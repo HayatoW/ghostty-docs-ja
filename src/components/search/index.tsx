@@ -26,10 +26,10 @@ import s from "./Search.module.css";
 
 // KIND_LABELS are the badges shown next to each result.
 const KIND_LABELS: Record<SearchSectionKind, string> = {
-  page: "Page",
-  section: "Section",
-  "config-option": "Config",
-  "keybind-action": "Action",
+  page: "ページ",
+  section: "セクション",
+  "config-option": "設定",
+  "keybind-action": "アクション",
   "vt-sequence": "VT",
 };
 
@@ -159,10 +159,10 @@ export default function Search({ className }: SearchProps) {
         onClick={open}
         onMouseEnter={prepare}
         onFocus={prepare}
-        aria-label="Search docs"
+        aria-label="ドキュメントを検索"
       >
         <SearchIcon size={16} aria-hidden />
-        <span className={s.triggerLabel}>Search docs</span>
+        <span className={s.triggerLabel}>ドキュメントを検索</span>
         <kbd className={s.triggerShortcut}>{shortcutLabel}</kbd>
       </button>
 
@@ -170,7 +170,7 @@ export default function Search({ className }: SearchProps) {
       <dialog
         ref={dialogRef}
         className={s.dialog}
-        aria-label="Search docs"
+        aria-label="ドキュメントを検索"
         // A safety net for closes that bypass close(), e.g. by the browser.
         onClose={resetSearch}
         onClick={(event) => {
@@ -186,7 +186,7 @@ export default function Search({ className }: SearchProps) {
               ref={inputRef}
               className={s.input}
               type="search"
-              placeholder="Search docs, config options, actions…"
+              placeholder="ドキュメント、設定項目、アクションを検索…"
               value={query}
               onChange={(event) => {
                 setQuery(event.target.value);
@@ -295,15 +295,15 @@ function statusMessage({
 }): string | null {
   const trimmed = query.trim();
   if (failed) {
-    return "Search is unavailable right now. Please try again later.";
+    return "現在検索を利用できません。しばらくしてから再度お試しください。";
   }
   if (!trimmed) {
     return null;
   }
   if (!loaded) {
-    return "Loading…";
+    return "読み込み中…";
   }
-  return resultCount === 0 ? `No results for “${trimmed}”` : null;
+  return resultCount === 0 ? `「${trimmed}」に一致する結果はありません` : null;
 }
 
 interface HighlightProps {

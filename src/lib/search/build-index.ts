@@ -72,7 +72,7 @@ async function loadDocsPageSource(
   );
   const title = String(data.title ?? slug);
   const breadcrumb = navTreeToBreadcrumbs(
-    "Ghostty Docs",
+    "Ghostty ドキュメント",
     DOCS_PAGES_ROOT_PATH,
     navTree,
     slug,

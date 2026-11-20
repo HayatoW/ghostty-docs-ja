@@ -6,16 +6,16 @@ import s from "./404Page.module.css";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Page not found | Ghostty",
+  title: "ページが見つかりません | Ghostty",
   description:
-    "Oops! We couldn’t find what you were looking for. Try browsing our docs or visit our download page.",
+    "お探しのページは見つかりませんでした。ドキュメントやダウンロードページをご覧ください。",
 };
 
 export default function NotFoundPage() {
   return (
     <main className={s.notFoundPage}>
       <header className={s.header}>
-        <H2>This page could not be found.</H2>
+        <H2>ページが見つかりませんでした。</H2>
       </header>
       <section>
         <Image

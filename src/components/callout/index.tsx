@@ -12,6 +12,15 @@ import {
 
 type CalloutType = "note" | "tip" | "important" | "warning" | "caution";
 
+// CALLOUT_LABELS are the Japanese headers shown for each callout type.
+const CALLOUT_LABELS: Record<CalloutType, string> = {
+  note: "注記",
+  tip: "ヒント",
+  important: "重要",
+  warning: "警告",
+  caution: "注意",
+};
+
 interface CalloutProps {
   type: CalloutType;
   children: React.ReactNode | string;
@@ -30,8 +39,7 @@ export default function Callout({ type, children }: CalloutProps) {
       })}
     >
       <P className={s.header} weight="medium">
-        <CalloutIcon className={s.icon} type={type} />{" "}
-        {type.charAt(0).toUpperCase() + type.slice(1)}
+        <CalloutIcon className={s.icon} type={type} /> {CALLOUT_LABELS[type]}
       </P>
       {typeof children === "string" ? (
         <BodyParagraph>{children}</BodyParagraph>
