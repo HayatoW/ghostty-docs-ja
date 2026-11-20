@@ -1,64 +1,57 @@
 ---
-title: Configuration
+title: 設定
 description: |-
-  Ghostty supports hundreds of configuration options to make
-  it look and behave exactly how you want.
+  Ghostty は数百種類の設定オプションをサポートし、
+  見た目や動作を思いどおりに調整できます。
 ---
 
-## Zero Configuration Philosophy {/* #zero-configuration-philosophy */}
+## 設定不要という考え方 {/* #zero-configuration-philosophy */}
 
-Ghostty is designed to work out of the box with no configuration
-for most users. Ghostty has sensible defaults, embeds a default
-font (JetBrains Mono), has built-in nerd fonts, and more. We are
-constantly challenging ourself as a project to eliminate any
-_necessary configuration_ to use Ghostty.
+Ghostty は、ほとんどのユーザーが設定なしですぐに使えるように設計されています。
+適切なデフォルト値、埋め込みのデフォルトフォント（JetBrains Mono）、組み込みの Nerd Fonts などを備えています。
+プロジェクトとして、Ghostty を使うために_必要な設定_をなくすことに常に取り組んでいます。
 
-To that end, if you find yourself needing to configure something
-other than highly subjective things like the theme and you think
-it should be a default, please
-[open a discussion](https://github.com/ghostty-org/ghostty/discussions).
+そのため、テーマのように好みが大きく分かれるもの以外で設定が必要になり、
+それをデフォルトにするべきだと思った場合は、
+[ディスカッションを作成](https://github.com/ghostty-org/ghostty/discussions)してください。
 
-And, if you're used to feeling you need to configure your terminal,
-maybe give Ghostty a try without any configuration first. You might
-be surprised!
+また、ターミナルには設定が必要だと感じるのが当たり前になっている方も、
+まずは設定なしで Ghostty を試してみてください。驚くかもしれません！
 
-## Configuration Format {/* #configuration-format */}
+## 設定形式 {/* #configuration-format */}
 
-Ghostty is configured using a text-based configuration file.
+Ghostty の設定には、テキスト形式の設定ファイルを使います。
 
 <Note>
-  In the future, we plan to also support native GUIs for
-  configuration in line with our native UI philosophy. This will
-  be in addition to the text-based configuration. Presently, the
-  text-based configuration is the only way to configure Ghostty.
+  将来的には、ネイティブ UI を重視する考え方に沿って、設定用のネイティブ GUI もサポートする予定です。
+  これはテキスト形式の設定に加えて提供するものです。
+  現在、Ghostty を設定する方法はテキスト形式の設定のみです。
 </Note>
 
-### File Location {/* #file-location */}
+### ファイルの場所 {/* #file-location */}
 
-The configuration file is named `config.ghostty` (or `config` before 1.2.3),
-is loaded from these locations in the following order:
+設定ファイルの名前は `config.ghostty`（1.2.3 より前は `config`）で、
+次の場所から以下の順序で読み込まれます。
 
-#### XDG configuration Path (all platforms): {/* #xdg-configuration-path-(all-platforms): */}
+#### XDG 設定パス（全プラットフォーム）: {/* #xdg-configuration-path-(all-platforms): */}
 - `$XDG_CONFIG_HOME/ghostty/config.ghostty`
 - `$XDG_CONFIG_HOME/ghostty/config`
-- if **XDG_CONFIG_HOME** is not defined, it defaults to `$HOME/.config`.
+- **XDG_CONFIG_HOME** が未定義の場合、デフォルトは `$HOME/.config` です。
 
-#### macOS-specific Path (macOS only): {/* #macos-specific-path-(macos-only): */}
+#### macOS 固有のパス（macOS のみ）: {/* #macos-specific-path-(macos-only): */}
 - `$HOME/Library/Application\ Support/com.mitchellh.ghostty/config.ghostty`.
 - `$HOME/Library/Application\ Support/com.mitchellh.ghostty/config`.
-- macOS also supports the XDG configuration path mentioned above.
+- macOS は、前述の XDG 設定パスもサポートしています。
 
-If both locations exist, they are loaded in the order above with
-conflicting values in later files overriding earlier ones.
-Configuration is optional and if no configuration file is found,
-Ghostty will use its defaults.  Note that all macOS-specific files are
-loaded *after* all XDG files.
+両方の場所にファイルが存在する場合、上記の順に読み込まれ、
+値が競合すると後のファイルが前のファイルを上書きします。
+設定は任意で、設定ファイルが見つからなければ Ghostty はデフォルト値を使います。
+すべての macOS 固有のファイルは、すべての XDG ファイルの*後に*読み込まれることに注意してください。
 
-### Syntax {/* #syntax */}
+### 構文 {/* #syntax */}
 
-Ghostty uses a custom, but very simplistic `key = value` syntax.
-The syntax is documented below using comments in a sample configuration
-file.
+Ghostty は独自の、とても単純な `key = value` 構文を使います。
+以下の設定ファイルの例では、コメントで構文を説明しています。
 
 ```ini
 # The syntax is "key = value". The whitespace around the
@@ -76,41 +69,35 @@ keybind = ctrl+d=new_split:right
 font-family =
 ```
 
-Some other notes about the syntax:
+構文に関するその他の注意点は次のとおりです。
 
-- Keys are case-sensitive. `background` and `Background` are not
-  the same. Ghostty always uses lowercase keys.
+- キーは大文字と小文字を区別します。`background` と `Background` は同じではありません。
+  Ghostty のキーは常に小文字です。
 
-- Values can be quoted or unquoted. `font-family = "JetBrains Mono"`
-  is the same as `font-family = JetBrains Mono`.
+- 値は引用符で囲んでも囲まなくてもかまいません。`font-family = "JetBrains Mono"`
+  は `font-family = JetBrains Mono` と同じです。
 
-- Every configuration key is a valid CLI flag when launching
-  Ghostty from the command-line. For example, the `background`
-  key can be set with `ghostty --background=282c34`. Or the
-  `font-family` key can be set with `ghostty --font-family="JetBrains Mono"`.
+- すべての設定キーは、コマンドラインから Ghostty を起動するときの CLI フラグとしても使えます。
+  たとえば、`background` キーは `ghostty --background=282c34` で設定できます。
+  また、`font-family` キーは `ghostty --font-family="JetBrains Mono"` で設定できます。
 
-### Splitting into Multiple Files {/* #splitting-into-multiple-files */}
+### 複数ファイルへの分割 {/* #splitting-into-multiple-files */}
 
-You can split your configuration into multiple files by using
-the `config-file` key in your configuration file. This key specifies
-a path to another configuration file to load and can be specified
-multiple times (cycles are detected and produce a warning).
+設定ファイル内の `config-file` キーを使うことで、設定を複数のファイルに分割できます。
+このキーは読み込む別の設定ファイルのパスを指定し、複数回指定できます
+（循環参照は検出され、警告が表示されます）。
 
-Note that any `config-file` keys are processed at the _end_ of the
-current file. This means that any keys after a `config-file` key
-will not override the keys in the loaded file if they are set.
+`config-file` キーは、現在のファイルの_最後_に処理されることに注意してください。
+つまり、`config-file` キーより後にあるキーでも、読み込んだファイルに同じキーが設定されていれば、それを上書きしません。
 
-If the value is a relative path, it is relative to the configuration
-file that contains the `config-file` key.
+値が相対パスの場合、`config-file` キーを含む設定ファイルからの相対パスになります。
 
-If the value is prefixed with `?`, the file is optional and if it
-doesn't exist, it is ignored. This is particularly useful for
-platform-specific or machine-specific configuration files.
-(If for some cursed reason you have a file you want to load
-that actually starts with `?`, you can escape by quoting
-the entire value with double quotes.)
+値の先頭に `?` を付けると、そのファイルは任意となり、存在しなければ無視されます。
+プラットフォーム固有やマシン固有の設定ファイルに特に便利です。
+（何らかの厄介な理由で、実際に `?` で始まるファイルを読み込みたい場合は、
+値全体を二重引用符で囲んでエスケープできます。）
 
-Example combining all of the above concepts:
+上記の要素をすべて組み合わせた例です。
 
 ```ini
 config-file = some/relative/sub/config
@@ -118,55 +105,45 @@ config-file = ?optional/config
 config-file = /absolute/path/config
 ```
 
-## Reloading the Configuration {/* #reloading-the-configuration */}
+## 設定の再読み込み {/* #reloading-the-configuration */}
 
-The configuration can be reloaded at runtime by pressing
-`ctrl+shift+,` (Linux) or `cmd+shift+,` (macOS). These are
-the default keybindings, but it is possible to define your
-own via the `reload_config` action.
+`ctrl+shift+,`（Linux）または `cmd+shift+,`（macOS）を押すと、実行中に設定を再読み込みできます。
+これらはデフォルトのキーバインドですが、`reload_config` アクションを使って独自のキーバインドも定義できます。
 
 <Note>
-Some configuration options cannot be reloaded at runtime;
-others may only apply to newly created terminals. See the
-specific configuration option for details.
+設定オプションによっては、実行中に再読み込みできないものや、新しく作成したターミナルにしか適用されないものがあります。
+詳しくは、各設定オプションを参照してください。
 </Note>
 
-## Offline Reference Documentation {/* #offline-reference-documentation */}
+## オフラインのリファレンスドキュメント {/* #offline-reference-documentation */}
 
-There are multiple places to find documentation on the configuration
-options besides the website. All locations are identical (they're all
-generated from the same source).
+設定オプションのドキュメントは、ウェブサイト以外にも複数の場所で確認できます。
+どれも内容は同じです（すべて同じソースから生成されています）。
 
 <Tip>
-The online reference documentation
-[is available here](/docs/config/reference).
+オンラインのリファレンスドキュメントは
+[こちらです](/docs/config/reference)。
 </Tip>
 
-1. There are HTML and Markdown formatted docs in the
-   `$prefix/share/ghostty/docs` directory. This directory is created
-   when you build or install Ghostty. The `$prefix` is `zig-out` if you're
-   building from source (or the specified `--prefix` flag). On macOS,
-   `$prefix` is the `Contents/Resources` subdirectory of the `.app` bundle.
+1. `$prefix/share/ghostty/docs` ディレクトリに HTML 形式と Markdown 形式のドキュメントがあります。
+   このディレクトリは Ghostty のビルド時またはインストール時に作成されます。
+   ソースからビルドする場合、`$prefix` は `zig-out`（または `--prefix` フラグで指定した値）です。
+   macOS では、`$prefix` は `.app` バンドルの `Contents/Resources` サブディレクトリです。
 
-2. There are man pages in the `$prefix/share/man` directory. This directory
-   is created when you build or install Ghostty.
+2. `$prefix/share/man` ディレクトリに man ページがあります。
+   このディレクトリは Ghostty のビルド時またはインストール時に作成されます。
 
-3. In the CLI, you can run `ghostty +show-config --default --docs`.
-   Note that this will output the full default configuration with docs to
-   stdout, so you may want to pipe that through a pager, an editor, etc.
+3. CLI では、`ghostty +show-config --default --docs` を実行できます。
+   デフォルト設定全体とドキュメントが標準出力に出力されるため、ページャーやエディターなどにパイプするとよいでしょう。
 
-4. In the source code, you can find the configuration structure in the
-   [Config structure](https://github.com/ghostty-org/ghostty/blob/main/src/config/Config.zig).
-   The available keys are the keys verbatim, and their possible values are typically
-   documented in the comments.
+4. ソースコードでは、[Config 構造体](https://github.com/ghostty-org/ghostty/blob/main/src/config/Config.zig)で設定の構造を確認できます。
+   使用可能なキーはそこに記載されているとおりで、指定可能な値は通常コメントに記載されています。
 
-5. Not documentation per se, but you can search for the
-   [public config files](https://github.com/search?q=path%3Aghostty%2Fconfig&type=code)
-   of many Ghostty users for examples and inspiration.
+5. 厳密にはドキュメントではありませんが、多くの Ghostty ユーザーの
+   [公開設定ファイル](https://github.com/search?q=path%3Aghostty%2Fconfig&type=code)を検索して、例やヒントを得ることもできます。
 
 <Note>
-You may see strange looking blank configurations like `font-family =`. This
-is a valid syntax to specify the default behavior (no value). The
-`+show-config` outputs it so it's clear that key is defaulting and also
-to have something to attach the doc comment to.
+`font-family =` のような、一見奇妙な空の設定を見かけることがあります。
+これはデフォルトの動作（値なし）を指定する有効な構文です。
+`+show-config` は、そのキーがデフォルトであることを明確にし、ドキュメントコメントの付与先にもするために、この形式で出力します。
 </Note>

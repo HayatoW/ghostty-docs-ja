@@ -1,50 +1,44 @@
 ---
-title: Trigger Sequences
+title: トリガーシーケンス
 description: |-
-  A trigger that requires a sequence of multiple keypress events.
+  複数のキー入力イベントの連続を必要とするトリガーです。
 ---
 
-Ghostty supports keybindings that require a sequence of triggers
-to activate the action. For example, you could require `ctrl+a`
-followed by `n` to open a new window. In other software, this is sometimes
-referred to as a "leader key", a "key chord", a "key table",
-etc.
+Ghostty は、アクションを実行するために連続したトリガーを必要とするキーバインドをサポートしています。
+たとえば、`ctrl+a` に続けて `n` を押すことで新しいウィンドウを開くようにできます。
+ほかのソフトウェアでは、「リーダーキー」「キーコード」「キーテーブル」などと呼ばれることがあります。
 
-To specify a sequence of triggers, use the
-[normal trigger syntax](/docs/config/keybind#trigger) and
-separate the triggers in the sequence with a `>` character.
-An example is shown below:
+トリガーシーケンスを指定するには、
+[通常のトリガー構文](/docs/config/keybind#trigger)を使用し、
+シーケンス内のトリガーを `>` で区切ります。
+以下に例を示します。
 
 ```ini
 keybind = ctrl+a>n=new_window
 ```
 
 <Warning>
- If you define a sequence as a CLI argument to `ghostty`,
-you probably have to quote the keybind since `>` is a special character
-in most shells. Example: ghostty --keybind='ctrl+a>n=new_window'
+ `ghostty` の CLI 引数としてシーケンスを定義する場合、
+ほとんどのシェルで `>` は特殊文字なので、キーバインドを引用符で囲む必要があるでしょう。
+例: ghostty --keybind='ctrl+a>n=new_window'
 </Warning>
 
-A trigger sequence has some special handling:
+トリガーシーケンスには、次のような特別な処理があります。
 
-  * Ghostty will wait an indefinite amount of time for the next key in
-    the sequence. There is no way to specify a timeout. The only way to
-    force the output of a prefix key is to assign another keybind to
-    specifically output that key (i.e. `ctrl+a>ctrl+a=text:foo`) or
-    press an unbound key which will send both keys to the program.
+  * Ghostty はシーケンス内の次のキーを無期限に待ちます。
+    タイムアウトは指定できません。プレフィックスキーを強制的に出力するには、
+    そのキーを明示的に出力する別のキーバインド（例: `ctrl+a>ctrl+a=text:foo`）を割り当てるか、
+    未割り当てのキーを押して両方のキーをプログラムに送信する必要があります。
 
-  * If a prefix in a sequence is previously bound, the sequence will
-    override the previous binding. For example, if `ctrl+a` is bound to
-    `new_window` and `ctrl+a>n` is bound to `new_tab`, pressing `ctrl+a`
-    will do nothing.
+  * シーケンス内のプレフィックスに既存の割り当てがある場合、シーケンスがその割り当てを上書きします。
+    たとえば、`ctrl+a` が `new_window` に、`ctrl+a>n` が `new_tab` に割り当てられている場合、
+    `ctrl+a` を押しても何も起こりません。
 
-  * Adding to the above, if a previously bound sequence prefix is
-    used in a new, non-sequence binding, the entire previously bound
-    sequence will be unbound. For example, if you bind `ctrl+a>n` and
-    `ctrl+a>t`, and then bind `ctrl+a` directly, both `ctrl+a>n` and
-    `ctrl+a>t` will become unbound.
+  * さらに、既存のシーケンスのプレフィックスをシーケンスではない新しい割り当てに使用すると、
+    既存のシーケンス全体の割り当てが解除されます。たとえば、`ctrl+a>n` と
+    `ctrl+a>t` を割り当ててから `ctrl+a` を直接割り当てると、`ctrl+a>n` と
+    `ctrl+a>t` の両方の割り当てが解除されます。
 
-  * Trigger sequences are not allowed for `global:` or `all:`-prefixed
-    triggers. This is a limitation we could remove in the future.
-
+  * `global:` または `all:` プレフィックス付きのトリガーでは、トリガーシーケンスは使用できません。
+    この制限は将来なくなる可能性があります。
 

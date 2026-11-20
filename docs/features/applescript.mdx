@@ -1,58 +1,54 @@
 ---
 title: AppleScript (macOS)
 description: |-
-  Automate Ghostty on macOS with AppleScript. This guide covers
-  the object model, available commands, and practical examples.
+  macOS で AppleScript を使って Ghostty を自動化します。
+  このガイドでは、オブジェクトモデル、使用可能なコマンド、実用例を説明します。
 ---
 
-## Overview {/* #overview */}
+## 概要 {/* #overview */}
 
-Ghostty on macOS exposes a native AppleScript dictionary so scripts can
-query and control terminal windows, tabs, and split panes.
-This makes it easy to integrate Ghostty with tools such as `osascript`,
-launcher workflows, editor plugins, and custom automation scripts.
+macOS 版 Ghostty はネイティブの AppleScript 辞書を公開しており、スクリプトからターミナルのウィンドウ、タブ、分割ペインの情報を取得し、制御できます。
+これにより、`osascript`、ランチャーのワークフロー、エディタープラグイン、独自の自動化スクリプトなどと Ghostty を簡単に連携できます。
 
-AppleScript support was introduced in Ghostty 1.3.0.
+AppleScript 対応は Ghostty 1.3.0 で導入されました。
 
-## Scripting Dictionary {/* #scripting-dictionary */}
+## スクリプティング辞書 {/* #scripting-dictionary */}
 
-The source of truth for the AppleScript API is the Ghostty scripting
-definition file: <a href="https://github.com/ghostty-org/ghostty/blob/main/macos/Ghostty.sdef">Ghostty.sdef</a>.
-The best way to view this is to load it into Script Editor and browse
-the API using the macOS GUI.
+AppleScript API の正確な定義は、Ghostty のスクリプティング定義ファイル
+<a href="https://github.com/ghostty-org/ghostty/blob/main/macos/Ghostty.sdef">Ghostty.sdef</a> にあります。
+スクリプトエディタで読み込み、macOS の GUI を使って API を閲覧するのが最も便利です。
 
-To inspect the dictionary from an installed app bundle:
+インストール済みのアプリバンドルから辞書を確認するには、次を実行します。
 
 ```sh
 sdef /Applications/Ghostty.app | less
 ```
 
-To verify that scripting works:
+スクリプトが動作することを確認するには、次を実行します。
 
 ```sh
 osascript -e 'tell application "Ghostty" to get version'
 ```
 
-## Object Model {/* #object-model */}
+## オブジェクトモデル {/* #object-model */}
 
-Ghostty's AppleScript model is hierarchical:
+Ghostty の AppleScript モデルは階層構造です。
 
 ```text
 application -> windows -> tabs -> terminals
 ```
 
-| Object | Key Properties | Key Elements |
+| オブジェクト | 主なプロパティ | 主な要素 |
 | ------ | -------------- | ------------ |
 | `application` | `name`, `frontmost`, `front window`, `version` | `windows`, `terminals` |
 | `window` | `id`, `name`, `selected tab` | `tabs`, `terminals` |
 | `tab` | `id`, `name`, `index`, `selected`, `focused terminal` | `terminals` |
-| `terminal` | `id`, `name`, `working directory` | None |
+| `terminal` | `id`, `name`, `working directory` | なし |
 
-`front window` returns the frontmost Ghostty window. `focused terminal`
-returns the active terminal in a tab, which is useful for scripts that
-operate on whatever terminal currently has focus.
+`front window` は最前面の Ghostty ウィンドウを返します。`focused terminal` はタブ内のアクティブなターミナルを返します。
+現在フォーカスされているターミナルを操作するスクリプトに便利です。
 
-### Object Query Examples {/* #object-query-examples */}
+### オブジェクトの取得例 {/* #object-query-examples */}
 
 ```AppleScript
 tell application "Ghostty"
@@ -65,7 +61,7 @@ tell application "Ghostty"
 end tell
 ```
 
-These two properties make active-context scripting concise:
+この 2 つのプロパティにより、アクティブなコンテキストを操作するスクリプトを簡潔に書けます。
 
 ```AppleScript
 tell application "Ghostty"
@@ -82,63 +78,62 @@ tell application "Ghostty"
 end tell
 ```
 
-## Commands {/* #commands */}
+## コマンド {/* #commands */}
 
-### Creation and Layout {/* #creation-and-layout */}
+### 作成とレイアウト {/* #creation-and-layout */}
 
-| Command | Purpose | Example Syntax |
+| コマンド | 用途 | 構文例 |
 | ------- | ------- | -------------- |
-| `new surface configuration` | Create a reusable surface configuration record. | `set cfg to new surface configuration` |
-| `new window` | Create a new window. | `set win to new window with configuration cfg` |
-| `new tab` | Create a new tab in an optional target window. | `set t to new tab in win with configuration cfg` |
-| `split` | Split a terminal and return the new terminal. | `set t2 to split t1 direction right with configuration cfg` |
+| `new surface configuration` | 再利用可能なサーフェス設定レコードを作成します。 | `set cfg to new surface configuration` |
+| `new window` | 新しいウィンドウを作成します。 | `set win to new window with configuration cfg` |
+| `new tab` | 新しいタブを作成します。対象ウィンドウは任意で指定できます。 | `set t to new tab in win with configuration cfg` |
+| `split` | ターミナルを分割し、新しいターミナルを返します。 | `set t2 to split t1 direction right with configuration cfg` |
 
-`split direction` values are `right`, `left`, `down`, and `up`.
+`split direction` の値は `right`、`left`、`down`、`up` です。
 
-### Focus, Selection, and Lifecycle {/* #focus-selection-and-lifecycle */}
+### フォーカス、選択、ライフサイクル {/* #focus-selection-and-lifecycle */}
 
-| Command | Purpose | Example Syntax |
+| コマンド | 用途 | 構文例 |
 | ------- | ------- | -------------- |
-| `focus` | Focus a terminal and bring its window to front. | `focus t1` |
-| `activate window` | Bring a window to the front. | `activate window (window 1)` |
-| `select tab` | Select a tab. | `select tab (tab 2 of window 1)` |
-| `close` | Close a terminal. | `close (terminal 2 of selected tab of window 1)` |
-| `close tab` | Close a tab. | `close tab (tab 2 of window 1)` |
-| `close window` | Close a window. | `close window (window 1)` |
+| `focus` | ターミナルにフォーカスし、そのウィンドウを最前面に移動します。 | `focus t1` |
+| `activate window` | ウィンドウを最前面に移動します。 | `activate window (window 1)` |
+| `select tab` | タブを選択します。 | `select tab (tab 2 of window 1)` |
+| `close` | ターミナルを閉じます。 | `close (terminal 2 of selected tab of window 1)` |
+| `close tab` | タブを閉じます。 | `close tab (tab 2 of window 1)` |
+| `close window` | ウィンドウを閉じます。 | `close window (window 1)` |
 
-### Input and Actions {/* #input-and-actions */}
+### 入力とアクション {/* #input-and-actions */}
 
-| Command | Purpose | Example Syntax |
+| コマンド | 用途 | 構文例 |
 | ------- | ------- | -------------- |
-| `input text` | Send paste-style text input to a terminal. | `input text "echo hello" to t1` |
-| `send key` | Send key press/release events with optional modifiers. | `send key "enter" to t1` |
-| `send mouse button` | Send mouse button events. | `send mouse button left button to t1` |
-| `send mouse position` | Send pointer position updates. | `send mouse position x 240 y 120 to t1` |
-| `send mouse scroll` | Send scroll events with precision/momentum options. | `send mouse scroll x 0 y -8 precision true to t1` |
-| `perform action` | Execute a Ghostty action string on a terminal. | `perform action "toggle_fullscreen" on t1` |
+| `input text` | 貼り付け形式のテキスト入力をターミナルに送信します。 | `input text "echo hello" to t1` |
+| `send key` | キーの押下・解放イベントを送信します。修飾キーも任意で指定できます。 | `send key "enter" to t1` |
+| `send mouse button` | マウスボタンのイベントを送信します。 | `send mouse button left button to t1` |
+| `send mouse position` | ポインター位置の更新を送信します。 | `send mouse position x 240 y 120 to t1` |
+| `send mouse scroll` | 精密スクロールや慣性のオプション付きでスクロールイベントを送信します。 | `send mouse scroll x 0 y -8 precision true to t1` |
+| `perform action` | ターミナルで Ghostty のアクション文字列を実行します。 | `perform action "toggle_fullscreen" on t1` |
 
-For `send key` and `send mouse button`, `action` can be `press` or
-`release`. `modifiers` is a comma-separated string containing any of:
+`send key` と `send mouse button` の `action` は、`press` または `release` です。
+`modifiers` は、次のいずれかを含むカンマ区切りの文字列です。
 `shift`, `control`, `option`, `command`.
 
-For `perform action`, action strings match the action names used in keybind
-configuration. See [Keybind Action Reference](/docs/config/keybind/reference).
+`perform action` のアクション文字列は、キーバインド設定で使うアクション名と同じです。
+[キーバインドアクションリファレンス](/docs/config/keybind/reference)を参照してください。
 
-## Surface Configuration Records {/* #surface-configuration-records */}
+## サーフェス設定レコード {/* #surface-configuration-records */}
 
-`new surface configuration` creates a reusable value record that can be passed
-to `new window`, `new tab`, and `split`.
+`new surface configuration` は、`new window`、`new tab`、`split` に渡せる再利用可能な値のレコードを作成します。
 
-Supported fields are:
+サポートするフィールドは次のとおりです。
 
 - `font size`
 - `initial working directory`
 - `command`
 - `initial input`
 - `wait after command`
-- `environment variables` (list of `KEY=VALUE` strings)
+- `environment variables`（`KEY=VALUE` 文字列のリスト）
 
-Example:
+例:
 
 ```AppleScript
 tell application "Ghostty"
@@ -151,21 +146,21 @@ tell application "Ghostty"
 end tell
 ```
 
-## Security {/* #security */}
+## セキュリティ {/* #security */}
 
-AppleScript support is enabled by default on macOS.
-macOS protects app-to-app automation using Automation permissions (TCC), so
-the system will prompt before another app can control Ghostty.
+macOS では、AppleScript 対応はデフォルトで有効です。
+macOS はオートメーション権限（TCC）でアプリ間の自動化を保護するため、
+ほかのアプリが Ghostty を制御する前に、システムが確認を求めます。
 
-If you want to disable AppleScript support entirely, set:
+AppleScript 対応を完全に無効にするには、次のように設定します。
 
 ```ini
 macos-applescript = false
 ```
 
-## Examples {/* #examples */}
+## 使用例 {/* #examples */}
 
-### Build a Tmux-style Layout {/* #build-a-tmux-style-layout */}
+### Tmux 風のレイアウトを作成する {/* #build-a-tmux-style-layout */}
 
 ```AppleScript
 set projectDir to POSIX path of (path to home folder) & "src/ghostty"
@@ -198,7 +193,7 @@ tell application "Ghostty"
 end tell
 ```
 
-### Broadcast a Command to Every Terminal {/* #broadcast-a-command-to-every-terminal */}
+### すべてのターミナルにコマンドを一斉送信する {/* #broadcast-a-command-to-every-terminal */}
 
 ```AppleScript
 set cmd to "date"
@@ -215,11 +210,11 @@ tell application "Ghostty"
 end tell
 ```
 
-### Set Tab Titles {/* #set-tab-titles */}
+### タブのタイトルを設定する {/* #set-tab-titles */}
 
-Use `perform action` with `set_tab_title` to label tabs from a script.
+`perform action` と `set_tab_title` を使って、スクリプトからタブにラベルを付けられます。
 
-An example of creating a new tab and setting the title:
+新しいタブを作成してタイトルを設定する例です。
 
 ```AppleScript
 tell application "Ghostty"
@@ -233,7 +228,7 @@ tell application "Ghostty"
 end tell
 ```
 
-### Jump to a Terminal by Working Directory {/* #jump-to-a-terminal-by-working-directory */}
+### 作業ディレクトリを指定してターミナルに移動する {/* #jump-to-a-terminal-by-working-directory */}
 
 ```AppleScript
 set needle to "ghostty"

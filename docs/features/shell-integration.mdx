@@ -1,82 +1,65 @@
 ---
-title: Shell Integration
+title: シェル統合
 description: |-
-  Some Ghostty features require integrating with your shell. Ghostty
-  can automatically inject shell integration for bash, elvish, fish,
-  nushell, and zsh.
+  Ghostty の一部の機能には、シェルとの統合が必要です。Ghostty は bash、elvish、fish、
+  nushell、zsh にシェル統合を自動的に挿入できます。
 ---
 
-## Features {/* #features */}
+## 機能 {/* #features */}
 
-- Do not confirm close for terminals where the cursor is at a prompt.
-- New terminals start in the working directory of the previously
-  focused terminal.
-- Complex prompts resize correctly by allowing the shell to
-  redraw -- rather than reflow -- the prompt line.
-- Triple-click while holding control (Linux) or command (macOS) to
-  select the output of a command.
-- The cursor at the prompt is turned into a bar to represent more
-  typical text editing.
-- The `jump_to_prompt` keybinding can be used to scroll the terminal window
-  forward and back through prompts.
-- Alt+click (option+click on macOS) moves the cursor to the click location
-  while at a prompt.
-- `sudo` can be automatically wrapped to preserve Ghostty terminfo
-  (disabled by default)
-- `ssh` can be automatically wrapped to set up the remote terminal
-  environment correctly. See [SSH](/docs/features/ssh) for details
-  (disabled by default).
+- カーソルがプロンプトにあるターミナルでは、閉じる際の確認を表示しません。
+- 新しいターミナルを、直前にフォーカスしていたターミナルの作業ディレクトリで開始します。
+- プロンプト行をリフローするのではなくシェルに再描画させることで、複雑なプロンプトも正しくリサイズします。
+- control（Linux）または command（macOS）を押しながらトリプルクリックすると、コマンドの出力を選択できます。
+- プロンプトのカーソルが、一般的なテキスト編集に近いバー形状になります。
+- `jump_to_prompt` キーバインドで、ターミナルウィンドウ内のプロンプト間を前後にスクロールできます。
+- プロンプトで Alt+クリック（macOS では option+クリック）すると、クリック位置にカーソルが移動します。
+- `sudo` を自動的にラップし、Ghostty の terminfo を保持できます（デフォルトでは無効です）。
+- `ssh` を自動的にラップし、リモートのターミナル環境を正しく設定できます。
+  詳しくは [SSH](/docs/features/ssh) を参照してください（デフォルトでは無効です）。
 
-## Shell Integration Injection {/* #shell-integration-injection */}
+## シェル統合の挿入 {/* #shell-integration-injection */}
 
-Ghostty will automatically inject the shell integration code for `bash`,
-`elvish`, `fish`, `nushell`, and `zsh`.
+Ghostty は、`bash`、`elvish`、`fish`、`nushell`、`zsh` 向けのシェル統合コードを自動的に挿入します。
 
 <Note>
-  The version of Bash distributed with macOS (`/bin/bash`) does not support
-  automatic shell integration. You'll need to manually source the shell
-  integration script (as shown below). You can also install a standard version
-  of Bash from Homebrew or elsewhere and set it as your shell.
+  macOS に付属する Bash（`/bin/bash`）は、自動シェル統合に対応していません。
+  以下に示すように、シェル統合スクリプトを手動で読み込む必要があります。
+  Homebrew などから標準の Bash をインストールし、使用するシェルに設定することもできます。
 </Note>
 
-Other shells do not have shell integration code written, but they will function
-fine within Ghostty, although some or all of the above-mentioned shell
-integration features may be unavailable.
+ほかのシェル向けのシェル統合コードは用意されていませんが、Ghostty 内で問題なく動作します。
+ただし、上記のシェル統合機能の一部またはすべてが利用できない場合があります。
 
-[Nushell](https://www.nushell.sh) provides many of these features
-itself (such as title and cursor handling), so its Ghostty integration
-focuses on Ghostty-specific features like `sudo`, `ssh-env`, and
-`ssh-terminfo`. Similarly, newer versions of Fish (4.0+) have built-in
-support for prompt marking so `jump_to_prompt`, prompt resizing, and
-prompt selection will work without shell integration.
+[Nushell](https://www.nushell.sh) は、タイトルやカーソルの処理など、多くの機能を自身で提供しています。
+そのため、Ghostty との統合は `sudo`、`ssh-env`、`ssh-terminfo` など、Ghostty 固有の機能に重点を置いています。
+同様に、新しい Fish（4.0 以降）はプロンプトのマークに標準で対応しているため、
+`jump_to_prompt`、プロンプトのリサイズ、プロンプトの選択はシェル統合なしで動作します。
 
-Ghostty detects your shell using a simple string match on the
-basename of the command to execute. If you are using a supported
-shell with a different name, you can force the shell integration
-by setting the `shell-integration` configuration option:
+Ghostty は、実行するコマンドのベース名を単純な文字列比較で照合してシェルを検出します。
+サポート対象のシェルを別の名前で使っている場合は、`shell-integration` 設定オプションでシェル統合を強制できます。
 
 ```ini
 shell-integration = fish
 ```
 
-If you want to disable automatic shell integration:
+自動シェル統合を無効にする場合は、次のようにします。
 
 ```ini
 shell-integration = none
 ```
 
-### Verify Shell Integration {/* #verify-shell-integration */}
+### シェル統合の確認 {/* #verify-shell-integration */}
 
-To verify shell integration is working, look for the following log lines:
+シェル統合が動作していることを確認するには、次のログ行を探してください。
 
 ```
 info(io_exec): using Ghostty resources dir from env var: /Applications/Ghostty.app/Contents/Resources
 info(io_exec): shell integration automatically injected shell=termio.shell_integration.Shell.fish
 ```
 
-If you see any of the following, something is not working correctly.
-The main culprit is usually that `GHOSTTY_RESOURCES_DIR` is not pointing
-to the right place.
+以下のいずれかが表示される場合は、正常に動作していません。
+主な原因は通常、`GHOSTTY_RESOURCES_DIR` が正しい場所を指していないことです。
 
 ```
 ghostty terminfo not found, using xterm-256color
@@ -86,35 +69,28 @@ ghostty terminfo not found, using xterm-256color
 shell could not be detected, no automatic shell integration will be injected
 ```
 
-### Troubleshooting {/* #troubleshooting */}
+### トラブルシューティング {/* #troubleshooting */}
 
-For the automatic shell integration to work Ghostty must either be run
-from the macOS app bundle or be installed in a location where the contents of
-`zig-out/share` are available somewhere above the directory where Ghostty
-is running from.
+自動シェル統合を動作させるには、macOS のアプリバンドルから Ghostty を実行するか、
+Ghostty の実行元ディレクトリより上のどこかに `zig-out/share` の内容が存在する場所にインストールする必要があります。
 
-On Linux, this should automatically work if you run from the `zig-out`
-directory tree structure (a standard FHS-style tree) or run from a
-properly installed location via `-p` (see
-[build from source](/docs/install/build)).
+Linux では、`zig-out` ディレクトリツリー（標準の FHS 形式のツリー）から実行するか、
+`-p` で適切にインストールした場所から実行すれば、自動的に動作するはずです
+（[ソースからのビルド](/docs/install/build)を参照してください）。
 
-You may also manually set the `GHOSTTY_RESOURCES_DIR` to point to the
-`zig-out/share/ghostty` contents. To validate this directory the file
-`$GHOSTTY_RESOURCES_DIR/../terminfo/ghostty.terminfo` should exist.
-Setting this environment variable manually is a red flag that something
-else is wrong, though, and you should investigate further.
+`GHOSTTY_RESOURCES_DIR` を手動で設定し、`zig-out/share/ghostty` の内容を指すようにすることもできます。
+このディレクトリが正しい場合、`$GHOSTTY_RESOURCES_DIR/../terminfo/ghostty.terminfo` が存在するはずです。
+ただし、この環境変数の手動設定が必要になるのは、ほかに問題がある兆候なので、さらに調査してください。
 
-## Manual Shell Integration Setup {/* #manual-shell-integration-setup */}
+## シェル統合の手動設定 {/* #manual-shell-integration-setup */}
 
-Shell integration can also be manually sourced in your shell
-configuration. This ensures that shell integration works in more
-scenarios (such as when you switch shells within Ghostty).
+シェルの設定でシェル統合を手動で読み込むこともできます。
+これにより、Ghostty 内でシェルを切り替える場合など、より多くの状況でシェル統合が動作します。
 
-Ghostty will automatically set the `GHOSTTY_RESOURCES_DIR` environment
-variable when it starts, so you can use this to (1) detect your shell
-is launched within Ghostty and (2) to find the shell-integration.
+Ghostty は起動時に `GHOSTTY_RESOURCES_DIR` 環境変数を自動設定します。
+これを使って、（1）シェルが Ghostty 内で起動されたことを検出し、（2）シェル統合を見つけられます。
 
-For example, for bash, you'd put this _at the top_ of your `~/.bashrc`:
+たとえば bash では、`~/.bashrc` の_先頭_に次の内容を記述します。
 
 ```bash
 # Ghostty shell integration for Bash. This should be at the top of your bashrc!
@@ -124,15 +100,13 @@ fi
 ```
 
 <Note>
-  Technically, the bash shell integration script could be sourced from anywhere,
-  but some bash configurations may interfere with the shell integration. To
-  avoid this, we recommend sourcing the script as early as possible in your
-  shell configuration.
+  技術的には、bash シェル統合スクリプトはどこからでも読み込めますが、一部の bash 設定がシェル統合に干渉する可能性があります。
+  これを避けるため、シェルの設定のできるだけ早い段階でスクリプトを読み込むことをお勧めします。
 </Note>
 
-Each shell integration's installation instructions are documented inline:
+各シェル統合のインストール手順は、それぞれのファイル内に記載されています。
 
-| Shell     | Integration                                                                                    |
+| シェル     | 統合                                                                                    |
 | --------- | ---------------------------------------------------------------------------------------------- |
 | `bash`    | `${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash`                                 |
 | `elvish`  | `${GHOSTTY_RESOURCES_DIR}/shell-integration/elvish/lib/ghostty-integration.elv`                |
@@ -140,26 +114,21 @@ Each shell integration's installation instructions are documented inline:
 | `nushell` | `$"($env.GHOSTTY_RESOURCES_DIR)/shell-integration/nushell/vendor/autoload/ghostty.nu"`         |
 | `zsh`     | `${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration`                           |
 
-For shell-specific details see <a href="https://github.com/ghostty-org/ghostty/blob/main/src/shell-integration/README.md">shell-integration/README.md</a>.
+シェル固有の詳細は、<a href="https://github.com/ghostty-org/ghostty/blob/main/src/shell-integration/README.md">shell-integration/README.md</a> を参照してください。
 
-## Switching Shells with Shell Integration {/* #switching-shells-with-shell-integration */}
+## シェル統合を使いながらシェルを切り替える {/* #switching-shells-with-shell-integration */}
 
-Automatic shell integration as described in the previous section only works
-for the _initially launched shell_ when Ghostty is started.
+前のセクションで説明した自動シェル統合は、Ghostty の起動時に_最初に起動したシェル_に対してのみ動作します。
 
-If you switch shells within Ghostty, i.e. you manually run `bash` or
-you use a command like `nix-shell`, the shell integration _will be
-lost_ in that shell (it will keep working in the original shell process).
+Ghostty 内でシェルを切り替えた場合、つまり手動で `bash` を実行したり、`nix-shell` などを使ったりすると、
+そのシェルではシェル統合が_失われます_（元のシェルプロセスでは引き続き動作します）。
 
-To make shell integration work in these cases, you must manually source
-the Ghostty shell-specific code as shown in the previous section.
+このような場合にシェル統合を動作させるには、前のセクションのとおり、Ghostty のシェル固有のコードを手動で読み込む必要があります。
 
-## SSH Integration {/* #ssh-integration */}
+## SSH 統合 {/* #ssh-integration */}
 
-The `ssh-env` and `ssh-terminfo` shell integration features wrap `ssh`
-in your interactive shell so that Ghostty's [`+ssh`](/docs/features/ssh)
-CLI action is invoked transparently. This sets up the remote terminal
-environment so applications running over `ssh` work correctly.
+シェル統合の `ssh-env` と `ssh-terminfo` は、対話シェル内の `ssh` をラップし、
+Ghostty の [`+ssh`](/docs/features/ssh) CLI アクションを透過的に呼び出します。
+これにより、リモートのターミナル環境が設定され、`ssh` 経由のアプリケーションが正しく動作します。
 
-See [SSH](/docs/features/ssh) for full details, including how to use
-`+ssh` directly outside of an interactive shell.
+対話シェルの外で `+ssh` を直接使う方法を含む詳細は、[SSH](/docs/features/ssh) を参照してください。

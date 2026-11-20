@@ -1,80 +1,69 @@
 ---
-title: Prerelease Builds
+title: プレリリースビルド
 description: |-
-  Help test the latest features and get the most recent bug fixes
-  by running prerelease builds of Ghostty.
+  Ghostty のプレリリースビルドを実行して、最新機能のテストに協力し、
+  最新のバグ修正を利用できます。
 ---
 
-If you're comfortable with running prerelease software, you can
-help test the latest features and get the most recent bug fixes
-by running prerelease builds of Ghostty. This helps the project
-significantly by providing feedback on new features and addressing
-possible issues before they are released to the public.
+プレリリースのソフトウェアを使うことに抵抗がなければ、Ghostty のプレリリースビルドを実行して、
+最新機能のテストに協力し、最新のバグ修正を利用できます。
+新機能へのフィードバックや、一般公開前の潜在的な問題への対処につながり、プロジェクトに大きく貢献できます。
 
 <Note>
-During the private beta period of Ghostty, testers daily drove
-prerelease builds using this same process. Many didn't have a single
-issue for months or even over a year. The prerelease builds are
-generally stable, but users should always be prepared for the
-possibility of stability issues.
+Ghostty のプライベートベータ期間中、テスターはこれと同じ手順でプレリリースビルドを日常的に使っていました。
+何か月も、あるいは 1 年以上も一度も問題が起きなかった方も多くいました。
+プレリリースビルドはおおむね安定していますが、安定性の問題が起こる可能性には常に備えてください。
 </Note>
 
-An overview of how to install prerelease builds is provided below
-with more details in the sections following the table.
+以下にプレリリースビルドのインストール方法の概要を示します。
+詳しい説明は、表の後の各セクションを参照してください。
 
-| Platform | Description |
+| プラットフォーム | 説明 |
 | -------- | ----------- |
-| macOS | `auto-update-channel` to get the latest prerelease builds |
-| Arch Linux | `ghostty-git` on the AUR |
-| NixOS/Nix on other distros | Flake within the Ghostty repository |
-| Other Linux distros | [Build from source](/docs/install/build) |
+| macOS | `auto-update-channel` で最新のプレリリースビルドを取得します |
+| Arch Linux | AUR の `ghostty-git` |
+| NixOS / ほかのディストリビューション上の Nix | Ghostty リポジトリ内の Flake |
+| ほかの Linux ディストリビューション | [ソースからビルド](/docs/install/build) |
 
 ## macOS {/* #macos */}
 
-For macOS, the Ghostty project provides signed and notarized builds
-for the latest commit on the `main` branch. These are available
-via [GitHub Releases](https://github.com/ghostty-org/ghostty/releases/tag/tip)
-but also via the standard macOS auto-update mechanism.
+macOS 向けには、Ghostty プロジェクトが `main` ブランチの最新コミットから署名・公証済みのビルドを提供しています。
+[GitHub Releases](https://github.com/ghostty-org/ghostty/releases/tag/tip) のほか、
+macOS 標準の自動更新の仕組みでも取得できます。
 
-If you are on a release build, you can switch to the prerelease channel
-by setting [`auto-update-channel`](/docs/config/reference#auto-update-channel) to `tip`.
+リリースビルドを使っている場合は、[`auto-update-channel`](/docs/config/reference#auto-update-channel) を `tip` に設定すると、プレリリースチャネルに切り替えられます。
 
 ```ini
 auto-update-channel = tip
 ```
 
 <Tip>
-Don't forget to restart Ghostty after changing the `auto-update-channel`
-setting! This setting does not take effect until Ghostty is restarted.
+`auto-update-channel` を変更したら、忘れずに Ghostty を再起動してください！
+この設定は Ghostty を再起動するまで反映されません。
 </Tip>
 
 <Warning>
-While you can set this setting back to `stable` at any time, this will
-only take effect when a later stable release is available. If you want
-to downgrade back to the previous stable release, you must
-[re-download](/download) Ghostty.
+この設定はいつでも `stable` に戻せますが、より新しい安定版が利用可能になったときに初めて反映されます。
+以前の安定版にダウングレードするには、Ghostty を[再ダウンロード](/download)する必要があります。
 </Warning>
 
 <Note>
-**Why is this setting called "tip"?** The term "tip" is a common term
-to refer to the latest commit on a branch in Git. Since we build
-prerelease builds from the latest commit on the `main` branch, we
-use the term "tip" to refer to the latest prerelease build rather than
-something like "nightly".
+**なぜ「tip」という設定名なのですか？** 「tip」は、Git でブランチの最新コミットを指す一般的な用語です。
+プレリリースビルドは `main` ブランチの最新コミットからビルドするため、
+最新のプレリリースビルドを「nightly」などではなく「tip」と呼んでいます。
 </Note>
 
 ### Homebrew {/* #homebrew */}
 
-You can also install prerelease builds using Homebrew using the
-`@tip` version.
+Homebrew でも、`@tip` バージョンを使ってプレリリースビルドをインストールできます。
 
 ```shell-session
 brew install --cask ghostty@tip
 ```
 
 <Warning>
-This is community-maintained. The `auto-update-channel` setting
-is an official distribution channel.
+こちらはコミュニティによって保守されています。
+`auto-update-channel` 設定は公式の配布チャネルです。
 </Warning>
 
 ## Linux {/* #linux */}
@@ -83,20 +72,17 @@ is an official distribution channel.
 
 <Warning>
 
-The AUR package is community-maintained. Any issues regarding packaging
-or the build process should be reported to the AUR maintainer first,
-and then to the Ghostty project.
+AUR パッケージはコミュニティによって保守されています。
+パッケージ化やビルド手順に関する問題は、まず AUR のメンテナーに報告し、その後 Ghostty プロジェクトに報告してください。
 
 </Warning>
 
-The [`ghostty-git`] package on the Arch User Repository (AUR) provides
-a way to automatically build and install the latest prerelease version
-of Ghostty with ease.
+Arch User Repository（AUR）の [`ghostty-git`] パッケージを使うと、
+Ghostty の最新プレリリース版を簡単に自動ビルドしてインストールできます。
 
 [`ghostty-git`]: https://aur.archlinux.org/packages/ghostty-git
 
-Installation may be done with an AUR helper or from source per the
-[usual AUR instructions](https://wiki.archlinux.org/title/Arch_User_Repository#Installing_and_upgrading_packages).
+インストールには AUR ヘルパーを使うか、[通常の AUR の手順](https://wiki.archlinux.org/title/Arch_User_Repository#Installing_and_upgrading_packages)に従ってソースからビルドできます。
 
 ```sh
 # Install Ghostty git
@@ -105,10 +91,8 @@ yay -S ghostty-git
 
 ### Nix Flake {/* #nix-flake */}
 
-The Ghostty repository comes with a Flake that can be used to build, run
-and install development ("tip") versions of Ghostty reproducibly, which
-is directly used, tested and maintained by Ghostty maintainers as our
-primary development and CI environment.
+Ghostty リポジトリには、開発版（「tip」）の Ghostty を再現可能な方法でビルド、実行、インストールできる Flake が付属しています。
+Ghostty のメンテナー自身が、主要な開発・CI 環境として直接使用し、テスト・保守しています。
 
 ```sh
 # Build and run the latest tip version of Ghostty without installing
@@ -117,24 +101,21 @@ nix run github:ghostty-org/ghostty
 
 <Note>
 
-The Flake currently does not support macOS builds due to limitations of
-the Nix ecosystem. See the [Nix (macOS binary)](/docs/install/binary#nix-(macos-binary))
-section of the "Prebuilt Binaries and Packages" page for more details.
+Nix エコシステムの制限により、この Flake は現在 macOS ビルドに対応していません。
+詳しくは、「ビルド済みバイナリとパッケージ」ページの [Nix（macOS バイナリ）](/docs/install/binary#nix-(macos-binary))を参照してください。
 
 </Note>
 
 <Warning>
 
-If you are installing the Flake on a non-NixOS system, be sure to read
-the [important caveats](/docs/install/binary#nix-on-other-distros) regarding
-running OpenGL programs built with Nix on non-NixOS systems. Ghostty will
-likely **fail to launch** without the workarounds described there.
+NixOS 以外のシステムに Flake をインストールする場合は、Nix でビルドした OpenGL プログラムを NixOS 以外で実行する際の
+[重要な注意事項](/docs/install/binary#nix-on-other-distros)を必ずお読みください。
+そこで説明する回避策なしでは、Ghostty は**起動に失敗する**可能性が高いです。
 
 </Warning>
 
-NixOS users can install Ghostty either directly as a package under
-`packages.<system>.default` (where `<system>` is your current host system,
-e.g. `x86_64-linux`), or use the overlay at `overlays.default`.
+NixOS ユーザーは、`packages.<system>.default` のパッケージを直接インストールするか
+（`<system>` は `x86_64-linux` など、現在のホストシステムです）、`overlays.default` のオーバーレイを使用できます。
 
 ```nix
 {
@@ -157,11 +138,8 @@ e.g. `x86_64-linux`), or use the overlay at `overlays.default`.
 }
 ```
 
-The Flake also exposes Ghostty compiled under different optimization settings,
-including `ghostty-debug`, `ghostty-releasefast` and `ghostty-releasesafe`:
-`releasefast` is the default; `debug` enables better debug information at the
-cost of performance; and `releasesafe` is rarely used.
+Flake は、異なる最適化設定でコンパイルした Ghostty も公開しています。
+`ghostty-debug`、`ghostty-releasefast`、`ghostty-releasesafe` があり、デフォルトは `releasefast` です。
+`debug` はパフォーマンスと引き換えに詳しいデバッグ情報を提供し、`releasesafe` はほとんど使われません。
 
-`debug` and `releasefast` are also available as overlays, under `overlays.debug`
-and `overlays.releasefast` respectively.
-
+`debug` と `releasefast` は、それぞれ `overlays.debug` と `overlays.releasefast` のオーバーレイとしても利用できます。
