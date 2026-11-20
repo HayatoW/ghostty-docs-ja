@@ -1,110 +1,107 @@
 ---
 title: Terminfo
 description: |-
-  Terminfo is used to tell software about the terminal's capabilities.
-  Ghostty ships with its own terminfo entry to advertise its features.
+  Terminfo は、ターミナルの機能をソフトウェアに伝えるために使われます。
+  Ghostty は、その機能を知らせるための独自の terminfo エントリーを同梱しています。
 ---
 
-[Terminfo](https://en.wikipedia.org/wiki/Terminfo) is an archaic format
-still in use by many terminal applications to determine the capabilities
-of the terminal. Ghostty ships with its own terminfo entry to advertise
-its features.
+[Terminfo](https://en.wikipedia.org/wiki/Terminfo) は古くからある形式で、
+現在も多くのターミナルアプリケーションが、ターミナルの機能を判定するために使用しています。
+Ghostty は、その機能を知らせるための独自の terminfo エントリーを同梱しています。
 
-Ghostty uses the `TERM` value of `xterm-ghostty`.
+Ghostty は、`TERM` の値に `xterm-ghostty` を使用します。
 
 <Note>
-  **Why the `xterm` prefix?** Unfortunately, many terminal applications string
-  search for "xterm" in the `TERM` value to _assume capabilities_. During the
-  private beta, we experimented with a pure `ghostty` value, but found that too
-  many applications broke and fixing the entire ecosystem was unrealistic. We
-  settled on `xterm-ghostty` to maintain compatibility.
+  **なぜ `xterm` という接頭辞が付くのでしょうか？** 残念ながら、多くのターミナルアプリケーションは、
+  `TERM` の値に「xterm」という文字列が含まれるかを調べて、*機能を推測*します。
+  非公開ベータでは、単に `ghostty` という値を試しましたが、あまりにも多くのアプリケーションが動作しなくなり、
+  エコシステム全体を修正するのは現実的ではないことが分かりました。
+  互換性を維持するため、`xterm-ghostty` に落ち着きました。
 </Note>
 
-Ghostty packages include the terminfo entry and set the proper filesystem
-layouts or environment variables to make it available to the system.
-When you run Ghostty, it will automatically set the `TERM` environment
-variable to `xterm-ghostty` so long as it detects that the terminfo entry
-is available.
+Ghostty のパッケージには terminfo エントリーが含まれており、
+システムで利用できるように適切なファイルシステム構成や環境変数を設定します。
+Ghostty を実行すると、terminfo エントリーが利用可能であることを検出した場合に、
+環境変数 `TERM` を自動的に `xterm-ghostty` に設定します。
 
 <Important>
-  **Ghostty's terminfo entry is available in ncurses 6.5-20241228 and above.**
-  As distros update their ncurses packages, Ghostty's terminfo entry will be
-  available by default system-wide. This will take time to propagate.
+  **Ghostty の terminfo エントリーは、ncurses 6.5-20241228 以降で利用できます。**
+  ディストリビューションで ncurses パッケージの更新が進むにつれて、
+  Ghostty の terminfo エントリーはデフォルトでシステム全体から利用できるようになります。
+  普及には時間がかかります。
 </Important>
 
 ## Sudo {/* #sudo */}
 
-If you use `sudo`, sudo may reset your environment variables and you may see
-an error about `missing or unsuitable terminal: xterm-ghostty` or `'xterm-ghostty': unknown terminal type.` when running
-some programs.
+`sudo` を使用すると、sudo が環境変数をリセットすることがあり、
+一部のプログラムを実行した際に `missing or unsuitable terminal: xterm-ghostty` や `'xterm-ghostty': unknown terminal type.` というエラーが表示される場合があります。
 
-To resolve this, you must either configure sudo to preserve
-the `TERMINFO` environment variable, or you can use shell-integration with
-the `sudo` feature enabled and Ghostty will alias sudo to automatically do
-this for you. To enable the shell-integration feature specify
-`shell-integration-features = sudo` in your configuration.
+解決するには、環境変数 `TERMINFO` を保持するよう sudo を設定するか、
+`sudo` 機能を有効にしたシェル統合を使用してください。
+シェル統合を使うと、Ghostty が sudo にエイリアスを設定して、自動的にこの処理を行います。
+このシェル統合機能を有効にするには、設定に
+`shell-integration-features = sudo` を指定します。
 
-See
+この設定オプションの詳細は、
 [`shell-integration-features`](/docs/config/reference#shell-integration-features)
-for more about this configuration option.
+を参照してください。
 
 ## SSH {/* #ssh */}
 
-If you use SSH to connect to other machines that do not have Ghostty's
-terminfo entry, you will see error messages like `missing or unsuitable
-terminal: xterm-ghostty`, `Error opening terminal: xterm-ghostty.` or
-`WARNING: terminal is not fully functional`.
+Ghostty の terminfo エントリーがないマシンに SSH で接続すると、
+`missing or unsuitable
+terminal: xterm-ghostty`、`Error opening terminal: xterm-ghostty.`、
+`WARNING: terminal is not fully functional` などのエラーメッセージが表示されます。
 
-Hopefully someday Ghostty will have terminfo entries pre-distributed
-everywhere, but in the meantime there are two methods to resolve the situation:
+いずれ Ghostty の terminfo エントリーがどこでもあらかじめ配布されるようになることを願っていますが、
+それまでの間は、次の 2 つの方法で対処できます。
 
-### Method 1: Copy Ghostty's terminfo entry to the remote machine {/* #method-1:-copy-ghostty's-terminfo-entry-to-the-remote-machine */}
-1. On your local machine, run the following one-liner:
+### 方法 1：Ghostty の terminfo エントリーをリモートマシンにコピーする {/* #method-1:-copy-ghostty's-terminfo-entry-to-the-remote-machine */}
+1. ローカルマシンで、次の 1 行のコマンドを実行します。
    ```sh
    infocmp -x xterm-ghostty | ssh YOUR-SERVER -- tic -x -
    ```
-2. On the server, confirm the configuration was saved into 
-   `/usr/share/terminfo/...`.
-   If not, check `$HOME/.terminfo/...` and move it across. 
+2. サーバー上で、設定が
+   `/usr/share/terminfo/...` に保存されたことを確認します。
+   保存されていない場合は、`$HOME/.terminfo/...` を確認し、そこから移動してください。
 
-The `tic` command on the server may give the warning `"<stdin>", line 2, col 31, terminal 
+サーバー上の `tic` コマンドが `"<stdin>", line 2, col 31, terminal 
 'xterm-ghostty': older tic versions may treat the description
-field as an alias` which can be safely ignored.
+field as an alias` という警告を出すことがありますが、安全に無視できます。
 
-`tic` will normally place its results in the system database, `/usr/share/terminfo`.
-This location can be overridden with the `TERMINFO` environment variable.
-If `TERMINFO` is not set and `tic` cannot write to the
-system location, it will place the results in `$HOME/.terminfo` if it exists.
-If this happens, `man tic` for details.
+`tic` は通常、結果をシステムデータベースの `/usr/share/terminfo` に配置します。
+この場所は、環境変数 `TERMINFO` で上書きできます。
+`TERMINFO` が設定されておらず、`tic` がシステムの場所に書き込めない場合、
+`$HOME/.terminfo` が存在すれば、そこに結果を配置します。
+この場合の詳細は、`man tic` を参照してください。
 
 <Note>
-  **macOS versions before Sonoma cannot use the system-bundled `infocmp`.** The
-  bundled version of `ncurses` is too old to emit a terminfo entry that can be
-  read by more recent versions of `tic`, and the command will fail with a bunch
-  of `Illegal character` messages. You can fix this by using Homebrew to install
-  a recent version of `ncurses` with `brew install ncurses` and replacing
-  `infocmp` above with the full path `/opt/homebrew/opt/ncurses/bin/infocmp` or
-  `/usr/local/opt/ncurses/bin/infocmp`.
+  **Sonoma より前の macOS では、システム同梱の `infocmp` は使用できません。**
+  同梱の `ncurses` のバージョンが古すぎて、新しい `tic` が読める terminfo エントリーを出力できず、
+  大量の `Illegal character` メッセージを表示してコマンドが失敗します。
+  Homebrew で `brew install ncurses` を実行して新しい `ncurses` をインストールし、
+  上記の `infocmp` を完全なパスである `/opt/homebrew/opt/ncurses/bin/infocmp` または
+  `/usr/local/opt/ncurses/bin/infocmp` に置き換えることで解決できます。
 </Note>
 
 
-### Method 2: Configure SSH to fall back to a known terminfo entry {/* #method-2:-configure-ssh-to-fall-back-to-a-known-terminfo-entry */}
-1. On your local machine, add the following SSH
-   configuration (**requires [OpenSSH 8.7](https://www.openssh.com/txt/release-8.7)
-   or newer**):
+### 方法 2：既知の terminfo エントリーにフォールバックするよう SSH を設定する {/* #method-2:-configure-ssh-to-fall-back-to-a-known-terminfo-entry */}
+1. ローカルマシンで、次の SSH 設定を追加します
+   （**[OpenSSH 8.7](https://www.openssh.com/txt/release-8.7)
+   以降が必要です**）。
    ```ssh-config
    # .ssh/config
    Host example.com
      SetEnv TERM=xterm-256color
    ```
 
-Ghostty can automate both variants. See [SSH](/docs/features/ssh) for
-details on the `ghostty +ssh` CLI action and the `ssh-env` /
-`ssh-terminfo` shell integration features, including important
-limitations around when the automation applies.
+Ghostty は、どちらの方法も自動化できます。
+`ghostty +ssh` CLI アクションと、`ssh-env` /
+`ssh-terminfo` シェル統合機能の詳細については、[SSH](/docs/features/ssh) を参照してください。
+自動化が適用される条件に関する重要な制限事項も記載しています。
 
 <Warning>
-  **Fallback does not support advanced terminal features.** Because
-  `xterm-256color` does not include all of Ghostty's capabilities, terminal
-  features beyond xterm's like colored and styled underlines will not work.
+  **フォールバックでは、高度なターミナル機能はサポートされません。**
+  `xterm-256color` は Ghostty のすべての機能を含んでいないため、
+  色付きの下線や装飾付きの下線など、xterm の範囲を超えるターミナル機能は動作しません。
 </Warning>
