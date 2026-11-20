@@ -105,9 +105,13 @@ export class DocsSearchEngine {
 // WORD_SEGMENTER splits Japanese text, which has no spaces, into words.
 const WORD_SEGMENTER = new Intl.Segmenter("ja", { granularity: "word" });
 
+// PUNCTUATION matches the separators MiniSearch's default tokenizer splits on,
+// which the segmenter would otherwise keep inside words like "font_family".
+const PUNCTUATION = /\p{P}+/gu;
+
 // tokenize splits text into word-like segments for indexing and querying.
 function tokenize(text: string): string[] {
-  return Array.from(WORD_SEGMENTER.segment(text))
+  return Array.from(WORD_SEGMENTER.segment(text.replace(PUNCTUATION, " ")))
     .filter((segment) => segment.isWordLike)
     .map((segment) => segment.segment);
 }
