@@ -1,131 +1,63 @@
 ---
 title: Ghostty 1.1.3
 description: |-
-  Release notes for Ghostty 1.1.3, released on March 24, 2025.
+  Ghostty 1.1.3（2025 年 3 月 24 日リリース）のリリースノートです。
 ---
 
-Ghostty 1.1.3 primarily addresses Gnome 48 and GTK 4.18 compatibility issues
-but also includes bug fixes for all platforms. This release contains no
-features or improvements and is only focused on stability and
-compatibility. The next major release (1.2.0) will include new features
-and improvements. This release includes changes from **11 contributors**
-over **21 commits.**
+Ghostty 1.1.3 では、主に GNOME 48 と GTK 4.18 との互換性の問題に対処し、すべてのプラットフォーム向けのバグ修正も行いました。このリリースには新機能や機能改善はなく、安定性と互換性のみに注力しています。次の大きなリリース（1.2.0）には、新機能と改善が含まれる予定です。今回のリリースには、**11 人の貢献者**による **21 件のコミット**が含まれています。
 
-## Highlights {/* #highlights */}
+## 主な変更点 {/* #highlights */}
 
-### Gnome 48, GTK 4.18 Compatibility {/* #gnome-48-gtk-4.18-compatibility */}
+### GNOME 48、GTK 4.18 との互換性 {/* #gnome-48-gtk-4.18-compatibility */}
 
 PR:
 [#6877](https://github.com/ghostty-org/ghostty/pull/6877)
 
-Ghostty 1.1.3 is fully compatible with Gnome 48 and GTK 4.18.
+Ghostty 1.1.3 は GNOME 48 と GTK 4.18 に完全対応しています。
 
-GTK 4.18 changes the default renderer for GTK applications to the
-["ngl" renderer](https://blog.gtk.org/2024/01/28/new-renderers-for-gtk/).
-This change exposed some bugs in Ghostty's rendering code that caused
-major visual glitches that effectively made Ghostty unusable on GTK 4.18
-with prior versions (1.1.2 and earlier).
+GTK 4.18 では、GTK アプリの既定のレンダラーが [「ngl」レンダラー](https://blog.gtk.org/2024/01/28/new-renderers-for-gtk/) に変更されました。この変更で Ghostty の描画コードに潜んでいた複数のバグが表面化しました。描画が大きく乱れ、以前のバージョン（1.1.2 以前）は GTK 4.18 上で事実上使えない状態でした。
 
-Since Ghostty now works with all current GTK GSK renderers, the
-`gtk-gsk-renderer` configuration is deprecated and no longer has any effect.
-If users want to force a specific GTK renderer, they can use the
-standard GTK
-[`GSK_RENDERER` environment variable](https://docs.gtk.org/gtk4/running.html#gsk_renderer).
-The configuration option still exists but will be removed in Ghostty
-1.2.0.
+Ghostty が現行の GTK の GSK レンダラーすべてで動作するようになったため、`gtk-gsk-renderer` 設定は非推奨になり、効果がなくなりました。特定の GTK レンダラーを強制したい場合は、GTK 標準の [`GSK_RENDERER` 環境変数](https://docs.gtk.org/gtk4/running.html#gsk_renderer) を使えます。この設定項目はまだ残っていますが、Ghostty 1.2.0 で削除されます。
 
-## Full List {/* #full-list */}
+## 変更の全一覧 {/* #full-list */}
 
-[Full list of closed issues on GitHub](https://github.com/ghostty-org/ghostty/milestone/6?closed=1).
+[対応済みの Issue の全一覧（GitHub）](https://github.com/ghostty-org/ghostty/milestone/6?closed=1)。
 
-- OSC 21 (Kitty color protocol): Ghostty no longer sends a response for
-  non-query requests.
-  [#5770](https://github.com/ghostty-org/ghostty/pull/5770)
-- The pty no longer has an initialize size of `0x0`. The size is something
-  non-zero but may still be incorrect due to a race condition between
-  initializing the pty and drawing the GUI window. We do not consider
-  this a bug.
-  [#5776](https://github.com/ghostty-org/ghostty/pull/5776)
-- Increase the maximum number of parameters for CSI sequences to 24.
-  This fixes some SGR sequences that were not working properly in
-  Kakoune.
-  [#5949](https://github.com/ghostty-org/ghostty/pull/5949)
-- The default binding for `equalize_splits` is now usable by default
-  for US (and similar) keyboard layouts. It was previously an impossible
-  binding. The binding is `super+ctrl+shift+plus`.
-  [#5646](https://github.com/ghostty-org/ghostty/pull/5646)
-- The elvish shell integration `sudo` feature now works properly.
-  [#5992](https://github.com/ghostty-org/ghostty/pull/5992)
+- OSC 21（Kitty 色プロトコル）: 問い合わせではないリクエストに、Ghostty は応答しなくなりました。[#5770](https://github.com/ghostty-org/ghostty/pull/5770)
+- 擬似端末の初期サイズが `0x0` ではなくなりました。サイズはゼロではありませんが、擬似端末の初期化と GUI ウィンドウの描画の競合によって、初期サイズが正しくない場合はまだあります。これはバグとは見なしていません。[#5776](https://github.com/ghostty-org/ghostty/pull/5776)
+- CSI シーケンスの最大パラメーター数を 24 に増やしました。これにより、Kakoune で正しく機能していなかった一部の SGR シーケンスが動作するようになります。[#5949](https://github.com/ghostty-org/ghostty/pull/5949)
+- US 配列や類似のキーボード配列で、`equalize_splits` の既定のキーバインドが使えるようになりました。従来の組み合わせでは入力できませんでした。新しいキーバインドは `super+ctrl+shift+plus` です。[#5646](https://github.com/ghostty-org/ghostty/pull/5646)
+- Elvish のシェル統合の `sudo` 機能が正しく動作するようになりました。[#5992](https://github.com/ghostty-org/ghostty/pull/5992)
 
 ### macOS {/* #macos */}
 
-- macOS: The new tab button is now more visible with semi-transparent
-  dark backgrounds.
-  [#5897](https://github.com/ghostty-org/ghostty/pull/5897)
-- macOS: New windows created while the quick terminal is in focused
-  now properly transfer focus to the new window.
-  [#5834](https://github.com/ghostty-org/ghostty/pull/5834)
-- macOS: Fix an issue where the terminal draw area would appear
-  garbled until focused under various conditions, most reliably when
-  a DPI change occurred.
-  [#6008](https://github.com/ghostty-org/ghostty/pull/6008)
-- macOS: Fix an issue where the terminal inspector menu item would
-  become deactivated under certain conditions in the Quick Terminal.
-  [#6024](https://github.com/ghostty-org/ghostty/pull/6024)
-- macOS: The equalize splits keybind and menu item now only affect
-  the focused tab, as expected.
-  [#6080](https://github.com/ghostty-org/ghostty/pull/6080)
+- macOS: 半透明の暗い背景でも、新規タブボタンが見やすくなりました。[#5897](https://github.com/ghostty-org/ghostty/pull/5897)
+- macOS: クイックターミナルにフォーカスがある状態で新規ウィンドウを作成すると、フォーカスが正しく新規ウィンドウへ移るようになりました。[#5834](https://github.com/ghostty-org/ghostty/pull/5834)
+- macOS: さまざまな条件で、フォーカスするまでターミナルの描画領域が乱れる問題を修正しました。特に DPI が変わった場合によく発生していました。[#6008](https://github.com/ghostty-org/ghostty/pull/6008)
+- macOS: クイックターミナルで、特定の条件下でターミナルインスペクターのメニュー項目が無効になる問題を修正しました。[#6024](https://github.com/ghostty-org/ghostty/pull/6024)
+- macOS: 分割のサイズを均等にするキーバインドとメニュー項目が、意図どおりフォーカス中のタブだけに適用されるようになりました。[#6080](https://github.com/ghostty-org/ghostty/pull/6080)
 
-### Linux (GTK) {/* #linux-(gtk) */}
+### Linux（GTK） {/* #linux-(gtk) */}
 
-- GTK: Fix various rendering issues with the "ngl" GSK renderer.
-  This resolves compatibility issues with GTK 4.18 and Gnome 48.
-  [#6877](https://github.com/ghostty-org/ghostty/pull/6877)
-- GTK: Treat negative content scale values from GTK as 1.0.
-  This fixes some known default setting issues on Gentoo systems.
-  [#5954](https://github.com/ghostty-org/ghostty/pull/5954)
-- GTK: Make the split drag handle area smaller to allow selecting
-  text on the boundary. This fix isn't perfect but is an improvement.
-  A more comprehensive fix is planned for 1.2.0.
-  [#6000](https://github.com/ghostty-org/ghostty/pull/6000)
-- GTK: The `title` configuration is now respected when a new tab
-  is created from the tab overview.
-  [#6032](https://github.com/ghostty-org/ghostty/pull/6032)
-- GTK: Improve the reliability of Korean input methods, specifically
-  the `fcitx5-hangul` input method.
-  [#6779](https://github.com/ghostty-org/ghostty/pull/6779)
+- GTK: GSK の「ngl」レンダラーでの描画の問題を複数修正しました。これにより、GTK 4.18 と GNOME 48 との互換性の問題が解消されます。[#6877](https://github.com/ghostty-org/ghostty/pull/6877)
+- GTK: GTK が返す負のコンテンツ表示倍率を 1.0 として扱います。これにより、Gentoo システムの既定設定に関する既知の問題がいくつか解消されます。[#5954](https://github.com/ghostty-org/ghostty/pull/5954)
+- GTK: 境界線上でテキストを選択できるように、分割のドラッグハンドルの領域を狭くしました。完全な修正ではありませんが、以前より改善しています。より包括的な修正は 1.2.0 で予定しています。[#6000](https://github.com/ghostty-org/ghostty/pull/6000)
+- GTK: タブ一覧から新しいタブを作成したときにも、`title` 設定が反映されるようになりました。[#6032](https://github.com/ghostty-org/ghostty/pull/6032)
+- GTK: 韓国語入力メソッド、特に `fcitx5-hangul` の信頼性を改善しました。[#6779](https://github.com/ghostty-org/ghostty/pull/6779)
 
-### Changes for Package Maintainers {/* #changes-for-package-maintainers */}
+### パッケージメンテナー向けの変更 {/* #changes-for-package-maintainers */}
 
-- The `fetch-zig-cache.sh` script is back in the source tarball.
-  This was erroneously removed in 1.1.1 and 1.1.2.
-  [#5762](https://github.com/ghostty-org/ghostty/pull/5762)
-- A new `build.zig.zon.txt` file is included in the source tarball.
-  This is an easily parsable file that contains the URL of every
-  dependency used to build Ghostty (for all configurations, so this
-  includes optional dependencies).
-  [#5764](https://github.com/ghostty-org/ghostty/pull/5764)
+- ソース tarball に `fetch-zig-cache.sh` スクリプトが戻りました。1.1.1 と 1.1.2 では誤って削除されていました。[#5762](https://github.com/ghostty-org/ghostty/pull/5762)
+- ソース tarball に新しい `build.zig.zon.txt` ファイルを含めました。解析しやすい形式で、Ghostty のビルドに使用するすべての依存関係の URL が記載されています。全構成が対象なので、オプションの依存関係も含まれます。[#5764](https://github.com/ghostty-org/ghostty/pull/5764)
 
-This release still requires Zig 0.13, but note that the next major
-release (1.2.0) will require Zig 0.14. This is just a heads-up for
-package maintainers. The main branch of Ghostty is already updated
-to Zig 0.14 so you can start testing now, if you wish. There is no
-schedule for the 1.2.0 release yet, we expect it to still be months
-away.
+このリリースでは引き続き Zig 0.13 が必要ですが、次の大きなリリース（1.2.0）では Zig 0.14 が必要になります。これはパッケージメンテナーへの事前のお知らせです。Ghostty の main ブランチはすでに Zig 0.14 に更新されているので、必要に応じて今からテストできます。1.2.0 の日程はまだ決まっておらず、リリースまで数か月かかる見込みです。
 
-Any future patch releases for 1.1.x will continue to require Zig 0.13.
+将来 1.1.x のパッチリリースを出す場合も、引き続き Zig 0.13 が必要です。
 
-## Roadmap {/* #roadmap */}
+## ロードマップ {/* #roadmap */}
 
-The focus of our efforts remain on the 1.2.0 release, which is shaping
-up very nicely. We didn't expect to have a 1.1.3 release, but the
-compatibility issues with GTK 4.18 and Gnome 48 were severe enough
-that we felt it was necessary to release a patch.
+引き続き 1.2.0 に注力しており、開発は順調に進んでいます。1.1.3 は予定していませんでしたが、GTK 4.18 と GNOME 48 の互換性の問題が深刻だったため、パッチリリースが必要だと判断しました。
 
-I don't want to make any promises for any specific features coming in
-1.2.0, but we are working hard to address many of the most requested
-features and improvements.
+1.2.0 にどの機能が入るかは約束できませんが、特に要望の多い機能や改善を数多く取り入れられるよう努めています。
 
-Ghostty 1.1.x has been a very stable series, and we are in no rush to
-ship 1.2.0, so there is no timeline for that release yet. We will
-cut the release when we feel it is ready. Thank you!
+Ghostty 1.1.x 系は非常に安定しており、1.2.0 を急いで出すつもりはありません。そのため、リリース時期はまだ決まっていません。準備が整ったと判断した時点でリリースします。ありがとうございます。
