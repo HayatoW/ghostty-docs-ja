@@ -1,15 +1,10 @@
 ---
-title: Vertical Position Absolute (VPA)
-description: Move the cursor to a specific row.
+title: 垂直絶対位置 (VPA)
+description: カーソルを指定した行に移動します。
 ---
 
 <VTSequence sequence={["CSI", "Py", "d"]} />
 
-This sequence performs [cursor position (CUP)](/docs/vt/csi/cup) with `y` set
-to the parameterized value and `x` set to the current cursor position.
-There is no additional or different behavior for using `VPA`.
+このシーケンスは、`y` をパラメーターで指定した値に、`x` を現在のカーソル位置に設定して、[カーソル位置 (CUP)](/docs/vt/csi/cup) を実行します。`VPA` を使用することによる追加の動作や動作の違いはありません。
 
-Because this invokes `CUP`, the cursor column (`y`) can change if it is
-outside the bounds of the `CUP` operation. For example, if
-[origin mode](#TODO) is set and the current cursor position is outside
-of the scroll region, the column will be adjusted.
+`CUP` を呼び出すため、カーソルの列（`y`）が `CUP` 操作の境界外にある場合、その列が変わることがあります。たとえば、[原点モード](#TODO)が設定されていて、現在のカーソル位置がスクロール領域の外にある場合、列が調整されます。

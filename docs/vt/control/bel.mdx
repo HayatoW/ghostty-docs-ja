@@ -1,42 +1,31 @@
 ---
-title: Bell (BEL)
-description: Raise the attention of the user.
+title: ベル (BEL)
+description: ユーザーの注意を引きます。
 ---
 
 <VTSequence sequence="BEL" />
 
-The purpose of the bell sequence is to raise the attention
-of the user.
+ベルシーケンスの目的は、ユーザーの注意を引くことです。
 
-Historically, this would
-[ring a physical bell](https://en.wikipedia.org/wiki/Bell_character).
-Today, many alternate behaviors are acceptable:
+歴史的には、これによって[物理的なベルを鳴らしていました](https://en.wikipedia.org/wiki/Bell_character)。現在では、さまざまな代替動作が認められています。
 
-- An audible sound can be played through the speakers
-- Background or border of a window can visually flash
-- The terminal window can come into focus or be put on top
-- Application icon can bounce or otherwise draw attention
-- A desktop notification can be shown
+- スピーカーから音を再生できます。
+- ウィンドウの背景や枠を視覚的に点滅させられます。
+- ターミナルウィンドウにフォーカスを当てたり、最前面に表示したりできます。
+- アプリケーションのアイコンを跳ねさせるなどして注意を引けます。
+- デスクトップ通知を表示できます。
 
-Normally, the bell behavior is configurable and can be disabled.
+通常、ベルの動作は設定可能で、無効にすることもできます。
 
-## BEL as an OSC Terminator {/* #bel-as-an-osc-terminator */}
+## OSC 終端文字としての BEL {/* #bel-as-an-osc-terminator */}
 
-The `BEL` character is also a valid terminating character for
-OSC sequences, although `ST` is preferred. If `BEL` is the
-terminating character for an OSC sequence, any responses should
-also terminate with the `BEL` character.[^1]
+`BEL` 文字は OSC シーケンスの終端文字としても有効ですが、`ST` が推奨されます。OSC シーケンスの終端文字が `BEL` の場合、すべての応答も `BEL` 文字で終端する必要があります。[^1]
 
-## Ghostty Status {/* #ghostty-status */}
+## Ghostty の対応状況 {/* #ghostty-status */}
 
-This control character is implemented in Ghostty, although by default
-most behaviors that Ghostty implements are disabled. See the documentation
-for the [`bell-features`](/docs/config/reference#bell-features) configuration
-option for more information.
+この制御文字は Ghostty に実装されていますが、Ghostty が実装している動作のほとんどはデフォルトでは無効になっています。詳細は、[`bell-features`](/docs/config/reference#bell-features) 設定オプションのドキュメントを参照してください。
 
-The BEL character can be used as an OSC terminator. If it is used as an OSC
-terminator, Ghostty will terminate any responses with the
-`BEL` character.
+BEL 文字は OSC 終端文字として使用できます。OSC 終端文字として使用した場合、Ghostty はすべての応答を `BEL` 文字で終端します。
 
 
 [^1]: https://invisible-island.net/xterm/ctlseqs/ctlseqs.html

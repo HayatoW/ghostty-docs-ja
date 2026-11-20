@@ -1,15 +1,12 @@
 ---
-title: Query or Change Special Colors (OSC 5)
-description: Query or change a special color based on its index.
+title: 特殊色の問い合わせと変更 (OSC 5)
+description: インデックスに基づいて特殊色の問い合わせや変更を行います。
 ---
 
 <VTSequence sequence={["OSC", "5", ";", "Pn", ";", "Pc", "ST"]} />
 
-Query or change the [special color] corresponding to `n` depending on the
-value of `c`.
+`c` の値に応じて、`n` に対応する[特殊色]の問い合わせまたは変更を行います。
 
-[special color]: /docs/vt/concepts/colors#special-colors
+[特殊色]: /docs/vt/concepts/colors#special-colors
 
-`n` and `c` behave nearly identically to [OSC 4](/docs/vt/osc/4), and may
-also be repeated multiple times in one sequence. The difference is that `n`
-now ranges between 0 and 4 inclusive, corresponding to the five special colors.
+`n` と `c` は [OSC 4](/docs/vt/osc/4) とほぼ同じように動作し、1 つのシーケンス内で複数回繰り返すこともできます。違いは、`n` の範囲が 0 から 4 までとなり、5 つの特殊色に対応することです。

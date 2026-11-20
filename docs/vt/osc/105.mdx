@@ -1,12 +1,10 @@
 ---
-title: Reset Special Colors (OSC 105)
-description: Reset special colors.
+title: 特殊色のリセット (OSC 105)
+description: 特殊色をリセットします。
 ---
 
 <VTSequence sequence={["OSC", "105", ";", "Pn", "ST"]} />
 
-Reset the [special color] at index `n`. `n` can be specified **zero or
-more** times, separated with semicolons (`;`)
-When `n` is not specified, all special colors are reset.
+インデックス `n` の[特殊色]をリセットします。`n` はセミコロン（`;`）で区切って **0 回以上**指定できます。`n` を指定しない場合、すべての特殊色をリセットします。
 
-[special color]: /docs/vt/concepts/colors#special-colors
+[特殊色]: /docs/vt/concepts/colors#special-colors

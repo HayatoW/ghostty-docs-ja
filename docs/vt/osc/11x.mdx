@@ -1,35 +1,33 @@
 ---
-title: Reset Dynamic Colors (OSC 110–119)
-description: Reset dynamic colors based on their indices.
+title: 動的色のリセット (OSC 110–119)
+description: インデックスに基づいて動的色をリセットします。
 ---
 
 <VTSequence sequence={["OSC", "Pn", "ST"]} />
 
-When `n` is between `110` and `119` inclusive, reset the
-[dynamic color] corresponding to `n`.
+`n` が `110` から `119` までの場合、`n` に対応する[動的色]をリセットします。
 
-[dynamic color]: /docs/vt/concepts/colors#dynamic-colors
+[動的色]: /docs/vt/concepts/colors#dynamic-colors
 
-The correspondence between `n` and the dynamic colors are as follows:
+`n` と動的色の対応は次のとおりです。
 
-| `n`  | Color                      |
+| `n`  | 色                      |
 |------|----------------------------|
-| `110` | Foreground color           |
-| `111` | Background color           |
-| `112` | Cursor color               |
-| `113` | Pointer foreground color   |
-| `114` | Pointer background color   |
-| `115` | Tektronix foreground color |
-| `116` | Tektronix background color |
-| `117` | Highlight background color |
-| `118` | Tektronix cursor color     |
-| `119` | Highlight foreground color |
+| `110` | 前景色           |
+| `111` | 背景色           |
+| `112` | カーソル色               |
+| `113` | ポインターの前景色   |
+| `114` | ポインターの背景色   |
+| `115` | Tektronix の前景色 |
+| `116` | Tektronix の背景色 |
+| `117` | 強調表示の背景色 |
+| `118` | Tektronix のカーソル色     |
+| `119` | 強調表示の前景色 |
 
 > [!NOTE]
 >
-> Currently, Ghostty only supports `n` between `110` and `112` inclusive. All other
-> dynamic colors are ignored.
+> 現在、Ghostty がサポートしている `n` は `110` から `112` までだけです。それ以外の動的色はすべて無視されます。
 
 > [!NOTE]
 >
-> xterm allows a trailing semicolon (`;`) to come after `n`.
+> xterm では、`n` の後に末尾のセミコロン（`;`）を付けることができます。

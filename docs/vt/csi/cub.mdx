@@ -1,64 +1,33 @@
 ---
-title: Cursor Backward (CUB)
-description: Move the cursor left `n` cells.
+title: カーソル後退 (CUB)
+description: カーソルを左に `n` セル移動します。
 ---
 
 <VTSequence sequence={["CSI", "Pn", "D"]} />
 
-The parameter `n` must be an integer greater than or equal to 1. If `n` is less than
-or equal to 0, adjust `n` to be 1. If `n` is omitted, `n` defaults to 1.
+パラメーター `n` は 1 以上の整数である必要があります。`n` が 0 以下の場合は、`n` を 1 に調整します。`n` を省略した場合、`n` のデフォルトは 1 です。
 
-This sequence always unsets the
-[pending wrap state](/docs/vt/concepts/cursor#pending-wrap-state).
+このシーケンスは常に[保留中の折り返し状態](/docs/vt/concepts/cursor#pending-wrap-state)を解除します。
 
-The leftmost boundary the cursor can move to is determined by the current
-cursor column and the [left margin](#TODO). If the cursor begins to the left of the left margin, modify the left margin to be the leftmost column
-for the duration of the sequence. The leftmost column the cursor can be on
-is the left margin.
+カーソルが移動できる左端の境界は、現在のカーソル列と[左マージン](#TODO)によって決まります。カーソルの開始位置が左マージンより左にある場合、このシーケンスの実行中に限り、左マージンを左端の列に変更します。カーソルが位置できる左端の列は左マージンです。
 
-With the above in place, there are three different cursor backward behaviors
-depending on the mode state of the terminal. The possible behaviors are listed
-below. In the case of a conflict, the top-most behavior takes priority.
+以上を踏まえ、ターミナルのモードの状態に応じて、カーソル後退には 3 種類の動作があります。可能な動作を以下に示します。競合する場合は、上にある動作が優先されます。
 
-- **Extended reverse wrap**: [wraparound (mode 7)](#TODO) and [extended reverse wrap (mode 1045)](#TODO)
-  are **BOTH** enabled
-- **Reverse wrap**: [wraparound (mode 7)](#TODO) and [reverse wrap (mode 45)](#TODO)
-  are **BOTH** enabled
-- **No wrap**: The default behavior if the above wrapping behaviors
-  do not have their conditions met.
+- **拡張逆折り返し**: [折り返し（モード 7）](#TODO) と[拡張逆折り返し（モード 1045）](#TODO) が**両方とも**有効です。
+- **逆折り返し**: [折り返し（モード 7）](#TODO) と[逆折り返し（モード 45）](#TODO) が**両方とも**有効です。
+- **折り返しなし**: 上記の折り返し動作の条件を満たさない場合のデフォルトの動作です。
 
-For the **no wrap** behavior, move the cursor to the left `n` cells while
-respecting the aforementioned leftmost boundary. Upon reaching the leftmost
-boundary, stop moving the cursor left regardless of the remaining value of `n`.
-The cursor row remains unchanged.
+**折り返しなし**の動作では、前述の左端の境界を守りながらカーソルを左に `n` セル移動します。左端の境界に達すると、`n` の残りの値に関係なく、左への移動を停止します。カーソルの行は変わりません。
 
-For the **extended reverse wrap** behavior, move the cursor to the left `n`
-cells while respecting the aforementioned leftmost boundary. Upon reaching the
-leftmost boundary, if `n > 0` then move the cursor to the [right margin](#TODO)
-of the line above the cursor. If the cursor is already on the
-[top margin](#TODO), move the cursor to the right margin of the
-[bottom margin](#TODO). Both the cursor column and row can change in this
-mode. Compared to non-extended reverse wrap, the two critical differences are
-that extended reverse wrap doesn't require the previous line to be wrapped
-and extended reverse wrap will wrap around to the bottom margin.
+**拡張逆折り返し**の動作では、前述の左端の境界を守りながらカーソルを左に `n` セル移動します。左端の境界に達したとき、`n > 0` であれば、カーソルの 1 行上の[右マージン](#TODO)にカーソルを移動します。カーソルがすでに[上マージン](#TODO)上にある場合は、[下マージン](#TODO)の右マージンに移動します。このモードでは、カーソルの列と行の両方が変わる可能性があります。拡張ではない逆折り返しとの重要な違いは、前の行が折り返されている必要がないことと、下マージンまで折り返すことの 2 点です。
 
-For the **reverse wrap** (non-extended) behavior, move the cursor to the left `n`
-cells while respecting the aforementioned leftmost boundary. Upon reaching the
-leftmost boundary, if `n > 0` and the previous line was wrapped, then move the
-cursor to the [right margin](#TODO) of the line above the cursor. If the previous
-line was not wrapped, the cursor left operation is complete even if there
-is a remaining value of `n`. If the cursor
-is already on the [top margin](#TODO), do not move the cursor up.
-This wrapping mode does not wrap the cursor row back to the bottom margin.
+**逆折り返し**（非拡張）の動作では、前述の左端の境界を守りながらカーソルを左に `n` セル移動します。左端の境界に達したとき、`n > 0` で、かつ前の行が折り返されていた場合、カーソルの 1 行上の[右マージン](#TODO)にカーソルを移動します。前の行が折り返されていなかった場合、`n` の値が残っていても、カーソルの左移動操作は終了します。カーソルがすでに[上マージン](#TODO)上にある場合は、カーソルを上に移動しません。この折り返しモードでは、カーソルの行を下マージンまで折り返すことはありません。
 
-For **extended reverse wrap** or **reverse wrap** modes, if the pending
-wrap state is set, decrease `n` by 1. In these modes, the initial cursor
-backward count is consumed by the pending wrap state, as if you pressed
-"backspace" on an empty newline and the cursor moved back to the previous line.
+**拡張逆折り返し**または**逆折り返し**モードでは、保留中の折り返し状態が設定されている場合、`n` を 1 減らします。これらのモードでは、空の改行上で「バックスペース」を押してカーソルが前の行に戻るかのように、最初のカーソル後退の回数が保留中の折り返し状態によって消費されます。
 
-## Validation {/* #validation */}
+## 検証 {/* #validation */}
 
-### CUB V-1: Pending Wrap is Unset {/* #cub-v-1:-pending-wrap-is-unset */}
+### CUB V-1: 保留中の折り返し状態の解除 {/* #cub-v-1:-pending-wrap-is-unset */}
 
 ```bash
 cols=$(tput cols)
@@ -73,7 +42,7 @@ printf "XYZ"
 |Zc________|
 ```
 
-### CUB V-2: Leftmost Boundary with Reverse Wrap Disabled {/* #cub-v-2:-leftmost-boundary-with-reverse-wrap-disabled */}
+### CUB V-2: 逆折り返しが無効な場合の左端の境界 {/* #cub-v-2:-leftmost-boundary-with-reverse-wrap-disabled */}
 
 ```bash
 printf "\033[?45l" # disable reverse wrap
@@ -87,7 +56,7 @@ printf "B"
 |Bc________|
 ```
 
-### CUB V-3: Reverse Wrap {/* #cub-v-3:-reverse-wrap */}
+### CUB V-3: 逆折り返し {/* #cub-v-3:-reverse-wrap */}
 
 ```bash
 cols=$(tput cols)
@@ -106,7 +75,7 @@ printf "X"
 |B_________|
 ```
 
-### CUB V-4: Extended Reverse Wrap Single Line {/* #cub-v-4:-extended-reverse-wrap-single-line */}
+### CUB V-4: 拡張逆折り返しでの 1 行の移動 {/* #cub-v-4:-extended-reverse-wrap-single-line */}
 
 ```bash
 printf "\033[?7h" # enable wraparound
@@ -124,7 +93,7 @@ printf "X"
 |B_________|
 ```
 
-### CUB V-5: Extended Reverse Wrap Wraps to Bottom {/* #cub-v-5:-extended-reverse-wrap-wraps-to-bottom */}
+### CUB V-5: 拡張逆折り返しで下端に折り返し {/* #cub-v-5:-extended-reverse-wrap-wraps-to-bottom */}
 
 ```bash
 cols=$(tput cols)
@@ -147,7 +116,7 @@ printf "X"
 |_________Xc
 ```
 
-### CUB V-6: Reverse Wrap Outside of Margins {/* #cub-v-6:-reverse-wrap-outside-of-margins */}
+### CUB V-6: マージン外での逆折り返し {/* #cub-v-6:-reverse-wrap-outside-of-margins */}
 
 ```bash
 printf "\033[1;1H"
@@ -164,7 +133,7 @@ printf "X"
 |Xc________|
 ```
 
-### CUB V-7: Reverse Wrap with Pending Wrap State {/* #cub-v-7:-reverse-wrap-with-pending-wrap-state */}
+### CUB V-7: 保留中の折り返し状態での逆折り返し {/* #cub-v-7:-reverse-wrap-with-pending-wrap-state */}
 
 ```bash
 cols=$(tput cols)

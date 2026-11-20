@@ -1,46 +1,29 @@
 ---
-title: Set Left and Right Margins (DECSLRM)
-description: Set the left and right margins.
+title: 左右マージン設定 (DECSLRM)
+description: 左右のマージンを設定します。
 ---
 
 <VTSequence sequence={["CSI", "Pl", ";", "Pr", "s"]} />
 
-Sets the left and right margins, otherwise known as the scroll region.
-To learn more about scroll regions in general, see
-[Set Top and Bottom Margins](/docs/vt/csi/decstbm).
+左右のマージン、別名スクロール領域を設定します。スクロール領域全般については、[上下マージン設定](/docs/vt/csi/decstbm)を参照してください。
 
-Parameters `l` and `r` are integer values. If either value is zero the
-value will be reset to default values. The default value for `l` is `1`
-and the default value of `r` is the number of columns in the screen.
+パラメーター `l` と `r` は整数値です。どちらかの値がゼロの場合、その値はデフォルト値にリセットされます。`l` のデフォルト値は `1`、`r` のデフォルト値は画面の列数です。
 
-Values `l` and `r` can be omitted. If either value is omitted, their
-default values will be used. Note that it is impossible to omit `l`
-and not omit `r`.
+`l` と `r` の値は省略できます。どちらかの値を省略した場合、そのデフォルト値を使用します。`l` を省略して `r` を省略しないことはできない点に注意してください。
 
-This sequence requires [enable left and right margin (mode 69)](#TODO)
-to be set. If mode 69 is not set, this sequence does nothing and left
-and right margins will not be set.
+このシーケンスには、[左右マージンの有効化（モード 69）](#TODO) が設定されている必要があります。モード 69 が設定されていない場合、このシーケンスは何もせず、左右のマージンも設定されません。
 
-This sequence conflicts with [save cursor (`CSI s`)](#TODO). If
-mode 69 is disabled, save cursor will be invoked. If mode 69 is enabled,
-the `CSI s` save cursor sequence will be disabled, but save cursor is always
-also available as `ESC 7`.
+このシーケンスは[カーソル保存（`CSI s`）](#TODO)と競合します。モード 69 が無効な場合は、カーソル保存が呼び出されます。モード 69 が有効な場合、`CSI s` のカーソル保存シーケンスは無効になりますが、カーソル保存は常に `ESC 7` としても利用できます。
 
-If left is larger or equal to right, this sequence does nothing. A
-scroll region must be at least two columns (`r` must be greater than `l`).
-The rest of this sequence description assumes valid values for `l` and `r`.
+左の値が右の値以上の場合、このシーケンスは何もしません。スクロール領域には少なくとも 2 列が必要です（`r` は `l` より大きい必要があります）。以降の説明では、`l` と `r` が有効な値であると仮定します。
 
-This sequence unsets the pending wrap state and moves the cursor to
-the top-left of the screen. If [origin mode](#TODO) is set, the cursor is
-moved to the top-left of the scroll region.
+このシーケンスは保留中の折り返し状態を解除し、カーソルを画面の左上に移動します。[原点モード](#TODO)が設定されている場合、カーソルはスクロール領域の左上に移動します。
 
-To reset the left and right margins, call this sequence with both values set to
-"0". This will force the default values for both `l` and `r` which is
-the full screen. Unsetting mode 69 will also reset the left and right margins.
+左右のマージンをリセットするには、両方の値を「0」に設定してこのシーケンスを呼び出します。これにより `l` と `r` の両方にデフォルト値が適用され、画面全体になります。モード 69 を解除することでも、左右のマージンはリセットされます。
 
-## Validation {/* #validation */}
+## 検証 {/* #validation */}
 
-### DECSLRM V-1: Full Screen {/* #decslrm-v-1:-full-screen */}
+### DECSLRM V-1: 画面全体 {/* #decslrm-v-1:-full-screen */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -59,7 +42,7 @@ printf "\033[X"
 |GHI_____|
 ```
 
-### DECSLRM V-2: Left Only {/* #decslrm-v-2:-left-only */}
+### DECSLRM V-2: 左のみ {/* #decslrm-v-2:-left-only */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -80,7 +63,7 @@ printf "\033[L"
 | HI_____|
 ```
 
-### DECSLRM V-3: Left And Right {/* #decslrm-v-3:-left-and-right */}
+### DECSLRM V-3: 左右 {/* #decslrm-v-3:-left-and-right */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -101,7 +84,7 @@ printf "\033[L"
 |GH______|
 ```
 
-### DECSLRM V-4: Left Equal to Right {/* #decslrm-v-4:-left-equal-to-right */}
+### DECSLRM V-4: 左と右が同じ値 {/* #decslrm-v-4:-left-equal-to-right */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

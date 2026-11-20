@@ -1,19 +1,12 @@
 ---
-title: Horizontal Position Relative (HPR)
-description: |-
-  Move the cursor to a specific column relative to the current position.
+title: 水平相対位置 (HPR)
+description: 現在の位置を基準として、カーソルを指定した列に移動します。
 ---
 
 <VTSequence sequence={["CSI", "Px", "a"]} />
 
-This sequence performs [cursor position (CUP)](/docs/vt/csi/cup) with `x` set
-to the current cursor column plus `x` and `y` set to the current cursor row.
-There is no additional or different behavior for using `HPR`.
+このシーケンスは、`x` を現在のカーソル列に `x` を加えた値に、`y` を現在のカーソル行に設定して、[カーソル位置 (CUP)](/docs/vt/csi/cup) を実行します。`HPR` を使用することによる追加の動作や動作の違いはありません。
 
-The parameter `x` must be an integer greater than or equal to 1. If `x` is less than
-or equal to 0, adjust `x` to be 1. If `x` is omitted, `x` defaults to 1.
+パラメーター `x` は 1 以上の整数である必要があります。`x` が 0 以下の場合は、`x` を 1 に調整します。`x` を省略した場合、`x` のデフォルトは 1 です。
 
-Because this invokes `CUP`, the cursor row (`y`) can change if it is
-outside the bounds of the `CUP` operation. For example, if
-[origin mode](#TODO) is set and the current cursor position is outside
-of the scroll region, the row will be adjusted.
+`CUP` を呼び出すため、カーソルの行（`y`）が `CUP` 操作の境界外にある場合、その行が変わることがあります。たとえば、[原点モード](#TODO)が設定されていて、現在のカーソル位置がスクロール領域の外にある場合、行が調整されます。

@@ -1,42 +1,18 @@
 ---
-title: Set Shift-Escape (XTSHIFTESCAPE)
-description: |-
-  Configure whether mouse reports are allowed to capture
-  the `shift` modifier.
+title: Shift-Escape 設定 (XTSHIFTESCAPE)
+description: マウス報告で `shift` 修飾キーを取得できるかどうかを設定します。
 ---
 
 <VTSequence sequence={["CSI", ">", "Pn", "s"]} />
 
-The parameter `n` must be an integer equal to 0 or 1. If `n` is omitted,
-`n` defaults to 0. If `n` is an invalid value, this sequence does nothing.
+パラメーター `n` は 0 または 1 の整数である必要があります。`n` を省略した場合、`n` のデフォルトは 0 です。`n` が無効な値の場合、このシーケンスは何もしません。
 
-When a terminal program requests [mouse reporting](#TODO), some mouse
-reporting modes also report the modifier keys that are pressed (control, shift,
-etc.). This would disable the ability for a terminal user to natively select
-text if they typically select text using left-click and drag, since the
-left-click event is captured by the running program.
+ターミナルプログラムが[マウス報告](#TODO)を要求すると、一部のマウス報告モードでは、押されている修飾キー（control、shift など）も報告します。通常、左クリックしてドラッグすることでテキストを選択するユーザーは、左クリックのイベントが実行中のプログラムに取得されるため、ターミナル本来のテキスト選択機能を使えなくなります。
 
-To get around this limitation, many terminal emulators (including xterm)
-use the `shift` modifier to disable mouse reporting temporarily, allowing
-native text selection to work. In this scenario, however, the running
-terminal program cannot detect shift-clicks because the terminal emulator
-captures the event.
+この制限を回避するため、多くのターミナルエミュレーター（xterm を含みます）は、`shift` 修飾キーを使ってマウス報告を一時的に無効にし、ターミナル本来のテキスト選択を可能にします。ただし、この場合はターミナルエミュレーターがイベントを取得するため、実行中のターミナルプログラムは shift を押しながらのクリックを検出できません。
 
-This sequence (`XTSHIFTESCAPE`) allows configuring this behavior. If
-`n` is `0`, the terminal is allowed to override the shift key and not pass
-it through to the terminal program. If `n` is `1`, the terminal program
-is requesting that the shift modifier is sent using standard mouse
-reporting formats.
+このシーケンス（`XTSHIFTESCAPE`）で、この動作を設定できます。`n` が `0` の場合、ターミナルは shift キーの処理を上書きし、ターミナルプログラムに渡さないことができます。`n` が `1` の場合、ターミナルプログラムは、標準のマウス報告形式を使って shift 修飾キーを送信するよう要求しています。
 
-In either case, the terminal emulator is not forced to respect this request.
-For example, `xterm` has a `never` and `always` terminal configuration
-to never allow terminal programs to capture shift or to always allow them,
-respectively. If either of these configurations are set, `XTSHIFTESCAPE`
-has zero effect.
+どちらの場合も、ターミナルエミュレーターにこの要求に従う義務はありません。たとえば、`xterm` には `never` と `always` というターミナル設定があり、それぞれターミナルプログラムによる shift の取得を一切許可しないか、常に許可するかを指定します。どちらかの設定が指定されている場合、`XTSHIFTESCAPE` はまったく効果を持ちません。
 
-`xterm` also has `false` and `true` terminal configurations. In the `false`
-scenario, the terminal emulator will override `shift` (not allow the terminal
-program to see it) _unless it is explicitly requested_ via `XTSHIFTESCAPE`.
-The `true` scenario is the exact opposite: pass the shift modifier through
-to the running terminal program unless the terminal program explicitly states
-it doesn't need to know about it (`n = 0`).
+`xterm` には `false` と `true` というターミナル設定もあります。`false` の場合、ターミナルエミュレーターは、`XTSHIFTESCAPE` によって_明示的に要求されない限り_、`shift` の処理を上書きします（ターミナルプログラムには通知しません）。`true` の場合はまったく逆で、ターミナルプログラムがその情報を必要としないと明示的に指定（`n = 0`）しない限り、実行中のターミナルプログラムに shift 修飾キーを渡します。

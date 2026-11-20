@@ -1,23 +1,19 @@
 ---
-title: Cursor Up (CUU)
-description: Move the cursor `n` cells up.
+title: カーソル上移動 (CUU)
+description: カーソルを上に `n` セル移動します。
 ---
 
 <VTSequence sequence={["CSI", "Pn", "A"]} />
 
-The parameter `n` must be an integer greater than or equal to 1. If `n` is less than
-or equal to 0, adjust `n` to be 1. If `n` is omitted, `n` defaults to 1.
+パラメーター `n` は 1 以上の整数である必要があります。`n` が 0 以下の場合は、`n` を 1 に調整します。`n` を省略した場合、`n` のデフォルトは 1 です。
 
-This sequence always unsets the pending wrap state.
+このシーケンスは常に保留中の折り返し状態を解除します。
 
-If the current cursor position is at or below the [top margin](#TODO),
-the highest point the cursor can move is the top margin. If the current
-cursor position is above the top margin, the highest point the cursor
-can move is the first row.
+現在のカーソル位置が[上マージン](#TODO)上またはその下にある場合、カーソルが移動できる最も上の位置は上マージンです。現在のカーソル位置が上マージンより上にある場合、カーソルが移動できる最も上の位置は最初の行です。
 
-## Validation {/* #validation */}
+## 検証 {/* #validation */}
 
-### CUU V-1: Cursor Up {/* #cuu-v-1:-cursor-up */}
+### CUU V-1: カーソル上移動 {/* #cuu-v-1:-cursor-up */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -34,7 +30,7 @@ printf "X"
 |A_________|
 ```
 
-### CUU V-2: Cursor Up Below Top Margin {/* #cuu-v-2:-cursor-up-below-top-margin */}
+### CUU V-2: 上マージンより下からのカーソル上移動 {/* #cuu-v-2:-cursor-up-below-top-margin */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -54,7 +50,7 @@ printf "X"
 |__________|
 ```
 
-### CUU V-3: Cursor Up Above Top Margin {/* #cuu-v-3:-cursor-up-above-top-margin */}
+### CUU V-3: 上マージンより上からのカーソル上移動 {/* #cuu-v-3:-cursor-up-above-top-margin */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

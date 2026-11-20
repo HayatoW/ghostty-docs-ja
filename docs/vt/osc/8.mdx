@@ -1,33 +1,20 @@
 ---
-title: Hyperlink (OSC 8)
-description: Begin or end a hyperlink.
+title: ハイパーリンク (OSC 8)
+description: ハイパーリンクを開始または終了します。
 ---
 
 > [!NOTE]
 >
-> OSC 8 was originally pioneered by VTE circa 2017. The original specification
-> can be read as [a GitHub gist][OSC 8 spec], which specifies every aspect of this
-> sequence fairly exhaustively. Any deviance between this page and the original
-> specification should be regarded as an error on our end.
-> 
+> OSC 8 は、もともと 2017 年頃に VTE が先駆けて導入しました。元の仕様は [GitHub gist][OSC 8 spec] で読むことができ、このシーケンスのあらゆる側面をかなり網羅的に規定しています。このページと元の仕様の間に相違がある場合は、こちら側の誤りとみなしてください。
+>
 > [OSC 8 spec]: https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
 
 <VTSequence sequence={["OSC", "8", ";", "Pp", ";", "Pu", "ST"]} />
 
-Mark the start of a hyperlink. Cells after this sequence are all considered
-part of a hyperlink to the URI `u` until the end of a hyperlink is reached,
-marked by a lack of any parameters `p` or the URI:
+ハイパーリンクの開始を示します。このシーケンス以降のセルは、パラメーター `p` も URI もないシーケンスによってハイパーリンクの終了が示されるまで、すべて URI `u` へのハイパーリンクの一部とみなされます。
 
 <VTSequence sequence={["OSC", "8", ";", ";", "ST"]} />
 
-Parameters are colon-separated (`:`) key-value pairs joined by an equal sign
-(`=`). Currently the only recognized parameter is `id`, which links together
-separate cells of the same hyperlink object, provided that they share the same
-URI. Terminals primarily use this information to highlight all linked cells
-when the user's cursor hovers on them, but other uses are possible.
+パラメーターは、等号（`=`）で結合したキーと値の組を、コロン（`:`）で区切ったものです。現在認識されるパラメーターは `id` だけです。これは、同じ URI を共有する、同一のハイパーリンクオブジェクトに属する別々のセルを関連付けます。ターミナルは主に、ユーザーのカーソルがセルの上にあるときに、関連付けられたすべてのセルを強調表示するためにこの情報を使用しますが、他の用途にも使用できます。
 
-When a `file://` URI is specified as a part of this sequence, one additional
-requirement is that the hostname must be specified, otherwise the terminal
-will refuse to process it. This is because terminal users commonly use SSH
-to access remote machines, and file links without a hostname may be
-erroneously interpreted to refer to local files that may or may not exist.
+このシーケンスの一部として `file://` URI を指定する場合、追加の要件としてホスト名を指定する必要があり、指定しない場合、ターミナルはその処理を拒否します。これは、ターミナルのユーザーがリモートマシンへのアクセスに SSH をよく使用し、ホスト名のないファイルリンクが、存在するかどうかわからないローカルファイルへの参照として誤って解釈される可能性があるためです。

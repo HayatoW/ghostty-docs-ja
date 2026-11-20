@@ -1,57 +1,37 @@
 ---
-title: ConEmu Extensions (OSC 9;n)
-description: Various extensions pioneered by ConEmu.
+title: ConEmu 拡張 (OSC 9;n)
+description: ConEmu が先駆けて導入したさまざまな拡張です。
 ---
 
-[ConEmu], an older terminal emulator for Windows, pioneered several [custom
-protocols] using OSC 9. Unfortunately, this conflicts with iTerm2's
-[Show Desktop Notification][OSC 9] protocol, which also uses OSC 9.
-Ghostty attempts to differentiate between the two by trying to find the
-*sub-ID* that each ConEmu sequence has, which determines its actual function.
-When one is not found, a Show Desktop Notification sequence is assumed instead.
+Windows 向けの古くからあるターミナルエミュレーター [ConEmu] は、OSC 9 を使用するいくつかの[独自プロトコル]を先駆けて導入しました。残念ながら、これは同じく OSC 9 を使用する iTerm2 の[デスクトップ通知の表示][OSC 9]プロトコルと競合します。Ghostty は、各 ConEmu シーケンスが持つ、実際の機能を決定する*サブ ID* を探すことで、両者を区別しようとします。見つからない場合は、代わりにデスクトップ通知の表示シーケンスとみなします。
 
 [ConEmu]: https://conemu.github.io/
-[custom protocols]: https://conemu.github.io/en/AnsiEscapeCodes.html#ConEmu_specific_OSC
+[独自プロトコル]: https://conemu.github.io/en/AnsiEscapeCodes.html#ConEmu_specific_OSC
 [OSC 9]: /docs/vt/osc/9
 
-Because the following protocols are often underspecified at best and highly
-questionable security-wise at worst, Ghostty only *implements* the extensions
-that are listed below. There are many more that Ghostty does parse, but either
-due to security reasons or the fact that Ghostty does not try to be a ConEmu
-clone, they are either ignored or converted into [OSC 9] sequences.
+以下のプロトコルは、よくても仕様が不十分であり、最悪の場合はセキュリティ面で非常に疑問があるため、Ghostty が*実装*する拡張は以下に挙げるものだけです。Ghostty が解析するものは他にも多数ありますが、セキュリティ上の理由、または Ghostty が ConEmu のクローンを目指していないことから、それらは無視されるか [OSC 9] シーケンスに変換されます。
 
-### Change Progress State (OSC 9;4) {/* #change-progress-state-(osc-94) */}
+### 進捗状態の変更 (OSC 9;4) {/* #change-progress-state-(osc-94) */}
 
 <VTSequence sequence={["OSC", "9", ";", "4", ";", "Ps", "ST"]} /><br/>
 <VTSequence sequence={["OSC", "9", ";", "4", ";", "Ps", ";", "Pv", "ST"]} />
 
-Change the current progress state based on the value of `s` and `v`.
+`s` と `v` の値に基づいて、現在の進捗状態を変更します。
 
-The current progress can be in various states: inactive (default), in progress,
-error, or indeterminate, which is represented visually in Ghostty as a progress
-bar on top of each split. Its value is represented as an integer between 0 and
-100 inclusive, corresponding to the percentage level of the progress bar.
+現在の進捗には、非アクティブ（デフォルト）、進行中、エラー、不確定といったさまざまな状態があります。Ghostty では、各分割の上部にある進捗バーとして視覚的に表現します。その値は 0 から 100 までの整数で表され、進捗バーの割合に対応します。
 
-The new state and value chiefly depends on the value of `s`:
+新しい状態と値は、主に `s` の値によって決まります。
 
-| `s` | New state     | New value                               |
+| `s` | 新しい状態     | 新しい値                               |
 |-----|---------------|-----------------------------------------|
-| `0` | Inactive      | 0                                       |
-| `1` | In progress   | `v`                                     |
-| `2` | Error         | `v` when specified, otherwise unchanged |
-| `3` | Indeterminate | Unchanged                               |
-| `4` | Paused        | `v` when specified, otherwise unchanged |
+| `0` | 非アクティブ      | 0                                       |
+| `1` | 進行中   | `v`                                     |
+| `2` | エラー         | 指定されていれば `v`、それ以外は変更なし |
+| `3` | 不確定 | 変更なし                               |
+| `4` | 一時停止        | 指定されていれば `v`、それ以外は変更なし |
 
 > [!NOTE]
 >
-> Note that the terminal cannot determine when a progress state becomes
-> *stale* with this protocol, e.g. when a program is terminated without
-> cleaning up its progress state. This is why Ghostty has a **hardcoded
-> timeout** of around 15 seconds, after which the current progress state
-> is reset.
+> このプロトコルでは、たとえばプログラムが進捗状態を後始末せずに終了した場合など、進捗状態が*古くなった*ことをターミナルが判断できない点に注意してください。このため、Ghostty には約 15 秒の**固定のタイムアウト**があり、それを過ぎると現在の進捗状態をリセットします。
 >
-> If you're writing a program that uses this protocol, you need to make sure
-> to update the progress state regularly as a keep-alive signal. There is
-> sadly no standardization around this, but we recommend at least updating
-> once per second.
-
+> このプロトコルを使用するプログラムを作成する場合は、生存確認の信号として、進捗状態を定期的に更新する必要があります。残念ながら、この点は標準化されていませんが、少なくとも 1 秒に 1 回は更新することを推奨します。

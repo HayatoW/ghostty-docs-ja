@@ -1,62 +1,29 @@
 ---
-title: Cursor
+title: カーソル
 description: |-
-  The cursor is the row and column where the next
-  character will be printed or location-sensitive control
-  sequence will be executed.
+  カーソルは、次の文字が表示される、または位置に依存する制御シーケンスが実行される行と列です。
 ---
 
-The cursor is always present in a terminal and is located at
-some row and column within the active screen area. The cursor
-may be visually hidden, but the terminal internal state always
-has a cursor, and it is always located at some active position.
+カーソルはターミナルに常に存在し、アクティブな画面領域内のいずれかの行と列に位置します。カーソルは見た目上非表示になることがありますが、ターミナルの内部状態には常にカーソルが存在し、常にいずれかのアクティブな位置にあります。
 
-The cursor most commonly is associated with where the next
-printed character will be placed. However, the cursor is also
-used for location-sensitive control sequences. For example,
-when an [erase line control sequence](/docs/vt/csi/el) is
-executed, the cursor determines the first line to erase.
+カーソルは通常、次に表示される文字の配置場所と関連付けられます。ただし、位置に依存する制御シーケンスにも使用されます。たとえば、[行消去制御シーケンス](/docs/vt/csi/el)を実行すると、カーソルによって最初に消去する行が決まります。
 
-The terminal has a single cursor [per screen](/docs/vt/concepts/screen).
-**Note that this document is about the cursor as it relates
-to the [terminal API](/docs/vt).** Applications such as editors may
-have their own concept known as a "cursor" that is completely
-unrelated to the terminal cursor. For example, an editor may support
-"multiple cursors", but the underlying terminal API is both a separate
-concept and only supports a single cursor at any given moment.
+ターミナルには[画面ごと](/docs/vt/concepts/screen)に 1 つのカーソルがあります。**この文書は、[ターミナル API](/docs/vt) に関連するカーソルについて説明していることに注意してください。** エディターなどのアプリケーションには、ターミナルのカーソルとはまったく無関係な、独自の「カーソル」という概念がある場合があります。たとえば、エディターは「複数のカーソル」をサポートしているかもしれませんが、その基盤となるターミナル API は別の概念であり、どの時点でも単一のカーソルしかサポートしません。
 
-## Initial State {/* #initial-state */}
+## 初期状態 {/* #initial-state */}
 
-The cursor is always initially located at the top-left corner of the screen.
+カーソルは常に画面の左上隅にある状態で始まります。
 
-## Pending Wrap State {/* #pending-wrap-state */}
+## 保留中の折り返し状態 {/* #pending-wrap-state */}
 
-The pending wrap state is a boolean value that is set when a character
-is printed in the rightmost column of the screen to indicate that the
-next printed character should wrap to the next line.
+保留中の折り返し状態は、画面の右端の列に文字を表示したときに設定される真偽値で、次に表示する文字を次の行に折り返すことを示します。
 
-If the pending wrap state is set, the next printed character will
-move the cursor to the leftmost column of the next line, unset
-the pending wrap state, and then print the character[^1].
+保留中の折り返し状態が設定されている場合、次の文字の表示時にカーソルを次の行の左端の列に移動し、保留中の折り返し状態を解除してから、その文字を表示します[^1]。
 
-The pending wrap state may feel like an obvious and inconsequential
-feature, but it has a significant (but subtle) impact on cursor
-behavior. For example, print followed by [backspace](/docs/vt/control/bs)
-behaves differently depending on if you're printing in the rightmost
-column of the screen or not.
+保留中の折り返し状態は、当然で取るに足りない機能に思えるかもしれませんが、カーソルの動作に大きな（ただし微妙な）影響を与えます。たとえば、文字の表示に続けて[バックスペース](/docs/vt/control/bs)を送ると、画面の右端の列に表示しているかどうかによって動作が異なります。
 
-If you print a character in any column other than the rightmost column
-and then send a [backspace](/docs/vt/control/bs) control character, the
-cursor will move back on top of the most recently printed character.
-But if you print a character in the rightmost column and then send a
-[backspace](/docs/vt/control/bs) control character, the cursor will move
-to the left of the character most recently printed. This is the
-source of [bugs in multiple popular shell prompts](https://github.com/ghostty-org/ghostty/issues/884).
+右端以外の列に文字を表示してから[バックスペース](/docs/vt/control/bs)制御文字を送ると、カーソルは直前に表示した文字の上に戻ります。しかし、右端の列に文字を表示してから[バックスペース](/docs/vt/control/bs)制御文字を送ると、カーソルは直前に表示した文字の左に移動します。これが、[複数の有名なシェルプロンプトにあるバグ](https://github.com/ghostty-org/ghostty/issues/884)の原因です。
 
-You will see that many control sequences note that they
-"unset the pending wrap state". This is just as it sounds: if the
-pending wrap state is set on the cursor, it becomes unset. The next
-printed character will not wrap to the next line.
+多くの制御シーケンスには、「保留中の折り返し状態を解除する」と記載されています。これは文字どおり、カーソルに保留中の折り返し状態が設定されていれば、それを解除するという意味です。次に表示する文字は、次の行に折り返されません。
 
-[^1]: This isn't strictly true. Wraparound modes and scroll regions
-can change this behavior.
+[^1]: 厳密には、これは常に正しいわけではありません。折り返しモードやスクロール領域によって、この動作は変わることがあります。
