@@ -3,7 +3,11 @@ import { promises as fs } from "node:fs";
 import { createElement, type ComponentType, type ReactNode } from "react";
 import type { Heading } from "mdast";
 import { visit } from "unist-util-visit";
-import { createHeadingIdResolver, headingText } from "./heading-ids.mjs";
+import {
+  createHeadingIdResolver,
+  explicitHeadingId,
+  headingText,
+} from "./heading-ids.mjs";
 import { parseMdx } from "./mdx";
 
 const nodePath = require("node:path");
@@ -117,7 +121,7 @@ function extractPageHeaders(source: string): PageHeader[] {
     const title = headingText(heading);
     pageHeaders.push({
       depth: heading.depth,
-      id: resolveHeadingId(title).id,
+      id: resolveHeadingId(title, explicitHeadingId(heading)).id,
       title,
     });
   });

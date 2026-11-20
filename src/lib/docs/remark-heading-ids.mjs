@@ -1,5 +1,9 @@
 import { visit } from "unist-util-visit";
-import { createHeadingIdResolver, headingText } from "./heading-ids.mjs";
+import {
+  createHeadingIdResolver,
+  explicitHeadingId,
+  headingText,
+} from "./heading-ids.mjs";
 
 // remarkHeadingIds applies stable IDs and de-duplication indices to heading nodes.
 export default function remarkHeadingIds() {
@@ -12,7 +16,10 @@ export default function remarkHeadingIds() {
         return;
       }
 
-      const { id, index } = resolveHeadingId(headingText(headingNode));
+      const { id, index } = resolveHeadingId(
+        headingText(headingNode),
+        explicitHeadingId(headingNode),
+      );
 
       if (!headingNode.data) {
         headingNode.data = {};
