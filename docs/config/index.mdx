@@ -5,7 +5,7 @@ description: |-
   it look and behave exactly how you want.
 ---
 
-## Zero Configuration Philosophy
+## Zero Configuration Philosophy {/* #zero-configuration-philosophy */}
 
 Ghostty is designed to work out of the box with no configuration
 for most users. Ghostty has sensible defaults, embeds a default
@@ -22,7 +22,7 @@ And, if you're used to feeling you need to configure your terminal,
 maybe give Ghostty a try without any configuration first. You might
 be surprised!
 
-## Configuration Format
+## Configuration Format {/* #configuration-format */}
 
 Ghostty is configured using a text-based configuration file.
 
@@ -33,17 +33,17 @@ Ghostty is configured using a text-based configuration file.
   text-based configuration is the only way to configure Ghostty.
 </Note>
 
-### File Location
+### File Location {/* #file-location */}
 
 The configuration file is named `config.ghostty` (or `config` before 1.2.3),
 is loaded from these locations in the following order:
 
-#### XDG configuration Path (all platforms):
+#### XDG configuration Path (all platforms): {/* #xdg-configuration-path-(all-platforms): */}
 - `$XDG_CONFIG_HOME/ghostty/config.ghostty`
 - `$XDG_CONFIG_HOME/ghostty/config`
 - if **XDG_CONFIG_HOME** is not defined, it defaults to `$HOME/.config`.
 
-#### macOS-specific Path (macOS only):
+#### macOS-specific Path (macOS only): {/* #macos-specific-path-(macos-only): */}
 - `$HOME/Library/Application\ Support/com.mitchellh.ghostty/config.ghostty`.
 - `$HOME/Library/Application\ Support/com.mitchellh.ghostty/config`.
 - macOS also supports the XDG configuration path mentioned above.
@@ -54,7 +54,7 @@ Configuration is optional and if no configuration file is found,
 Ghostty will use its defaults.  Note that all macOS-specific files are
 loaded *after* all XDG files.
 
-### Syntax
+### Syntax {/* #syntax */}
 
 Ghostty uses a custom, but very simplistic `key = value` syntax.
 The syntax is documented below using comments in a sample configuration
@@ -89,7 +89,7 @@ Some other notes about the syntax:
   key can be set with `ghostty --background=282c34`. Or the
   `font-family` key can be set with `ghostty --font-family="JetBrains Mono"`.
 
-### Splitting into Multiple Files
+### Splitting into Multiple Files {/* #splitting-into-multiple-files */}
 
 You can split your configuration into multiple files by using
 the `config-file` key in your configuration file. This key specifies
@@ -118,7 +118,7 @@ config-file = ?optional/config
 config-file = /absolute/path/config
 ```
 
-## Reloading the Configuration
+## Reloading the Configuration {/* #reloading-the-configuration */}
 
 The configuration can be reloaded at runtime by pressing
 `ctrl+shift+,` (Linux) or `cmd+shift+,` (macOS). These are
@@ -131,7 +131,7 @@ others may only apply to newly created terminals. See the
 specific configuration option for details.
 </Note>
 
-## Offline Reference Documentation
+## Offline Reference Documentation {/* #offline-reference-documentation */}
 
 There are multiple places to find documentation on the configuration
 options besides the website. All locations are identical (they're all

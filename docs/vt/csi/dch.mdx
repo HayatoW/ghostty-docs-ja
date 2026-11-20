@@ -30,9 +30,9 @@ in half, the multi-cell character can either be clipped or erased. Typical
 behavior is to clip at the right edge of the screen and erase at a right
 margin, but either behavior is acceptable.
 
-## Validation
+## Validation {/* #validation */}
 
-### DCH V-1: Simple Delete Character
+### DCH V-1: Simple Delete Character {/* #dch-v-1:-simple-delete-character */}
 
 ```bash
 printf "ABC123"
@@ -44,7 +44,7 @@ printf "\033[2P"
 |AB23____|
 ```
 
-### DCH V-2: SGR State
+### DCH V-2: SGR State {/* #dch-v-2:-sgr-state */}
 
 ```bash
 printf "ABC123"
@@ -59,7 +59,7 @@ printf "\033[2P"
 
 The two rightmost cells should have a red background color.
 
-### DCH V-3: Outside Left/Right Scroll Region
+### DCH V-3: Outside Left/Right Scroll Region {/* #dch-v-3:-outside-leftright-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -75,7 +75,7 @@ printf "\033[P"
 |ABC123__|
 ```
 
-### DCH V-4: Inside Left/Right Scroll Region
+### DCH V-4: Inside Left/Right Scroll Region {/* #dch-v-4:-inside-leftright-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -91,7 +91,7 @@ printf "\033[P"
 |ABC2_3__|
 ```
 
-### DCH V-5: Split Wide Character
+### DCH V-5: Split Wide Character {/* #dch-v-5:-split-wide-character */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

@@ -34,9 +34,9 @@ Run `ghostty +ssh --help` for the full flag reference.
   documented on this page are present in 1.3.x.
 </Note>
 
-## Features
+## Features {/* #features */}
 
-### Environment Forwarding
+### Environment Forwarding {/* #environment-forwarding */}
 
 The `--forward-env` flag (default `true`) requests `SendEnv`
 forwarding of `COLORTERM`, `TERM_PROGRAM`, and `TERM_PROGRAM_VERSION`
@@ -48,7 +48,7 @@ For the forwarded variables to reach the remote session, the remote
 
 Disable with `--forward-env=false`.
 
-### Terminfo Install
+### Terminfo Install {/* #terminfo-install */}
 
 Ghostty uses `xterm-ghostty` as its `TERM` value, but most remote
 hosts don't yet ship Ghostty's terminfo entry. See
@@ -66,7 +66,7 @@ terminal capabilities on the remote.
 
 Disable with `--terminfo=false`.
 
-### Install Cache
+### Install Cache {/* #install-cache */}
 
 Successful terminfo installs are recorded in a local cache, keyed by
 `user@hostname`, so subsequent connections to the same host skip the
@@ -77,7 +77,7 @@ Passing `--cache=false` to `+ssh` bypasses both the read and the
 write for a single invocation, without touching the cache. This is
 useful for scripting ("always reinstall") and for debugging issues.
 
-### Alternate `ssh` Executable
+### Alternate `ssh` Executable {/* #alternate-ssh-executable */}
 
 By default `+ssh` exec's the first `ssh` on your `PATH`. The
 `--ssh=PATH` flag points it at a specific client instead:
@@ -91,7 +91,7 @@ client that you want `+ssh` to use. The path must resolve to an
 executable; if it doesn't, `+ssh` fails rather than silently falling
 back to the `PATH` `ssh`.
 
-## The `+ssh-cache` CLI Action
+## The `+ssh-cache` CLI Action {/* #the-+ssh-cache-cli-action */}
 
 `ghostty +ssh-cache` manages the terminfo cache used by `+ssh`:
 
@@ -133,7 +133,7 @@ an alias from `~/.ssh/config`.
 
 Run `ghostty +ssh-cache --help` for the full flag reference.
 
-## Shell Integration
+## Shell Integration {/* #shell-integration */}
 
 Ghostty's [shell integration](/docs/features/shell-integration) can
 wrap `ssh` in your interactive shell so that `ghostty +ssh` is invoked
@@ -153,7 +153,7 @@ The wrapper is a small shell function named `ssh` that translates
 these feature flags into the right `+ssh` command-line options and
 then forwards your args.
 
-### Limitations
+### Limitations {/* #limitations */}
 
 Because the wrapper is a shell function, it **is not inherited by
 child processes**. The wrapper will _not_ be used in the following
@@ -176,7 +176,7 @@ cases:
 For these cases, invoke `ghostty +ssh` directly, or configure
 `~/.ssh/config` as described below.
 
-## Manual `~/.ssh/config` Configuration
+## Manual `~/.ssh/config` Configuration {/* #manual-~.sshconfig-configuration */}
 
 For cases the shell wrapper can't cover, you can configure `SetEnv`
 and `SendEnv` directly in `~/.ssh/config`, which applies to every
@@ -201,7 +201,7 @@ Host example.com
   use this for hosts that lack the terminfo entry.
 </Note>
 
-## Remote `sshd` Configuration
+## Remote `sshd` Configuration {/* #remote-sshd-configuration */}
 
 Environment forwarding uses `SendEnv`, which is only a _request_. The
 remote `sshd` will silently drop any variable that isn't listed in its

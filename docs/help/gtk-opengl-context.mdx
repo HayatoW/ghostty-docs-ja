@@ -20,7 +20,7 @@ this directly. It is usually an issue regarding a library, driver, or OS
 package version. This page will attempt to provide some assistance in
 tracking down the issue.
 
-## Quick Fixes
+## Quick Fixes {/* #quick-fixes */}
 
 If you want to try to get Ghostty working quickly, try the following.
 
@@ -45,7 +45,7 @@ If you want to try to get Ghostty working quickly, try the following.
   this section.
 </Important>
 
-## Mismatched Library Versions
+## Mismatched Library Versions {/* #mismatched-library-versions */}
 
 A common cause of this error is mismatched library versions. The balance
 between GTK, [Mesa](https://mesa3d.org/), libX11/libwayland, and the kernel is
@@ -68,7 +68,7 @@ coherent state that allows Ghostty to work.
 **Check your GPU drivers.** Try updating or downgrading your GPU drivers.
 We've had many cases where GPU driver changes have broken OpenGL in GTK.
 
-## Known Historical Causes
+## Known Historical Causes {/* #known-historical-causes */}
 
 - [Mesa 25.2.0 Regression](https://gitlab.freedesktop.org/mesa/mesa/-/issues/13719).
   Ghostty doesn't bundle a libwayland client library, but building Ghostty

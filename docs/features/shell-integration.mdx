@@ -6,7 +6,7 @@ description: |-
   nushell, and zsh.
 ---
 
-## Features
+## Features {/* #features */}
 
 - Do not confirm close for terminals where the cursor is at a prompt.
 - New terminals start in the working directory of the previously
@@ -27,7 +27,7 @@ description: |-
   environment correctly. See [SSH](/docs/features/ssh) for details
   (disabled by default).
 
-## Shell Integration Injection
+## Shell Integration Injection {/* #shell-integration-injection */}
 
 Ghostty will automatically inject the shell integration code for `bash`,
 `elvish`, `fish`, `nushell`, and `zsh`.
@@ -65,7 +65,7 @@ If you want to disable automatic shell integration:
 shell-integration = none
 ```
 
-### Verify Shell Integration
+### Verify Shell Integration {/* #verify-shell-integration */}
 
 To verify shell integration is working, look for the following log lines:
 
@@ -86,7 +86,7 @@ ghostty terminfo not found, using xterm-256color
 shell could not be detected, no automatic shell integration will be injected
 ```
 
-### Troubleshooting
+### Troubleshooting {/* #troubleshooting */}
 
 For the automatic shell integration to work Ghostty must either be run
 from the macOS app bundle or be installed in a location where the contents of
@@ -104,7 +104,7 @@ You may also manually set the `GHOSTTY_RESOURCES_DIR` to point to the
 Setting this environment variable manually is a red flag that something
 else is wrong, though, and you should investigate further.
 
-## Manual Shell Integration Setup
+## Manual Shell Integration Setup {/* #manual-shell-integration-setup */}
 
 Shell integration can also be manually sourced in your shell
 configuration. This ensures that shell integration works in more
@@ -142,7 +142,7 @@ Each shell integration's installation instructions are documented inline:
 
 For shell-specific details see <a href="https://github.com/ghostty-org/ghostty/blob/main/src/shell-integration/README.md">shell-integration/README.md</a>.
 
-## Switching Shells with Shell Integration
+## Switching Shells with Shell Integration {/* #switching-shells-with-shell-integration */}
 
 Automatic shell integration as described in the previous section only works
 for the _initially launched shell_ when Ghostty is started.
@@ -154,7 +154,7 @@ lost_ in that shell (it will keep working in the original shell process).
 To make shell integration work in these cases, you must manually source
 the Ghostty shell-specific code as shown in the previous section.
 
-## SSH Integration
+## SSH Integration {/* #ssh-integration */}
 
 The `ssh-env` and `ssh-terminfo` shell integration features wrap `ssh`
 in your interactive shell so that Ghostty's [`+ssh`](/docs/features/ssh)

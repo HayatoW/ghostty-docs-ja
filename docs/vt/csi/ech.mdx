@@ -38,9 +38,9 @@ mode on the currently active screen, cells with the protected attribute set are
 respected and not erased but still count towards `n`. It does not matter if the
 protection attribute for a cell was originally set from DECSCA.
 
-## Validation
+## Validation {/* #validation */}
 
-### ECH V-1: Simple Operation
+### ECH V-1: Simple Operation {/* #ech-v-1:-simple-operation */}
 
 ```bash
 printf "ABC"
@@ -52,7 +52,7 @@ printf "\033[2X"
 |c_C_____|
 ```
 
-### ECH V-2: Erasing Beyond Edge of Screen
+### ECH V-2: Erasing Beyond Edge of Screen {/* #ech-v-2:-erasing-beyond-edge-of-screen */}
 
 ```bash
 cols=$(tput cols)
@@ -67,7 +67,7 @@ printf "\033[10X"
 |_____Ac_|
 ```
 
-### ECH V-3: Reset Pending Wrap State
+### ECH V-3: Reset Pending Wrap State {/* #ech-v-3:-reset-pending-wrap-state */}
 
 ```bash
 cols=$(tput cols)
@@ -81,7 +81,7 @@ printf "X"
 |_______Xc
 ```
 
-### ECH V-4: SGR State
+### ECH V-4: SGR State {/* #ech-v-4:-sgr-state */}
 
 ```bash
 printf "ABC"
@@ -97,7 +97,7 @@ printf "\033[2X"
 The `c_` cells should both have a red background. All other cells
 remain unchanged in style.
 
-### ECH V-5: Multi-cell Character
+### ECH V-5: Multi-cell Character {/* #ech-v-5:-multi-cell-character */}
 
 ```bash
 printf "橋BC"
@@ -110,7 +110,7 @@ printf "X"
 |XcBC____|
 ```
 
-### ECH V-6: Left/Right Scroll Region Ignored
+### ECH V-6: Left/Right Scroll Region Ignored {/* #ech-v-6:-leftright-scroll-region-ignored */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -127,7 +127,7 @@ printf "\033[4X"
 |c___BC____|
 ```
 
-### ECH V-7: Protected Attributes Ignored with DECSCA
+### ECH V-7: Protected Attributes Ignored with DECSCA {/* #ech-v-7:-protected-attributes-ignored-with-decsca */}
 
 ```bash
 printf "\033V"
@@ -142,7 +142,7 @@ printf "\033[2X"
 |c_C_______|
 ```
 
-### ECH V-8: Protected Attributes Respected without DECSCA
+### ECH V-8: Protected Attributes Respected without DECSCA {/* #ech-v-8:-protected-attributes-respected-without-decsca */}
 
 ```bash
 printf "\033[1\"q"

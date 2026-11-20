@@ -16,9 +16,9 @@ The [protected attribute](#TODO) is not unset.
 The entire screen is filled with the character `E`. The letter `E` ignores
 the current SGR settings and is written with no styling.
 
-## Validation
+## Validation {/* #validation */}
 
-### DECALN V-1: Simple Usage
+### DECALN V-1: Simple Usage {/* #decaln-v-1:-simple-usage */}
 
 ```bash
 printf "\033#8"
@@ -30,7 +30,7 @@ printf "\033#8"
 |EEEEEEEE|
 ```
 
-### DECALN V-2: Reset Margins
+### DECALN V-2: Reset Margins {/* #decaln-v-2:-reset-margins */}
 
 ```bash
 printf "\033[2;3r" # scroll region top/bottom

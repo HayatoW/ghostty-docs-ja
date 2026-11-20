@@ -25,11 +25,11 @@ unrelated to the terminal cursor. For example, an editor may support
 "multiple cursors", but the underlying terminal API is both a separate
 concept and only supports a single cursor at any given moment.
 
-## Initial State
+## Initial State {/* #initial-state */}
 
 The cursor is always initially located at the top-left corner of the screen.
 
-## Pending Wrap State
+## Pending Wrap State {/* #pending-wrap-state */}
 
 The pending wrap state is a boolean value that is set when a character
 is printed in the rightmost column of the screen to indicate that the

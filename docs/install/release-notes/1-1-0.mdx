@@ -9,15 +9,15 @@ Ghostty 1.1.0 features **1 month of work** with changes from
 remains on critical bug fixes and quality of life improvements based
 on feedback from the initial 1.0 release.
 
-## Security
+## Security {/* #security */}
 
 - [GHSA-98wc-794w-gjx3](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-98wc-794w-gjx3).
   Fixed an issue where Ghostty would leak some file descriptors to the
   running shell or command.
 
-## Highlights
+## Highlights {/* #highlights */}
 
-### Server Side Decorations (SSD) on Linux
+### Server Side Decorations (SSD) on Linux {/* #server-side-decorations-(ssd)-on-linux */}
 
 PR:
 [#4630](https://github.com/ghostty-org/ghostty/pull/4630),
@@ -73,7 +73,7 @@ See [the dedication section](#gtk:-forcing-a-dependency-on-libadwaita) for more
 details.
 </Important>
 
-### Input Method Editor (IME) Improvements
+### Input Method Editor (IME) Improvements {/* #input-method-editor-(ime)-improvements */}
 
 PR:
 [#3567](https://github.com/ghostty-org/ghostty/pull/3567),
@@ -99,7 +99,7 @@ On macOS, we've ensured in particular that the AquaSKK and macSKK
 Japanese language input methods work out of the box, although we've
 also tested other IMEs and found them to work well as well.
 
-### "Performable" Keybindings
+### "Performable" Keybindings {/* #"performable"-keybindings */}
 
 PR:
 [#4328](https://github.com/ghostty-org/ghostty/pull/4328)
@@ -121,7 +121,7 @@ performed (e.g. `text`, `new_tab`, etc.). The performable prefix only
 applies to actions that have a meaningful "perform" state.
 </Note>
 
-### macOS: Alpha Blending Improvements
+### macOS: Alpha Blending Improvements {/* #macos:-alpha-blending-improvements */}
 
 PR:
 [#4913](https://github.com/ghostty-org/ghostty/pull/4913),
@@ -164,7 +164,7 @@ zoom in to see the differences correctly.
 This is currently only available on macOS, but work is underway which should
 bring it to Linux as well in the future.
 
-### macOS: Quick Terminal Improvements
+### macOS: Quick Terminal Improvements {/* #macos:-quick-terminal-improvements */}
 
 PR:
 [#4049](https://github.com/ghostty-org/ghostty/pull/4049),
@@ -181,7 +181,7 @@ control how the quick terminal reacts to changing macOS spaces while it
 is open. The default behavior is to follow the active space (`move`).
 You can also set it to `remain` to stay on the space it was opened on.
 
-## Full List
+## Full List {/* #full-list */}
 
 [Full list of closed issues on GitHub](https://github.com/ghostty-org/ghostty/milestone/3?closed=1).
 
@@ -300,7 +300,7 @@ In each section, we try to sort improvements before bug fixes.
 - Inspector: Font size now shows fractional values.
   [#4371](https://github.com/ghostty-org/ghostty/pull/4371)
 
-### macOS
+### macOS {/* #macos */}
 
 - macOS: Consistent and correct alpha blending for correct colors.
   Options for matching Apple-style alpha blending as well as an
@@ -403,7 +403,7 @@ In each section, we try to sort improvements before bug fixes.
   non-native fullscreen.
   [#3535](https://github.com/ghostty-org/ghostty/issues/3535)
 
-### Linux (GTK)
+### Linux (GTK) {/* #linux-(gtk) */}
 
 - GTK: Support for server-side decorations (SSD) has been added.
   This utilizes the existing `window-decoration` configuration option.
@@ -496,7 +496,7 @@ In each section, we try to sort improvements before bug fixes.
 - GTK: Paste preview text is now monospace.
   [#4227](https://github.com/ghostty-org/ghostty/pull/4227)
 
-### Changes for Package Maintainers
+### Changes for Package Maintainers {/* #changes-for-package-maintainers */}
 
 <Note>
 All of the build changes are minor and should not impact previously
@@ -520,7 +520,7 @@ simply curious about them.
 - Build: Fix incorrect libadwaita pkg-config name.
   [#4818](https://github.com/ghostty-org/ghostty/pull/4818)
 
-## Roadmap
+## Roadmap {/* #roadmap */}
 
 We plan to release a version 1.1.1 to address some additional bugs that
 didn't quite make the 1.1.0 release. We don't expect this release to happen
@@ -536,7 +536,7 @@ We're reaching general wide-scale stability since our initial 1.0 release.
 I expect soon we'll move to even longer release cycles (months long) to
 allow the development team to focus on larger, more impactful features.
 
-### GTK: Forcing a Dependency on libadwaita
+### GTK: Forcing a Dependency on libadwaita {/* #gtk:-forcing-a-dependency-on-libadwaita */}
 
 Starting with Ghostty 1.2, we plan to remove the `gtk-adwaita` option
 and force a dependency on libadwaita. libadwaita is defaulted to on

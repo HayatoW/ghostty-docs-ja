@@ -32,7 +32,7 @@ is available.
   available by default system-wide. This will take time to propagate.
 </Important>
 
-## Sudo
+## Sudo {/* #sudo */}
 
 If you use `sudo`, sudo may reset your environment variables and you may see
 an error about `missing or unsuitable terminal: xterm-ghostty` or `'xterm-ghostty': unknown terminal type.` when running
@@ -48,7 +48,7 @@ See
 [`shell-integration-features`](/docs/config/reference#shell-integration-features)
 for more about this configuration option.
 
-## SSH
+## SSH {/* #ssh */}
 
 If you use SSH to connect to other machines that do not have Ghostty's
 terminfo entry, you will see error messages like `missing or unsuitable
@@ -58,7 +58,7 @@ terminal: xterm-ghostty`, `Error opening terminal: xterm-ghostty.` or
 Hopefully someday Ghostty will have terminfo entries pre-distributed
 everywhere, but in the meantime there are two methods to resolve the situation:
 
-### Method 1: Copy Ghostty's terminfo entry to the remote machine
+### Method 1: Copy Ghostty's terminfo entry to the remote machine {/* #method-1:-copy-ghostty's-terminfo-entry-to-the-remote-machine */}
 1. On your local machine, run the following one-liner:
    ```sh
    infocmp -x xterm-ghostty | ssh YOUR-SERVER -- tic -x -
@@ -88,7 +88,7 @@ If this happens, `man tic` for details.
 </Note>
 
 
-### Method 2: Configure SSH to fall back to a known terminfo entry
+### Method 2: Configure SSH to fall back to a known terminfo entry {/* #method-2:-configure-ssh-to-fall-back-to-a-known-terminfo-entry */}
 1. On your local machine, add the following SSH
    configuration (**requires [OpenSSH 8.7](https://www.openssh.com/txt/release-8.7)
    or newer**):

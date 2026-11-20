@@ -39,9 +39,9 @@ column that can be blanked is the first column of the screen. The
 If `n` is `2`, **erase the entire line**. This is the equivalent of
 erase left (`n = 1`) and erase right (`n = 0`) both being executed.
 
-## Validation
+## Validation {/* #validation */}
 
-### EL V-1: Simple Erase Right
+### EL V-1: Simple Erase Right {/* #el-v-1:-simple-erase-right */}
 
 ```bash
 printf "ABCDE"
@@ -53,7 +53,7 @@ printf "\033[0K"
 |ABc_____|
 ```
 
-### EL V-2: Erase Right Resets Pending Wrap
+### EL V-2: Erase Right Resets Pending Wrap {/* #el-v-2:-erase-right-resets-pending-wrap */}
 
 ```bash
 cols=$(tput cols)
@@ -69,7 +69,7 @@ printf "X"
 
 The cursor should be on the 'X'
 
-### EL V-3: Erase Right SGR State
+### EL V-3: Erase Right SGR State {/* #el-v-3:-erase-right-sgr-state */}
 
 ```bash
 printf "ABC"
@@ -85,7 +85,7 @@ printf "\033[0K"
 The cells from `c` onwards should have a red background all the way to
 the right edge of the screen.
 
-### EL V-4: Erase Right Multi-cell Character
+### EL V-4: Erase Right Multi-cell Character {/* #el-v-4:-erase-right-multi-cell-character */}
 
 ```bash
 printf "AB橋DE"
@@ -97,7 +97,7 @@ printf "\033[0K"
 |AB_c____|
 ```
 
-### EL V-5: Erase Right Left/Right Scroll Region Ignored
+### EL V-5: Erase Right Left/Right Scroll Region Ignored {/* #el-v-5:-erase-right-leftright-scroll-region-ignored */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -113,7 +113,7 @@ printf "\033[0K"
 |Ac________|
 ```
 
-### EL V-6: Erase Right Protected Attributes Ignored with DECSCA
+### EL V-6: Erase Right Protected Attributes Ignored with DECSCA {/* #el-v-6:-erase-right-protected-attributes-ignored-with-decsca */}
 
 ```bash
 printf "\033V"
@@ -128,7 +128,7 @@ printf "\033[0K"
 |Ac________|
 ```
 
-### EL V-7: Protected Attributes Respected without DECSCA
+### EL V-7: Protected Attributes Respected without DECSCA {/* #el-v-7:-protected-attributes-respected-without-decsca */}
 
 ```bash
 printf "\033[1\"q"
@@ -144,7 +144,7 @@ printf "\033[2K"
 |ABCDE_____|
 ```
 
-### EL V-8: Simple Erase Left
+### EL V-8: Simple Erase Left {/* #el-v-8:-simple-erase-left */}
 
 ```bash
 printf "ABCDE"
@@ -156,7 +156,7 @@ printf "\033[1K"
 |__cDE___|
 ```
 
-### EL V-9: Erase Left SGR State
+### EL V-9: Erase Left SGR State {/* #el-v-9:-erase-left-sgr-state */}
 
 ```bash
 printf "ABC"
@@ -171,7 +171,7 @@ printf "\033[1K"
 
 The cells from `c` to the left should have a red background.
 
-### EL V-10: Erase Left Multi-cell Character
+### EL V-10: Erase Left Multi-cell Character {/* #el-v-10:-erase-left-multi-cell-character */}
 
 ```bash
 printf "AB橋DE"
@@ -183,7 +183,7 @@ printf "\033[1K"
 |__c_DE__|
 ```
 
-### EL V-11: Erase Left Protected Attributes Ignored with DECSCA
+### EL V-11: Erase Left Protected Attributes Ignored with DECSCA {/* #el-v-11:-erase-left-protected-attributes-ignored-with-decsca */}
 
 ```bash
 printf "\033V"
@@ -198,7 +198,7 @@ printf "\033[1K"
 |_cCDE_____|
 ```
 
-### EL V-12: Simple Erase Complete
+### EL V-12: Simple Erase Complete {/* #el-v-12:-simple-erase-complete */}
 
 ```bash
 printf "ABCDE"
@@ -210,7 +210,7 @@ printf "\033[2K"
 |__c_______|
 ```
 
-### EL V-13: Erase Complete SGR State
+### EL V-13: Erase Complete SGR State {/* #el-v-13:-erase-complete-sgr-state */}
 
 ```bash
 printf "ABC"

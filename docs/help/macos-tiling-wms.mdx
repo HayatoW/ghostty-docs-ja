@@ -24,12 +24,12 @@ that doesn't rely on macOS native tabs. This would allow us
 to better integrate with macOS tiling window managers.
 </Note>
 
-## Workarounds
+## Workarounds {/* #workarounds */}
 
 The Ghostty community has identified potential workarounds
 depending on the tiling window manager you are using.
 
-### Aerospace
+### Aerospace {/* #aerospace */}
 
 ```toml
 on-window-detected = [
@@ -42,7 +42,7 @@ on-window-detected = [
 
 If Ghostty tabs are still being rendered as separate windows, try replacing `"layout tiling"` with `"layout floating"`. Note that this will cause the Ghostty window to be floating on initial startup. You can manually unfloat the window (`alt+shift+;` followed by `f` by default).
 
-### Yabai
+### Yabai {/* #yabai */}
 
 ```
 yabai -m signal --add app='^Ghostty$' event=window_created action='yabai -m space --layout bsp'

@@ -32,9 +32,9 @@ The scroll region impacts the operation of many sequences such as
 an effective and efficient way to constraint terminal modifications to a
 rectangular region of the screen.
 
-## Validation
+## Validation {/* #validation */}
 
-### DECSTBM V-1: Full Screen
+### DECSTBM V-1: Full Screen {/* #decstbm-v-1:-full-screen */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -53,7 +53,7 @@ printf "\033[T"
 |GHI_____|
 ```
 
-### DECSTBM V-2: Top Only
+### DECSTBM V-2: Top Only {/* #decstbm-v-2:-top-only */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -72,7 +72,7 @@ printf "\033[T"
 |GHI_____|
 ```
 
-### DECSTBM V-3: Top and Bottom
+### DECSTBM V-3: Top and Bottom {/* #decstbm-v-3:-top-and-bottom */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -90,7 +90,7 @@ printf "\033[T"
 |GHI_____|
 ```
 
-### DECSTBM V-4: Top Equal to Bottom
+### DECSTBM V-4: Top Equal to Bottom {/* #decstbm-v-4:-top-equal-to-bottom */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

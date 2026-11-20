@@ -10,7 +10,7 @@ maintainers, community moderators, translators, packagers, and users
 who each helped make this release possible. This release contains major
 improvements to every part of Ghostty, including hundreds of bug fixes.
 
-## Security
+## Security {/* #security */}
 
 - macOS: [GHSA-q9fg-cpmh-c78x](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-q9fg-cpmh-c78x).
   Fixed an issue where Ghostty can be used as a vector for privilege
@@ -18,9 +18,9 @@ improvements to every part of Ghostty, including hundreds of bug fixes.
   vulnerable application outside of Ghostty to initiate this chain of events.
   As such, this is considered a low risk advisory.
 
-## Highlights
+## Highlights {/* #highlights */}
 
-### New App Icons
+### New App Icons {/* #new-app-icons */}
 
 PRs: GH-7638 GH-8038
 
@@ -62,7 +62,7 @@ environments.
   view.
 </Note>
 
-### Command Palette
+### Command Palette {/* #command-palette */}
 
 PRs: GH-7153 GH-7156
 
@@ -108,7 +108,7 @@ terminal sequence specification that would allow terminal programs to expose
 any of their actions directly in the command palette (e.g. imagine Neovim
 commands being fully available in the command palette).
 
-### Quick Terminal Size
+### Quick Terminal Size {/* #quick-terminal-size */}
 
 PRs: GH-2384
 
@@ -165,7 +165,7 @@ Screenshots with a couple examples on GTK are shown below:
   </a>
 </p>
 
-### SSH Improvements (Work-in-Progress)
+### SSH Improvements (Work-in-Progress) {/* #ssh-improvements-(work-in-progress) */}
 
 PR: GH-7608
 
@@ -189,7 +189,7 @@ sure users are aware of what they're doing. We do our best to make this
 stable and reliable, but there are edge cases we can't account for. As such,
 this is still a work-in-progress and we welcome feedback.
 
-### Renderer Rework
+### Renderer Rework {/* #renderer-rework */}
 
 PRs: GH-7620
 
@@ -213,7 +213,7 @@ blending that people are used to.
 
 This rework also made it so that custom shaders can now be hot reloaded.
 
-### Custom Cursor Shaders
+### Custom Cursor Shaders {/* #custom-cursor-shaders */}
 
 PRs: GH-7648
 
@@ -239,7 +239,7 @@ shaders was an easy stop-gap measure. Plus, this will still be useful even after
 we add the first-party animated cursors, since some users may still want to have
 very specific custom effects that aren't possible through the built-in option.
 
-### Terminal Background Images
+### Terminal Background Images {/* #terminal-background-images */}
 
 PRs: GH-3645
 
@@ -265,7 +265,7 @@ configurations so that the image appears just how you'd like it:
   will share image textures across terminals to avoid this issue.
 </Warning>
 
-### Graphical Progress Bars
+### Graphical Progress Bars {/* #graphical-progress-bars */}
 
 PRs: GH-7975, GH-8477
 
@@ -301,7 +301,7 @@ task bars, dock icons, etc.
   for the more recommended `OSC 777` notification sequence.
 </Note>
 
-### Fallback Font Size Adjustment
+### Fallback Font Size Adjustment {/* #fallback-font-size-adjustment */}
 
 PRs: GH-7840, GH-7953
 
@@ -328,7 +328,7 @@ In the future, we plan to rework font configuration so that you can specify
 sizes per-font, or let a configured font be sized automatically like fallback
 fonts are.
 
-### Lots of New Built-in Glyphs
+### Lots of New Built-in Glyphs {/* #lots-of-new-built-in-glyphs */}
 
 PRs: GH-7732, GH-7755, GH-7761
 
@@ -345,7 +345,7 @@ for TUI applications that use glyphs such as these for UI elements.
 | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | <p align="center"><img src="/images/1-2-0/sprites-old.png" style={{ maxWidth: "66%" }} /></p> | <p align="center"><img src="/images/1-2-0/sprites-new.png" style={{ maxWidth: "66%" }} /></p> |
 
-### Built-in Nerd Font Improvement
+### Built-in Nerd Font Improvement {/* #built-in-nerd-font-improvement */}
 
 PRs: GH-7809, and subsequent PRs to fix minor issues
 
@@ -368,7 +368,7 @@ This means that there is now _no reason_ to use patched fonts in Ghostty, since
 things like powerline glyphs will always be scaled appropriately for the cell
 size either way.
 
-### Key Binding Rework
+### Key Binding Rework {/* #key-binding-rework */}
 
 PR: GH-7320
 
@@ -402,7 +402,7 @@ For backwards compatibility, all existing key names in Ghostty that didn't
 match W3C map to their W3C equivalent. For example, `grave_accent` maps to
 `backquote`.
 
-### Terminal Bell
+### Terminal Bell {/* #terminal-bell */}
 
 PRs: GH-7099, GH-5326, GH-7087, GH-7101, GH-7118, GH-7148, GH-7842, GH-7533
 
@@ -435,7 +435,7 @@ by other terminal emulators.
 A future version of Ghostty will bring parity to macOS with all the bell
 features.
 
-### Terminal Emulation Compatibility
+### Terminal Emulation Compatibility {/* #terminal-emulation-compatibility */}
 
 Ghostty 1.2 includes dozens of improvements to core terminal emulation to
 ensure terminal programs work consistently and correctly in Ghostty as they
@@ -463,7 +463,7 @@ set a progress bar, it will not work. This is a compromise Ghostty made
 so that we can be one of the only terminals to support both progress bars
 and iTerm2 desktop notifications.[^2]
 
-### macOS: Tahoe Support
+### macOS: Tahoe Support {/* #macos:-tahoe-support */}
 
 Ghostty 1.2 adds support for macOS 26 (Tahoe).
 
@@ -484,7 +484,7 @@ and including macOS 13 (Ventura).
   upgrade to Ghostty 1.2 in the near term.
 </Note>
 
-### macOS: Undo/Redo Close
+### macOS: Undo/Redo Close {/* #macos:-undoredo-close */}
 
 PRs: GH-7535
 
@@ -507,7 +507,7 @@ The time that a terminal can be undone can be configured with the
 In future versions of Ghostty we plan to expand the GUI interactions
 that can be undone and redone, such as resizing splits, moving tabs, etc.
 
-### macOS: Apple Shortcuts
+### macOS: Apple Shortcuts {/* #macos:-apple-shortcuts */}
 
 PR: GH-7634
 
@@ -532,7 +532,7 @@ Ghostty API. This macOS-specific feature does address many of those use cases
 for macOS users, but we still plan to build alternate scripting choices in
 the future.
 
-### GTK: Quick Terminal
+### GTK: Quick Terminal {/* #gtk:-quick-terminal */}
 
 PRs: GH-4624
 
@@ -558,7 +558,7 @@ The quick terminal on Linux fully supports tabs and splits.
   </a>
 </p>
 
-### GTK: Global Keybinds
+### GTK: Global Keybinds {/* #gtk:-global-keybinds */}
 
 PRs: GH-6051
 
@@ -575,7 +575,7 @@ Global keybinds support any keybind action but are particularly well
 suited when paired with features such as `toggle_quick_terminal`, which is
 now [also supported on GTK](#gtk:-quick-terminal).
 
-### GTK: Localization (Work-in-Progress)
+### GTK: Localization (Work-in-Progress) {/* #gtk:-localization-(work-in-progress) */}
 
 PRs: GH-6004 plus too many to list for each locale.
 
@@ -614,7 +614,7 @@ is extremely grateful to the volunteers who have contributed their time
 to localize Ghostty. If you would like to localize Ghostty to your locale,
 please see the `CONTRIBUTING.md` documentation for instructions.
 
-### GTK: FreeBSD Support
+### GTK: FreeBSD Support {/* #gtk:-freebsd-support */}
 
 PRs: GH-7606
 
@@ -628,7 +628,7 @@ In addition to building and running properly on FreeBSD, the community
 is developing a FreeBSD port to make installation easier. We will update
 the installation documentation when that port is available.
 
-### GTK: Full, Leak-free Rewrite
+### GTK: Full, Leak-free Rewrite {/* #gtk:-full-leak-free-rewrite */}
 
 PRs: GH-7961, [`gtk-ng` PRs](https://github.com/ghostty-org/ghostty/pulls?page=4&q=is%3Apr+is%3Aclosed+gtk-ng)
 
@@ -657,7 +657,7 @@ ensure that all of Ghostty is more stable and reliable.
   possible code path in Ghostty.
 </Note>
 
-## System Requirements
+## System Requirements {/* #system-requirements */}
 
 **macOS:** The minimum required macOS version for Ghostty 1.2 remains
 unchanged (macOS 13 Ventura). Ghostty is now compatible with macOS 26 (Tahoe).
@@ -668,7 +668,7 @@ Systems with older GTK or Adwaita versions can workaround this requirement
 by using an older version of Ghostty or a community-maintained snap or
 flatpak package.
 
-## Breaking Changes
+## Breaking Changes {/* #breaking-changes */}
 
 - GTK: libadwaita is now required. We've
   [warned that this was coming](/docs/install/release-notes/1-1-0#gtk:-forcing-a-dependency-on-libadwaita)
@@ -694,7 +694,7 @@ flatpak package.
   on by default. You can re-enable this feature with the `font-features` config.
   GH-8164
 
-### Deprecations
+### Deprecations {/* #deprecations */}
 
 The list below contains deprecations that remain compatible today through
 a compatibility layer, but may break in a future release if they are
@@ -719,7 +719,7 @@ any possible disruptions in the future.
   release.
 </Note>
 
-## Full Changelog
+## Full Changelog {/* #full-changelog */}
 
 [Full list of closed issues on GitHub](https://github.com/ghostty-org/ghostty/milestone/5?closed=1).
 
@@ -883,7 +883,7 @@ In each section, we try to sort improvements before bug fixes.
 - inspector: fix display of fractional pixel sizes. GH-8179
 - contrib/vim: fix syntax highlighting of the config in scratch buffers. GH-7119
 
-### Terminal Capabilities
+### Terminal Capabilities {/* #terminal-capabilities */}
 
 This section covers the changes to terminal emulation and other capabilities
 exposed to applications running inside the terminal.
@@ -930,7 +930,7 @@ application developers can take advantage of.
 - vt: when VS15 makes a default wide character narrow, the cursor moves back
   one cell. GH-8538
 
-### macOS
+### macOS {/* #macos */}
 
 - macOS: Support macOS 26 (Tahoe).
 - macOS: You can now undo and redo closing any type of terminal (window, tab,
@@ -1043,7 +1043,7 @@ application developers can take advantage of.
 - font/coretext: improve font search sorting to be more consistent. GH-7483
 - man pages now mention macOS-specific configuration path. GH-5938
 
-### GTK (Linux, FreeBSD)
+### GTK (Linux, FreeBSD) {/* #gtk-(linux-freebsd) */}
 
 - GTK: Support for FreeBSD. This work was all driven by a single community
   member and we are very grateful for their contributions. GH-7606
@@ -1123,7 +1123,7 @@ application developers can take advantage of.
   published snap image is maintained by an external maintainer for now.
   GH-3931
 
-### Changes for Package Maintainers
+### Changes for Package Maintainers {/* #changes-for-package-maintainers */}
 
 - We now generate source tarballs with some preprocessed files as is
   standard with many source tarballs (e.g. converting parser `.y` to `.c`).
@@ -1144,7 +1144,7 @@ application developers can take advantage of.
   security and compatibility with tooling. Tip releases have always been
   signed. GH-8549
 
-#### Flatpak/Snap Update
+#### Flatpak/Snap Update {/* #flatpaksnap-update */}
 
 Ghostty 1.2 now comes with a configuration to build for Flatpak as well as
 Snap. We test this for every commit in CI and strive to keep Ghostty
@@ -1163,7 +1163,7 @@ ability to maintain these packages long term. If you are interested in
 helping maintain the Flatpak or Snap packages of Ghostty, please join
 Discord and message us in `#packaging`.
 
-## Roadmap
+## Roadmap {/* #roadmap */}
 
 Ghostty 1.3 will continue the focus of making Ghostty the
 ["best existing terminal emulator"](https://mitchellh.com/writing/ghostty-1-0-reflection)
@@ -1183,7 +1183,7 @@ standalone library** are not planned for Ghostty 1.3. These remain part
 of the long term roadmap, but we want to focus on our existing platforms
 and desktop applications first.
 
-### Moving to a March/September Release Cycle
+### Moving to a March/September Release Cycle {/* #moving-to-a-marchseptember-release-cycle */}
 
 Ghostty will move to a 6-month release cycle for major/minor releases,
 with the next minor release (1.3.0) planned for March 2026. A March/September

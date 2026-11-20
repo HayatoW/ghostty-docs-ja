@@ -17,9 +17,9 @@ can move is the final row.
 
 This sequence never triggers scrolling.
 
-## Validation
+## Validation {/* #validation */}
 
-### CUD V-1: Cursor Down
+### CUD V-1: Cursor Down {/* #cud-v-1:-cursor-down */}
 
 ```bash
 printf "A"
@@ -33,7 +33,7 @@ printf "X"
 |_Xc_______|
 ```
 
-### CUD V-2: Cursor Down Above Bottom Margin
+### CUD V-2: Cursor Down Above Bottom Margin {/* #cud-v-2:-cursor-down-above-bottom-margin */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -52,7 +52,7 @@ printf "X"
 |__________|
 ```
 
-### CUD V-3: Cursor Down Below Bottom Margin
+### CUD V-3: Cursor Down Below Bottom Margin {/* #cud-v-3:-cursor-down-below-bottom-margin */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

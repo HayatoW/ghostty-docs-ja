@@ -14,9 +14,9 @@ If origin mode is _not_ set and the cursor is on or to the right of the
 left margin, the cursor is set to the left margin. If the cursor is to the left
 of the left margin, the cursor is moved to the leftmost column in the terminal.
 
-## Validation
+## Validation {/* #validation */}
 
-### CR V-1: Pending Wrap is Unset
+### CR V-1: Pending Wrap is Unset {/* #cr-v-1:-pending-wrap-is-unset */}
 
 ```bash
 cols=$(tput cols)
@@ -32,7 +32,7 @@ echo
 |c_________|
 ```
 
-### CR V-2: Left Margin
+### CR V-2: Left Margin {/* #cr-v-2:-left-margin */}
 
 ```bash
 cols=$(tput cols)
@@ -50,7 +50,7 @@ printf "X"
 |_XcA______|
 ```
 
-### CR V-3: Left of Left Margin
+### CR V-3: Left of Left Margin {/* #cr-v-3:-left-of-left-margin */}
 
 ```bash
 cols=$(tput cols)
@@ -69,7 +69,7 @@ printf "X"
 |Xc_A______|
 ```
 
-### CR V-3: Left Margin with Origin Mode
+### CR V-3: Left Margin with Origin Mode {/* #cr-v-3:-left-margin-with-origin-mode */}
 
 ```bash
 cols=$(tput cols)

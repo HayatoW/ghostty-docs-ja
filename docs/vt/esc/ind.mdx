@@ -22,9 +22,9 @@ margin and within the remaining scroll region. If the cursor is outside
 the scroll region and on the bottom line of the terminal, the cursor
 does not move.
 
-## Validation
+## Validation {/* #validation */}
 
-### IND V-1: No Scroll Region, Top of Screen
+### IND V-1: No Scroll Region, Top of Screen {/* #ind-v-1:-no-scroll-region-top-of-screen */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -39,7 +39,7 @@ printf "X"
 |_Xc_______|
 ```
 
-### IND V-2: Bottom of Primary Screen
+### IND V-2: Bottom of Primary Screen {/* #ind-v-2:-bottom-of-primary-screen */}
 
 ```bash
 lines=$(tput lines)
@@ -56,7 +56,7 @@ printf "X"
 |_Xc_______|
 ```
 
-### IND V-3: Inside Scroll Region
+### IND V-3: Inside Scroll Region {/* #ind-v-3:-inside-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -72,7 +72,7 @@ printf "X"
 |_Xc_______|
 ```
 
-### IND V-4: Bottom of Scroll Region
+### IND V-4: Bottom of Scroll Region {/* #ind-v-4:-bottom-of-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -93,7 +93,7 @@ printf "X"
 |B_________|
 ```
 
-### IND V-5: Bottom of Primary Screen with Scroll Region
+### IND V-5: Bottom of Primary Screen with Scroll Region {/* #ind-v-5:-bottom-of-primary-screen-with-scroll-region */}
 
 ```bash
 lines=$(tput lines)
@@ -115,7 +115,7 @@ printf "X"
 |Xc________|
 ```
 
-### IND V-6: Outside of Left/Right Scroll Region
+### IND V-6: Outside of Left/Right Scroll Region {/* #ind-v-6:-outside-of-leftright-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -136,7 +136,7 @@ printf "X"
 |XcA_______|
 ```
 
-### IND V-7: Inside of Left/Right Scroll Region
+### IND V-7: Inside of Left/Right Scroll Region {/* #ind-v-7:-inside-of-leftright-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

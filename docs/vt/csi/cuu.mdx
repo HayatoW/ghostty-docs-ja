@@ -15,9 +15,9 @@ the highest point the cursor can move is the top margin. If the current
 cursor position is above the top margin, the highest point the cursor
 can move is the first row.
 
-## Validation
+## Validation {/* #validation */}
 
-### CUU V-1: Cursor Up
+### CUU V-1: Cursor Up {/* #cuu-v-1:-cursor-up */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -34,7 +34,7 @@ printf "X"
 |A_________|
 ```
 
-### CUU V-2: Cursor Up Below Top Margin
+### CUU V-2: Cursor Up Below Top Margin {/* #cuu-v-2:-cursor-up-below-top-margin */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -54,7 +54,7 @@ printf "X"
 |__________|
 ```
 
-### CUU V-3: Cursor Up Above Top Margin
+### CUU V-3: Cursor Up Above Top Margin {/* #cuu-v-3:-cursor-up-above-top-margin */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

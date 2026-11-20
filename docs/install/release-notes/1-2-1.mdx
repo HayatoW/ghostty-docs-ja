@@ -9,9 +9,9 @@ Ghostty 1.2.1 features **two weeks of work** with changes from
 focused on fixing issues introduced in the 1.2.0 release. It includes
 a small handful of improvements, too.
 
-## Highlights
+## Highlights {/* #highlights */}
 
-### Font Rendering Improvements
+### Font Rendering Improvements {/* #font-rendering-improvements */}
 
 PRs: GH-8563 GH-8580 GH-8738 GH-8720 GH-8847
 
@@ -36,7 +36,7 @@ An overview of the changes:
 - Improved FreeType glyph measurements to ensure glyphs are measured with the
   same hinting as they are rendered.
 
-### Shell Integration Adds `ghostty` to `PATH`
+### Shell Integration Adds `ghostty` to `PATH` {/* #shell-integration-adds-ghostty-to-path */}
 
 PR: GH-8976
 
@@ -51,7 +51,7 @@ chances that `ghostty` is available in your shell.
 
 This is supported for bash, zsh, fish, and elvish.
 
-### Mouse Scroll Multiplier for Precision Scrolling Devices
+### Mouse Scroll Multiplier for Precision Scrolling Devices {/* #mouse-scroll-multiplier-for-precision-scrolling-devices */}
 
 PR: GH-8927
 
@@ -77,7 +77,7 @@ mouse-scroll-multiplier = precision:2
 The default precision multiplier is `0.1` while the default discrete
 multiplier remains `1`.
 
-## Full Changelog
+## Full Changelog {/* #full-changelog */}
 
 [Full list of closed issues on GitHub](https://github.com/ghostty-org/ghostty/milestone/8?closed=1).
 
@@ -98,7 +98,7 @@ In each section, we try to sort improvements before bug fixes.
 - i18n: Portuguese translation updates. GH-8633
 - contrib/vim: use `:setf` to set the filetype. GH-8914
 
-### macOS
+### macOS {/* #macos */}
 
 - macOS: implement `bell-features=border` on macOS. GH-8768
 - macOS: `bell-features=title` now works properly. GH-8766
@@ -117,7 +117,7 @@ In each section, we try to sort improvements before bug fixes.
 - macOS: Delay app icon update in syncAppearance to improve startup time. GH-8792
 - font/coretext: crash with certain RTL languages and trailing spaces no longer occurs. GH-9002
 
-### GTK (Linux, FreeBSD)
+### GTK (Linux, FreeBSD) {/* #gtk-(linux-freebsd) */}
 
 - GTK: Enter key now confirms "Change Terminal Title" dialog. GH-8949
 - GTK: dragging last tab out of tab overview no longer crashes. GH-8944 GH-8955
@@ -129,7 +129,7 @@ In each section, we try to sort improvements before bug fixes.
 - GTK: duplicate signal handlers no longer cause multiple toasts. GH-9001
 - GTK: Flatpak-aware resource directory support restored. GH-8816
 
-### Changes for Package Maintainers
+### Changes for Package Maintainers {/* #changes-for-package-maintainers */}
 
 - Ghostty now limits builds to 32 cores on Linux to workaround a known
   memory corruption bug in Zig, allowing Ghostty to be reliably built on
@@ -137,7 +137,7 @@ In each section, we try to sort improvements before bug fixes.
   won't be backported to the 0.14.x series that Ghostty 1.2.x relies on.
   GH-8925
 
-## Roadmap
+## Roadmap {/* #roadmap */}
 
 We believe there will likely be a 1.2.2 release at some point to continue to
 address minor issues introduced by the changes in 1.2.0 and 1.2.1. A possible

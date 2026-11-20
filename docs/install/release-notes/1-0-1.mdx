@@ -4,7 +4,7 @@ description: |-
   Release notes for Ghostty 1.0.1, released on December 31, 2024.
 ---
 
-## Security
+## Security {/* #security */}
 
 - [GHSA-5hcq-3j4q-4v6p](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-5hcq-3j4q-4v6p).
   Fixed a security vulnerability where Ghostty was improperly handling
@@ -16,9 +16,9 @@ description: |-
   mode `0644` allowing any local user to read the file. The file now defaults
   to mode `0600` to prevent unauthorized access.
 
-## Highlights
+## Highlights {/* #highlights */}
 
-### Default Configuration File
+### Default Configuration File {/* #default-configuration-file */}
 
 PR: [#3460](https://github.com/ghostty-org/ghostty/pull/3460)
 
@@ -33,7 +33,7 @@ about where the configuration file was located, how to edit it, and what
 options were available. This change is intended to help users better
 understand how to configure Ghostty.
 
-### Bitmap Font Support
+### Bitmap Font Support {/* #bitmap-font-support */}
 
 PR: [#4115](https://github.com/ghostty-org/ghostty/pull/4115) (CoreText),
 [#3837](https://github.com/ghostty-org/ghostty/pull/3837) (Freetype)
@@ -42,7 +42,7 @@ Ghostty now supports bitmap fonts on both macOS and Linux. Bitmap fonts
 must still be in truetype format, but may contain bitmaps for each glyph
 instead of outlines.
 
-### macOS: "Settings" Improvements
+### macOS: "Settings" Improvements {/* #macos:-"settings"-improvements */}
 
 PR: [#4004](https://github.com/ghostty-org/ghostty/pull/4004)
 
@@ -68,7 +68,7 @@ configuration file. And another future update will allow users to use
 a GUI to modify the configuration file.
 </Note>
 
-## Improvements
+## Improvements {/* #improvements */}
 
 - Color values now accept shorthand hex values (e.g. `#ABC`).
   [#4111](https://github.com/ghostty-org/ghostty/issues/4111)
@@ -83,7 +83,7 @@ a GUI to modify the configuration file.
 - Bundled iTerm2 color schemes updated to
   [e030599a](https://github.com/mbadolato/iTerm2-Color-Schemes/tree/e030599a6a6e19fcd1ea047c7714021170129d56).
 
-## Bug Fixes
+## Bug Fixes {/* #bug-fixes */}
 
 [Full list of closed issues on GitHub](https://github.com/ghostty-org/ghostty/milestone/2?closed=1).
 
@@ -112,7 +112,7 @@ a GUI to modify the configuration file.
 - bash: shell integration works better with `sudo` aliases.
   [#4080](https://github.com/ghostty-org/ghostty/pull/4080)
 
-### macOS
+### macOS {/* #macos */}
 
 - macOS: Fixed a resource leak where windows were not fully destroyed.
   [#4128](https://github.com/ghostty-org/ghostty/pull/4128)
@@ -143,7 +143,7 @@ a GUI to modify the configuration file.
 - macOS: Fix startup crash when `$HOME` was not writable.
   [#3949](https://github.com/ghostty-org/ghostty/pull/3949)
 
-### Linux (GTK)
+### Linux (GTK) {/* #linux-(gtk) */}
 
 - GTK: Detect proper system color scheme on older GTK versions by falling
   back to a deprecated API if the recommended one is not available.
@@ -173,7 +173,7 @@ a GUI to modify the configuration file.
 - GTK: Fix possible segfault when closing surfaces.
   [#3694](https://github.com/ghostty-org/ghostty/pull/3694)
 
-## Changes for Package Maintainers
+## Changes for Package Maintainers {/* #changes-for-package-maintainers */}
 
 - The Ghostty source tarball is now named `ghostty-${VERSION}.tar.gz`
   (from `ghostty-source.tar.gz`) and extracts to a directory named
@@ -184,7 +184,7 @@ a GUI to modify the configuration file.
 - `DESTDIR` now works properly as documented in `PACKAGING.md`.
   [#3426](https://github.com/ghostty-org/ghostty/pull/3426)
 
-## Known Issues
+## Known Issues {/* #known-issues */}
 
 Ghostty 1.0.1 still contains many known issues, but is considered stable
 for general, professional use.
@@ -195,7 +195,7 @@ about to return from holiday and get back to work.
 Please see the GitHub discussions and issue tracker for more information
 on known or newly discovered issues.
 
-## Roadmap
+## Roadmap {/* #roadmap */}
 
 We plan to release a version 1.0.2 in the near future. We don't want to
 get in the habit of releasing too many patch versions, but there are still

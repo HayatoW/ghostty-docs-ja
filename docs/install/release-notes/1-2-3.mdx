@@ -14,9 +14,9 @@ focused on fixing issues introduced in the 1.2.x series.
   upgrade to this version at their soonest convenience.
 </Important>
 
-## Highlights
+## Highlights {/* #highlights */}
 
-### macOS Titlebar Tabs Improvements
+### macOS Titlebar Tabs Improvements {/* #macos-titlebar-tabs-improvements */}
 
 PRs: GH-9090 GH-9163 GH-9168 GH-1787 GH-1813 GH-1945 GH-8612
 
@@ -34,7 +34,7 @@ An overview of the changes:
   style in fullscreen.
 - Improved behavior with macOS 26 native fullscreen and titlebar tabs.
 
-### Font Rendering Improvements
+### Font Rendering Improvements {/* #font-rendering-improvements */}
 
 PRs: GH-9142 GH-9152 GH-9160
 
@@ -49,7 +49,7 @@ still other known font-related issues but they either predate Ghostty 1.2
 or are otherwise unrelated to font rendering (and are instead related to
 font discovery, loading, shaping, etc.).
 
-## Full Changelog
+## Full Changelog {/* #full-changelog */}
 
 [Full list of closed issues on GitHub](https://github.com/ghostty-org/ghostty/milestone/10?closed=1).
 
@@ -74,7 +74,7 @@ In each section, we try to sort improvements before bug fixes.
 - shell-integration: cursor integration now works in vi mode for fish. GH-9157
 - shell-integration: no longer updates universal `fish_user_paths` variable. GH-9273
 
-### macOS
+### macOS {/* #macos */}
 
 - macOS: Quick terminal size is now properly remembered per screen. GH-9256
 - macOS: `goto_split` direction is now compatible with `performable:` bindings.
@@ -87,12 +87,12 @@ In each section, we try to sort improvements before bug fixes.
   appropriate. GH-9124
 - macOS: Fix crash if Cocoa APIs return a nil locale. GH-9290
 
-### GTK (Linux, FreeBSD)
+### GTK (Linux, FreeBSD) {/* #gtk-(linux-freebsd) */}
 
 - GTK: If `title` is configured, set the correct window title immediately. GH-9120
 - GTK: quick terminal autohide now works properly. GH-9145 GH-9139
 
-### Changes for Package Maintainers
+### Changes for Package Maintainers {/* #changes-for-package-maintainers */}
 
 - A new `-Demit-themes` (default true) build option has been added to
   build Ghostty without any bundled themes. This was added for packagers
@@ -101,7 +101,7 @@ In each section, we try to sort improvements before bug fixes.
   a short-term solution to avoid the themes entirely if there are concerns.
   GH-9288
 
-## Roadmap
+## Roadmap {/* #roadmap */}
 
 We don't plan on releasing any further 1.2.x releases, except in the
 circumstance that a critical issue is found. The 1.2.x series has already

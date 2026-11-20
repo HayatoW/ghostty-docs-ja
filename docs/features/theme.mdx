@@ -6,7 +6,7 @@ description: |-
   for light and dark mode, and more.
 ---
 
-## Built-in Themes
+## Built-in Themes {/* #built-in-themes */}
 
 Ghostty ships with hundreds of built-in themes that can be selected
 with one line of configuration by using the [`theme` configuration option](/docs/config/reference#theme). For example, to use the popular Catppuccin theme:
@@ -27,7 +27,7 @@ If you want to contribute a new theme, please contribute it to
 iterm2-color-schemes and it will be automatically picked up by
 Ghostty.
 
-### Listing Available Themes
+### Listing Available Themes {/* #listing-available-themes */}
 
 To see a list of available themes, you can use the `+list-themes` CLI:
 
@@ -39,7 +39,7 @@ For built-in themes, you can also view the theme list online
 at [iterm2-color-schemes](https://iterm2colorschemes.com). This
 also includes a preview of each theme.
 
-## Separate Light and Dark Themes
+## Separate Light and Dark Themes {/* #separate-light-and-dark-themes */}
 
 Ghostty supports specifying separate light and dark themes.
 
@@ -51,7 +51,7 @@ When separate light and dark themes are specified, Ghostty will
 automatically switch between the light and dark theme based on
 the system appearance.
 
-## Authoring a Custom Theme
+## Authoring a Custom Theme {/* #authoring-a-custom-theme */}
 
 Themes are no different than any other configuration file
 in Ghostty; they just happen to typically only set color options.
@@ -82,7 +82,7 @@ following options:
   - [`selection-background`](/docs/config/reference#selection-background)
   - [`palette`](/docs/config/reference#palette)
 
-### File Location
+### File Location {/* #file-location */}
 
 Theme files can be located anywhere on the filesystem. The
 [`theme`](/docs/config/reference#theme) configuration option allows
@@ -94,7 +94,7 @@ Theme lookup by name searches two directories:
   1. `$XDG_CONFIG_HOME/ghostty/themes`
   2. `$PREFIX/share/ghostty/themes`
 
-### Example
+### Example {/* #example */}
 
 Below is an example of a complete theme file:
 

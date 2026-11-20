@@ -23,7 +23,7 @@ The basic syntax of a keybinding configuration is:
 keybind = trigger=action
 ```
 
-## Trigger
+## Trigger {/* #trigger */}
 
 The `trigger` part of a keybinding specifies the keypress events
 that will trigger the action. The trigger can be a single key,
@@ -53,7 +53,7 @@ in Unicode.
 keybind = ctrl+ö=action
 ```
 
-### Modifiers
+### Modifiers {/* #modifiers */}
 
 Valid modifiers are:
 
@@ -68,7 +68,7 @@ modifier. This is a limitation of the operating systems and GUI toolkits
 that Ghostty uses.
 </Note>
 
-### Trigger Prefixes
+### Trigger Prefixes {/* #trigger-prefixes */}
 
 A trigger can also be prefixed with some special values
 to change the behavior of the keybind. These are listed below.
@@ -145,7 +145,7 @@ Example:
 keybind = performable:ctrl+c=copy_to_clipboard
 ```
 
-## Action
+## Action {/* #action */}
 
 Action is what happens when the trigger is activated. It is
 in the format of `action` or `action:parameter` if the action

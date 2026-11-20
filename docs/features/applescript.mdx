@@ -5,7 +5,7 @@ description: |-
   the object model, available commands, and practical examples.
 ---
 
-## Overview
+## Overview {/* #overview */}
 
 Ghostty on macOS exposes a native AppleScript dictionary so scripts can
 query and control terminal windows, tabs, and split panes.
@@ -14,7 +14,7 @@ launcher workflows, editor plugins, and custom automation scripts.
 
 AppleScript support was introduced in Ghostty 1.3.0.
 
-## Scripting Dictionary
+## Scripting Dictionary {/* #scripting-dictionary */}
 
 The source of truth for the AppleScript API is the Ghostty scripting
 definition file: <a href="https://github.com/ghostty-org/ghostty/blob/main/macos/Ghostty.sdef">Ghostty.sdef</a>.
@@ -33,7 +33,7 @@ To verify that scripting works:
 osascript -e 'tell application "Ghostty" to get version'
 ```
 
-## Object Model
+## Object Model {/* #object-model */}
 
 Ghostty's AppleScript model is hierarchical:
 
@@ -52,7 +52,7 @@ application -> windows -> tabs -> terminals
 returns the active terminal in a tab, which is useful for scripts that
 operate on whatever terminal currently has focus.
 
-### Object Query Examples
+### Object Query Examples {/* #object-query-examples */}
 
 ```AppleScript
 tell application "Ghostty"
@@ -82,9 +82,9 @@ tell application "Ghostty"
 end tell
 ```
 
-## Commands
+## Commands {/* #commands */}
 
-### Creation and Layout
+### Creation and Layout {/* #creation-and-layout */}
 
 | Command | Purpose | Example Syntax |
 | ------- | ------- | -------------- |
@@ -95,7 +95,7 @@ end tell
 
 `split direction` values are `right`, `left`, `down`, and `up`.
 
-### Focus, Selection, and Lifecycle
+### Focus, Selection, and Lifecycle {/* #focus-selection-and-lifecycle */}
 
 | Command | Purpose | Example Syntax |
 | ------- | ------- | -------------- |
@@ -106,7 +106,7 @@ end tell
 | `close tab` | Close a tab. | `close tab (tab 2 of window 1)` |
 | `close window` | Close a window. | `close window (window 1)` |
 
-### Input and Actions
+### Input and Actions {/* #input-and-actions */}
 
 | Command | Purpose | Example Syntax |
 | ------- | ------- | -------------- |
@@ -124,7 +124,7 @@ For `send key` and `send mouse button`, `action` can be `press` or
 For `perform action`, action strings match the action names used in keybind
 configuration. See [Keybind Action Reference](/docs/config/keybind/reference).
 
-## Surface Configuration Records
+## Surface Configuration Records {/* #surface-configuration-records */}
 
 `new surface configuration` creates a reusable value record that can be passed
 to `new window`, `new tab`, and `split`.
@@ -151,7 +151,7 @@ tell application "Ghostty"
 end tell
 ```
 
-## Security
+## Security {/* #security */}
 
 AppleScript support is enabled by default on macOS.
 macOS protects app-to-app automation using Automation permissions (TCC), so
@@ -163,9 +163,9 @@ If you want to disable AppleScript support entirely, set:
 macos-applescript = false
 ```
 
-## Examples
+## Examples {/* #examples */}
 
-### Build a Tmux-style Layout
+### Build a Tmux-style Layout {/* #build-a-tmux-style-layout */}
 
 ```AppleScript
 set projectDir to POSIX path of (path to home folder) & "src/ghostty"
@@ -198,7 +198,7 @@ tell application "Ghostty"
 end tell
 ```
 
-### Broadcast a Command to Every Terminal
+### Broadcast a Command to Every Terminal {/* #broadcast-a-command-to-every-terminal */}
 
 ```AppleScript
 set cmd to "date"
@@ -215,7 +215,7 @@ tell application "Ghostty"
 end tell
 ```
 
-### Set Tab Titles
+### Set Tab Titles {/* #set-tab-titles */}
 
 Use `perform action` with `set_tab_title` to label tabs from a script.
 
@@ -233,7 +233,7 @@ tell application "Ghostty"
 end tell
 ```
 
-### Jump to a Terminal by Working Directory
+### Jump to a Terminal by Working Directory {/* #jump-to-a-terminal-by-working-directory */}
 
 ```AppleScript
 set needle to "ghostty"

@@ -33,9 +33,9 @@ character. For example, if "橋" is printed to the left of the left margin
 and shifting the line down as a result of DL would split the character,
 the cell should be erased.
 
-## Validation
+## Validation {/* #validation */}
 
-### DL V-1: Simple Delete Line
+### DL V-1: Simple Delete Line {/* #dl-v-1:-simple-delete-line */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -52,7 +52,7 @@ printf "\033[M"
 |GHI_____|
 ```
 
-### DL V-2: Cursor Outside of Scroll Region
+### DL V-2: Cursor Outside of Scroll Region {/* #dl-v-2:-cursor-outside-of-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -71,7 +71,7 @@ printf "\033[M"
 |GHI_____|
 ```
 
-### DL V-3: Top/Bottom Scroll Regions
+### DL V-3: Top/Bottom Scroll Regions {/* #dl-v-3:-topbottom-scroll-regions */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -92,7 +92,7 @@ printf "\033[M"
 |123_____|
 ```
 
-### DL V-4: Left/Right Scroll Regions
+### DL V-4: Left/Right Scroll Regions {/* #dl-v-4:-leftright-scroll-regions */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

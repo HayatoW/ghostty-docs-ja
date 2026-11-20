@@ -17,9 +17,9 @@ which are explained below.
 The cursor position after the operation must be unchanged from when SU was
 invoked. The pending wrap state is _not_ reset.
 
-## Validation
+## Validation {/* #validation */}
 
-### SU V-1: Simple Usage
+### SU V-1: Simple Usage {/* #su-v-1:-simple-usage */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -36,7 +36,7 @@ printf "\033[S"
 |GHI_____|
 ```
 
-### SU V-2: Top/Bottom Scroll Region
+### SU V-2: Top/Bottom Scroll Region {/* #su-v-2:-topbottom-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -54,7 +54,7 @@ printf "\033[S"
 |GHI_____|
 ```
 
-### SU V-3: Left/Right Scroll Regions
+### SU V-3: Left/Right Scroll Regions {/* #su-v-3:-leftright-scroll-regions */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -74,7 +74,7 @@ printf "\033[S"
 |G___89__|
 ```
 
-### SU V-4: Preserves Pending Wrap
+### SU V-4: Preserves Pending Wrap {/* #su-v-4:-preserves-pending-wrap */}
 
 ```bash
 cols=$(tput cols)
@@ -96,7 +96,7 @@ printf "X"
 |X_______|
 ```
 
-### SU V-5: Scroll Full Top/Bottom Scroll Region
+### SU V-5: Scroll Full Top/Bottom Scroll Region {/* #su-v-5:-scroll-full-topbottom-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

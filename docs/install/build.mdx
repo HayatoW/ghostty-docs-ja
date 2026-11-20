@@ -53,7 +53,7 @@ Depending on your platform, you may also need to install additional
 dependencies to build Ghostty. For Linux, see [Linux](#linux). For macOS,
 see [macOS](#macos).
 
-## Getting the source code
+## Getting the source code {/* #getting-the-source-code */}
 
 Begin by **downloading Ghostty's source tarball**.
 
@@ -139,9 +139,9 @@ use them for development.
 
 </Tip>
 
-## Linux
+## Linux {/* #linux */}
 
-### Dependencies
+### Dependencies {/* #dependencies */}
 
 On Linux, you'll need to install header packages for Ghostty's dependencies
 before building it. Only a few dependencies are needed for source builds
@@ -170,7 +170,7 @@ to `zig build`.
 
 </Tip>
 
-#### Alpine
+#### Alpine {/* #alpine */}
 
 ```sh
 doas apk add \
@@ -181,7 +181,7 @@ doas apk add \
   gettext
 ```
 
-#### Arch Linux
+#### Arch Linux {/* #arch-linux */}
 
 ```sh
 sudo pacman -S \
@@ -192,7 +192,7 @@ sudo pacman -S \
   gettext
 ```
 
-#### Debian and Ubuntu
+#### Debian and Ubuntu {/* #debian-and-ubuntu */}
 
 ```sh
 sudo apt install \
@@ -206,7 +206,7 @@ sudo apt install \
 On Debian unstable/testing, the `gcc-multilib` package is also required
 for building.
 
-#### Fedora
+#### Fedora {/* #fedora */}
 
 On Fedora variants, use
 
@@ -230,7 +230,7 @@ rpm-ostree install \
   gettext
 ```
 
-#### Gentoo
+#### Gentoo {/* #gentoo */}
 
 ```sh
 emerge -av \
@@ -240,7 +240,7 @@ emerge -av \
   gettext
 ```
 
-#### openSUSE Tumbleweed
+#### openSUSE Tumbleweed {/* #opensuse-tumbleweed */}
 
 ```sh
 sudo zypper install \
@@ -253,7 +253,7 @@ sudo zypper install \
   gtk4-layer-shell-devel
 ```
 
-#### openSUSE Leap
+#### openSUSE Leap {/* #opensuse-leap */}
 
 ```sh
 sudo zypper install \
@@ -265,7 +265,7 @@ sudo zypper install \
   gettext
 ```
 
-#### Solus
+#### Solus {/* #solus */}
 
 ```sh
 sudo eopkg install \
@@ -276,7 +276,7 @@ sudo eopkg install \
   gettext
 ```
 
-#### Void
+#### Void {/* #void */}
 
 ```sh
 sudo xbps-install \
@@ -288,7 +288,7 @@ sudo xbps-install \
   gettext
 ```
 
-### Installation Directory
+### Installation Directory {/* #installation-directory */}
 
 Use `zig build` with the `-p` (prefix) flag to install Ghostty into
 a target directory. This will setup the proper FHS directory structure
@@ -327,7 +327,7 @@ For system-wide installs, we recommend `/usr` (likely requires `sudo`):
 zig build -p /usr -Doptimize=ReleaseFast
 ```
 
-### Building with Nix
+### Building with Nix {/* #building-with-nix */}
 
 The Nix build environment can be accessed like any other
 [Nix dev shell](https://nix.dev/tutorials/first-steps/declarative-shell.html),
@@ -355,11 +355,11 @@ Building with Nix should yield the same result as building it with Zig,
 but with higher reproducibility guarantees that ensure every part of
 Ghostty can be built reliably.
 
-## macOS
+## macOS {/* #macos */}
 
-### Dependencies
+### Dependencies {/* #dependencies */}
 
-#### Xcode
+#### Xcode {/* #xcode */}
 
 To build the macOS application, you must build on a macOS machine with
 Xcode installed and the active developer directory pointing to it. If
@@ -381,7 +381,7 @@ is installed.
 Next, make sure you have the macOS SDK, iOS SDK, and Metal Toolchain
 installed (from inside Xcode → Settings → Components).
 
-#### Other Dependencies
+#### Other Dependencies {/* #other-dependencies */}
 
 Ghostty also requires some additional library dependencies to be
 installed. You can choose to install them however you'd like, but
@@ -396,7 +396,7 @@ brew install gettext
   handled for you and you do not need to install them manually.
 </Note>
 
-### Mac `.app`
+### Mac `.app` {/* #mac-.app */}
 
 ```sh
 zig build -Doptimize=ReleaseFast

@@ -25,9 +25,9 @@ in half, the multi-cell character can either be clipped or erased. Typical
 behavior is to clip at the right edge of the screen and erase at a right
 margin, but either behavior is acceptable.
 
-## Validation
+## Validation {/* #validation */}
 
-### ICH V-1: No Scroll Region, Fits on Screen
+### ICH V-1: No Scroll Region, Fits on Screen {/* #ich-v-1:-no-scroll-region-fits-on-screen */}
 
 ```bash
 printf "ABC"
@@ -40,7 +40,7 @@ printf "X"
 |XcABC_____|
 ```
 
-### ICH V-2: SGR State
+### ICH V-2: SGR State {/* #ich-v-2:-sgr-state */}
 
 ```bash
 printf "ABC"
@@ -57,7 +57,7 @@ printf "X"
 The `c_` cells should both have a red background. The `ABC` cells should
 remain unchanged in style.
 
-### ICH V-3: Shifting Content Off the Screen
+### ICH V-3: Shifting Content Off the Screen {/* #ich-v-3:-shifting-content-off-the-screen */}
 
 ```bash
 cols=$(tput cols)
@@ -73,7 +73,7 @@ printf "X"
 |_______XcA|
 ```
 
-### ICH V-4: Inside Left/Right Scroll Region
+### ICH V-4: Inside Left/Right Scroll Region {/* #ich-v-4:-inside-leftright-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -91,7 +91,7 @@ printf "X"
 |__XcA_____|
 ```
 
-### ICH V-5: Outside Left/Right Scroll Region
+### ICH V-5: Outside Left/Right Scroll Region {/* #ich-v-5:-outside-leftright-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -109,7 +109,7 @@ printf "X"
 |XcABC_____|
 ```
 
-### ICH V-6: Split Wide Character
+### ICH V-6: Split Wide Character {/* #ich-v-6:-split-wide-character */}
 
 ```bash
 cols=$(tput cols)

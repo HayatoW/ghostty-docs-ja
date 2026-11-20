@@ -21,7 +21,7 @@ second instance.
   learn more.
 </Tip>
 
-## CLI Environment Detection
+## CLI Environment Detection {/* #cli-environment-detection */}
 
 The default behavior of Ghostty is to use GTK single instance mode
 **when _not_ launched from a CLI environment.**
@@ -43,7 +43,7 @@ from a non-CLI environment, so Ghostty uses the following heuristic:
 2. If any command line arguments are passed to Ghostty, we assume we
    want instance-specific configuration and disable GTK single instance mode.
 
-## Forcing GTK Single Instance Mode On or Off
+## Forcing GTK Single Instance Mode On or Off {/* #forcing-gtk-single-instance-mode-on-or-off */}
 
 You can force GTK single instance mode on or off by setting the
 [`gtk-single-instance`](/docs/config/reference#gtk-single-instance) option:
@@ -56,7 +56,7 @@ A value of `true` forces Ghostty to run in single instance mode.
 In this mode, each new `ghostty` process will result in a new window
 in an existing instance of Ghostty if one is running.
 
-## Relationship to Startup Performance and Memory
+## Relationship to Startup Performance and Memory {/* #relationship-to-startup-performance-and-memory */}
 
 Ghostty is a GTK application. The GTK framework has unavoidable
 overhead when starting up, both in terms of how long it takes and

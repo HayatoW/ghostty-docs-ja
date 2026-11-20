@@ -43,9 +43,9 @@ the visible display of the screen and does not move the cursor. The scrollback
 region is the region of the terminal that is currently above the visible
 area of the screen when the screen is scrolled completely to the bottom.
 
-## Validation
+## Validation {/* #validation */}
 
-### ED V-1: Simple Erase Below
+### ED V-1: Simple Erase Below {/* #ed-v-1:-simple-erase-below */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -63,7 +63,7 @@ printf "\033[0J"
 |________|
 ```
 
-### ED V-2: Erase Below SGR State
+### ED V-2: Erase Below SGR State {/* #ed-v-2:-erase-below-sgr-state */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -84,7 +84,7 @@ printf "\033[0J"
 
 All the cells right and below of the cursor should be colored red.
 
-### ED V-3: Erase Below Multi-Cell Character
+### ED V-3: Erase Below Multi-Cell Character {/* #ed-v-3:-erase-below-multi-cell-character */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -102,7 +102,7 @@ printf "\033[0J"
 |________|
 ```
 
-### ED V-4: Simple Erase Above
+### ED V-4: Simple Erase Above {/* #ed-v-4:-simple-erase-above */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -120,7 +120,7 @@ printf "\033[1J"
 |GHI_____|
 ```
 
-### ED V-5: Simple Erase Complete
+### ED V-5: Simple Erase Complete {/* #ed-v-5:-simple-erase-complete */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

@@ -56,9 +56,9 @@ wrap state is set, decrease `n` by 1. In these modes, the initial cursor
 backward count is consumed by the pending wrap state, as if you pressed
 "backspace" on an empty newline and the cursor moved back to the previous line.
 
-## Validation
+## Validation {/* #validation */}
 
-### CUB V-1: Pending Wrap is Unset
+### CUB V-1: Pending Wrap is Unset {/* #cub-v-1:-pending-wrap-is-unset */}
 
 ```bash
 cols=$(tput cols)
@@ -73,7 +73,7 @@ printf "XYZ"
 |Zc________|
 ```
 
-### CUB V-2: Leftmost Boundary with Reverse Wrap Disabled
+### CUB V-2: Leftmost Boundary with Reverse Wrap Disabled {/* #cub-v-2:-leftmost-boundary-with-reverse-wrap-disabled */}
 
 ```bash
 printf "\033[?45l" # disable reverse wrap
@@ -87,7 +87,7 @@ printf "B"
 |Bc________|
 ```
 
-### CUB V-3: Reverse Wrap
+### CUB V-3: Reverse Wrap {/* #cub-v-3:-reverse-wrap */}
 
 ```bash
 cols=$(tput cols)
@@ -106,7 +106,7 @@ printf "X"
 |B_________|
 ```
 
-### CUB V-4: Extended Reverse Wrap Single Line
+### CUB V-4: Extended Reverse Wrap Single Line {/* #cub-v-4:-extended-reverse-wrap-single-line */}
 
 ```bash
 printf "\033[?7h" # enable wraparound
@@ -124,7 +124,7 @@ printf "X"
 |B_________|
 ```
 
-### CUB V-5: Extended Reverse Wrap Wraps to Bottom
+### CUB V-5: Extended Reverse Wrap Wraps to Bottom {/* #cub-v-5:-extended-reverse-wrap-wraps-to-bottom */}
 
 ```bash
 cols=$(tput cols)
@@ -147,7 +147,7 @@ printf "X"
 |_________Xc
 ```
 
-### CUB V-6: Reverse Wrap Outside of Margins
+### CUB V-6: Reverse Wrap Outside of Margins {/* #cub-v-6:-reverse-wrap-outside-of-margins */}
 
 ```bash
 printf "\033[1;1H"
@@ -164,7 +164,7 @@ printf "X"
 |Xc________|
 ```
 
-### CUB V-7: Reverse Wrap with Pending Wrap State
+### CUB V-7: Reverse Wrap with Pending Wrap State {/* #cub-v-7:-reverse-wrap-with-pending-wrap-state */}
 
 ```bash
 cols=$(tput cols)

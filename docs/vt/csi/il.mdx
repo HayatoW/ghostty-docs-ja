@@ -37,9 +37,9 @@ character. For example, if "橋" is printed to the left of the left margin
 and shifting the line down as a result of IL would split the character,
 the cell should be erased.
 
-## Validation
+## Validation {/* #validation */}
 
-### IL V-1: Simple Insert Line
+### IL V-1: Simple Insert Line {/* #il-v-1:-simple-insert-line */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -58,7 +58,7 @@ printf "\033[L"
 |GHI_____|
 ```
 
-### IL V-2: Cursor Outside of Scroll Region
+### IL V-2: Cursor Outside of Scroll Region {/* #il-v-2:-cursor-outside-of-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -77,7 +77,7 @@ printf "\033[L"
 |GHI_____|
 ```
 
-### IL V-3: Top/Bottom Scroll Regions
+### IL V-3: Top/Bottom Scroll Regions {/* #il-v-3:-topbottom-scroll-regions */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -98,7 +98,7 @@ printf "\033[L"
 |123_____|
 ```
 
-### IL V-4: Left/Right Scroll Regions
+### IL V-4: Left/Right Scroll Regions {/* #il-v-4:-leftright-scroll-regions */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

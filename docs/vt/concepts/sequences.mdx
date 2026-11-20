@@ -19,7 +19,7 @@ They are described below along with their specific syntax. The
 [reference](/docs/vt/reference) contains a full list of supported
 control sequences grouped by type.
 
-## C0 control characters
+## C0 control characters {/* #c0-control-characters */}
 
 Each control sequence starts with a special, unprintable character, known
 as a **control character**. The simplest control characters, known as
@@ -46,7 +46,7 @@ C0 characters meaningful to terminal emulation include:
 [`LF`]: /docs/vt/control/lf
 [`CR`]: /docs/vt/control/cr
 
-## Escape sequences
+## Escape sequences {/* #escape-sequences */}
 
 One of the C0 characters, Escape (`0x1b`, `ESC`), is special. It can either
 start a few discrete sequences or begin entire families of sequences, which is
@@ -63,7 +63,7 @@ intermediates = [0x20-0x2F]*
 final = [0x30-0x7E]
 ```
 
-## `Fe` sequences
+## `Fe` sequences {/* #fe-sequences */}
 
 When Escape is followed by certain printable characters, for various historical
 reasons they are instead interpreted together as **C1 control characters**,
@@ -82,7 +82,7 @@ modern terminals.
 | `ESC X`  | `0x98` | SOS  | Start of String             | Obsolete. Ignored by Ghostty.                                                                            |
 | `ESC ^`  | `0x9e` | PM   | Private Message             | Obsolete. Ignored by Ghostty.                                                                            |
 
-### CSI
+### CSI {/* #csi */}
 
 CSI sequences are *by far* the most common type of C1 sequences.
 They use integer parameters separated either with colons (`:`) or semicolons
@@ -103,7 +103,7 @@ intermediates = [0x20-0x2F]*
 final = [0x40-0x7E]
 ```
 
-### OSC
+### OSC {/* #osc */}
 
 OSC sequences are typically used to encode strings or other non-integer data to
 transmit between the terminal and an application. They usually alter variables
@@ -141,7 +141,7 @@ data = [0x20-0xFF]
 terminator = "0x1B" "0x5C"
 ```
 
-### DCS
+### DCS {/* #dcs */}
 
 DCS Sequences are like a CSI sequence combined with an OSC sequence: they
 natively support integer parameters as well as string values. An example DSC
@@ -157,7 +157,7 @@ data = [0x20-0xFF]
 ST = "0x1B" "0x5C"
 ```
 
-### APC
+### APC {/* #apc */}
 
 Ghostty supports APC sequences. Currently there is only one supported APC
 sequence: the Kitty Graphics Protocol sequence. This is documented [here](https://sw.kovidgoyal.net/kitty/graphics-protocol/).
@@ -168,7 +168,7 @@ data = [0x20-0xFF]
 ST = "0x1B" "0x5C"
 ```
 
-### SOS and PM
+### SOS and PM {/* #sos-and-pm */}
 
 SOS and PM sequences are entirely ignored by Ghostty.
 
