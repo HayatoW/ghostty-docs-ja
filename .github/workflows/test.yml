@@ -7,15 +7,10 @@ name: Test
 
 jobs:
   alejandra:
-    runs-on: namespace-profile-ghostty-sm
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4 # Check out repo so we can lint it
-      - name: Setup Cache
-        uses: namespacelabs/nscloud-cache-action@v1.2.0
-        with:
-          path: |
-            /nix
       - uses: cachix/install-nix-action@v30
         with:
           nix_path: nixpkgs=channel:nixos-unstable
@@ -23,15 +18,10 @@ jobs:
         run: nix develop -c alejandra --check .
 
   biome:
-    runs-on: namespace-profile-ghostty-sm
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4 # Check out repo so we can lint it
-      - name: Setup Cache
-        uses: namespacelabs/nscloud-cache-action@v1.2.0
-        with:
-          path: |
-            /nix
       - uses: cachix/install-nix-action@v30
         with:
           nix_path: nixpkgs=channel:nixos-unstable
@@ -39,3 +29,5 @@ jobs:
         run: nix develop -c npm install
       - name: biome check
         run: nix develop -c npm run lint
+      - name: build
+        run: nix develop -c npm run build
