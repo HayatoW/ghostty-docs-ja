@@ -133,7 +133,7 @@ shell-integration-features = ssh-env,ssh-terminfo
 ### 制限事項 {/* #limitations */}
 
 ラッパーはシェル関数なので、**子プロセスには継承されません**。
-次の場合は、ラッパーが_使われません_。
+次の場合は、ラッパーが*使われません*。
 
 - **`./script.sh` または `sh script.sh` で実行するスクリプト。** 各スクリプトは、関数を継承しない新しい非対話シェルで実行されます。
   代わりに、現在のシェルでスクリプトを読み込み（`source script.sh` や `. script.sh` など）、関数が定義されている同じシェルプロセスで実行してください。
@@ -169,7 +169,7 @@ Host example.com
 
 ## リモートの `sshd` の設定 {/* #remote-sshd-configuration */}
 
-環境変数の転送は `SendEnv` を使いますが、これは_要求_にすぎません。
+環境変数の転送は `SendEnv` を使いますが、これは*要求*にすぎません。
 リモートの `sshd` は、`AcceptEnv` ディレクティブにない変数を通知せずに破棄します。
 `COLORTERM`、`TERM_PROGRAM`、`TERM_PROGRAM_VERSION` をリモートセッションに届けるには、
 リモートの `sshd_config` に次のような設定が必要です。

@@ -283,7 +283,7 @@ zig build -p $HOME/.local -Doptimize=ReleaseFast
 一般的な Freedesktop 対応のデスクトップ環境（GNOME、KDE など）では、これによりアプリランチャーから Ghostty を起動できるようになります。
 すぐに表示されなければ、ログアウトして再ログインするか、場合によっては再起動が必要です。
 
-アプリランチャーのアイコンから Ghostty を起動できない場合は、`~/.local/bin` が_システムの_ `PATH` に含まれていることを確認してください。
+アプリランチャーのアイコンから Ghostty を起動できない場合は、`~/.local/bin` が*システムの* `PATH` に含まれていることを確認してください。
 デスクトップ環境自体の `PATH` にそのパスが必要です。
 設定方法は、お使いのデスクトップ環境とディストリビューションについて Google で検索してください。
 
@@ -342,7 +342,7 @@ xcode-select --print-path
 /Applications/Xcode.app/Contents/Developer # <-- GOOD
 ```
 
-上記の状態は、Xcode をインストールした_後に_ Xcode Command Line Tools をインストールすると発生することがあります。
+上記の状態は、Xcode をインストールした*後に* Xcode Command Line Tools をインストールすると発生することがあります。
 
 次に、macOS SDK、iOS SDK、Metal Toolchain がインストールされていることを確認します
 （Xcode → Settings → Components から確認できます）。
