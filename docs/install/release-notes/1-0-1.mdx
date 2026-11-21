@@ -1,218 +1,118 @@
 ---
 title: Ghostty 1.0.1
 description: |-
-  Release notes for Ghostty 1.0.1, released on December 31, 2024.
+  Ghostty 1.0.1（2024 年 12 月 31 日リリース）のリリースノートです。
 ---
 
-## Security {/* #security */}
+## セキュリティ {/* #security */}
 
-- [GHSA-5hcq-3j4q-4v6p](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-5hcq-3j4q-4v6p).
-  Fixed a security vulnerability where Ghostty was improperly handling
-  window title sequences in such a way that could lead to arbitrary code
-  execution (required user interaction).
+- [GHSA-5hcq-3j4q-4v6p](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-5hcq-3j4q-4v6p)。Ghostty がウィンドウタイトルのシーケンスを適切に処理せず、任意のコード実行につながる可能性があった脆弱性を修正しました（ユーザー操作が必要です）。
 
-- [GHSA-hfg5-8q2c-crhc](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-hfg5-8q2c-crhc).
-  The file created with `write_*_file` keybind actions previously defaulted to
-  mode `0644` allowing any local user to read the file. The file now defaults
-  to mode `0600` to prevent unauthorized access.
+- [GHSA-hfg5-8q2c-crhc](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-hfg5-8q2c-crhc)。従来、`write_*_file` キーバインドアクションで作成したファイルは既定でモード `0644` となり、ローカルのすべてのユーザーが読み取れました。意図しないアクセスを防ぐため、既定のモードを `0600` に変更しました。
 
-## Highlights {/* #highlights */}
+## 主な変更点 {/* #highlights */}
 
-### Default Configuration File {/* #default-configuration-file */}
+### 既定の設定ファイル {/* #default-configuration-file */}
 
 PR: [#3460](https://github.com/ghostty-org/ghostty/pull/3460)
 
-Ghostty will now create a default configuration file on launch if no
-non-empty configuration files are found. In line with our
-[zero configuration philosophy](/docs/config#zero-configuration-philosophy),
-the default configuration file only has comments, but the comments help
-educate users on file location, syntax, and documentation.
+空でない設定ファイルが見つからない場合、Ghostty の起動時に既定の設定ファイルを作成するようになりました。[設定不要という方針](/docs/config#zero-configuration-philosophy) に沿って、既定の設定ファイルにはコメントしかありません。そのコメントにはファイルの場所や構文、ドキュメントの情報が記載されています。
 
-For the 1.0.0 release, we noticed there was a significant amount of confusion
-about where the configuration file was located, how to edit it, and what
-options were available. This change is intended to help users better
-understand how to configure Ghostty.
+1.0.0 のリリースでは、設定ファイルがどこにあるのか、どう編集するのか、どんな設定項目が使えるのかが分かりにくいという声が多くありました。今回の変更は、Ghostty の設定方法を分かりやすくするためのものです。
 
-### Bitmap Font Support {/* #bitmap-font-support */}
+### ビットマップフォントのサポート {/* #bitmap-font-support */}
 
 PR: [#4115](https://github.com/ghostty-org/ghostty/pull/4115) (CoreText),
-[#3837](https://github.com/ghostty-org/ghostty/pull/3837) (Freetype)
+[#3837](https://github.com/ghostty-org/ghostty/pull/3837)（FreeType）
 
-Ghostty now supports bitmap fonts on both macOS and Linux. Bitmap fonts
-must still be in truetype format, but may contain bitmaps for each glyph
-instead of outlines.
+macOS と Linux の両方で、Ghostty がビットマップフォントに対応しました。フォントは引き続き TrueType 形式である必要がありますが、各グリフをアウトラインではなくビットマップで収録したものを使えます。
 
-### macOS: "Settings" Improvements {/* #macos:-"settings"-improvements */}
+### macOS: 「設定」の改善 {/* #macos:-"settings"-improvements */}
 
 PR: [#4004](https://github.com/ghostty-org/ghostty/pull/4004)
 
-The "Settings" menu option (`open_config` keybinding action) has
-improved in several ways.
+「設定」メニュー項目（`open_config` キーバインドアクション）をいくつか改善しました。
 
-First, Ghostty now finds the first non-empty configuration file to open
-if one exists. Previously, Ghostty would always open the XDG configuration
-path first, even if the AppSupport path existed. This led to confusion because
-the AppSupport path overrides the XDG path. Now, Ghostty will open the
-AppSupport path if it exists, and if not, it will open the XDG path.
+まず、空でない設定ファイルがあれば、最初に該当するファイルを探して開くようになりました。以前は AppSupport 側の設定が存在していても、常に XDG 側の設定パスを最初に開いていました。実際には AppSupport 側の設定が XDG 側より優先されるため、混乱の原因になっていました。今後は AppSupport 側のパスがあればそれを開き、なければ XDG 側のパスを開きます。
 
-Second, Ghostty now properly prioritizes opening the AppSupport path over
-the XDG path if neither path exists. This is important because the AppSupport
-path overrides all other paths on macOS.
+次に、どちらのパスも存在しない場合は、XDG より AppSupport のパスを正しく優先するようになりました。macOS では AppSupport のパスがほかのすべてのパスよりも優先されるため、これは重要です。
 
-Third, Ghostty now uses the `-t` flag with `open` to open the configuration
-file in a text editor.
+最後に、`open` コマンドに `-t` フラグを渡し、設定ファイルをテキストエディターで開くようにしました。
 
 <Note>
-A future update will allow users to use their `$EDITOR` to open the
-configuration file. And another future update will allow users to use
-a GUI to modify the configuration file.
+今後の更新で、設定ファイルを `$EDITOR` で開けるようにする予定です。さらに別の更新で、GUI から設定ファイルを編集できるようにする予定です。
 </Note>
 
-## Improvements {/* #improvements */}
+## 改善 {/* #improvements */}
 
-- Color values now accept shorthand hex values (e.g. `#ABC`).
-  [#4111](https://github.com/ghostty-org/ghostty/issues/4111)
-- `confirm-close-surface` can now be set to `always` to always show the
-  confirmation dialog when closing a window.
-  [#3700](https://github.com/ghostty-org/ghostty/pull/3700)
-- macOS: Add "terminal" keyword to the Spotlight search metadata.
-  [#3745](https://github.com/ghostty-org/ghostty/pull/3745)
-- GTK: Add `window-titlebar-foreground` and `window-titlebar-background`
-  configuration options.
-  [#3806](https://github.com/ghostty-org/ghostty/pull/3806)
-- Bundled iTerm2 color schemes updated to
-  [e030599a](https://github.com/mbadolato/iTerm2-Color-Schemes/tree/e030599a6a6e19fcd1ea047c7714021170129d56).
+- 色の値に、`#ABC` などの短縮形の 16 進表記を指定できるようになりました。[#4111](https://github.com/ghostty-org/ghostty/issues/4111)
+- `confirm-close-surface` を `always` にすると、ウィンドウを閉じるときに確認ダイアログを必ず表示するようになりました。[#3700](https://github.com/ghostty-org/ghostty/pull/3700)
+- macOS: Spotlight 検索のメタデータに「terminal」キーワードを追加しました。[#3745](https://github.com/ghostty-org/ghostty/pull/3745)
+- GTK: `window-titlebar-foreground` と `window-titlebar-background` の設定オプションを追加しました。[#3806](https://github.com/ghostty-org/ghostty/pull/3806)
+- 同梱の iTerm2 カラースキームを [e030599a](https://github.com/mbadolato/iTerm2-Color-Schemes/tree/e030599a6a6e19fcd1ea047c7714021170129d56) に更新しました。
 
-## Bug Fixes {/* #bug-fixes */}
+## バグ修正 {/* #bug-fixes */}
 
-[Full list of closed issues on GitHub](https://github.com/ghostty-org/ghostty/milestone/2?closed=1).
+[対応済みの Issue の全一覧（GitHub）](https://github.com/ghostty-org/ghostty/milestone/2?closed=1)。
 
-- keybinds with triggers that map to a key are now treated as a translated
-  key and not a unicode trigger, i.e. `cmd+1` now works in addition to
-  `cmd+one` and `cmd+.` is the same as `cmd+period`.
-  [#4147](https://github.com/ghostty-org/ghostty/pull/4147)
-- `write_selection_file` would sometimes write empty contents.
-  [#4078](https://github.com/ghostty-org/ghostty/pull/4078)
-- Hyperlinks within TUI applications are more stable.
-  [#3903](https://github.com/ghostty-org/ghostty/pull/3903)
-- Reloading configuration no longer overrides OSC 10/11/12.
-  [#3228](https://github.com/ghostty-org/ghostty/pull/3228)
-- `scrollback-limit` configuration now accepts numbers larger than 32-bit.
-  [#3906](https://github.com/ghostty-org/ghostty/pull/3906)
-- Fix issues `background-opacity` on both macOS and Linux.
-  [#3347](https://github.com/ghostty-org/ghostty/pull/3347)
-- Fix a crash that could happen if `--font-family=""` was set specifically
-  on the command-line.
-  [#4151](https://github.com/ghostty-org/ghostty/pull/4151)
-- vt: mode 2031 DSR reports are no longer sent for OSC 10/11/12 in
-  accordance with the updated specification.
-  [#3994](https://github.com/ghostty-org/ghostty/pull/3994)
-- vt: fix direct-color parsing edge cases
-  [#4216](https://github.com/ghostty-org/ghostty/pull/4216)
-- bash: shell integration works better with `sudo` aliases.
-  [#4080](https://github.com/ghostty-org/ghostty/pull/4080)
+- キーに対応するトリガーを持つキーバインドは、Unicode のトリガーではなく、配列に従って解釈されたキーとして扱うようにしました。これにより、`cmd+one` に加えて `cmd+1` が使えるようになり、`cmd+.` と `cmd+period` が同じ意味になります。[#4147](https://github.com/ghostty-org/ghostty/pull/4147)
+- `write_selection_file` が空の内容を書き出す場合があった問題を修正しました。[#4078](https://github.com/ghostty-org/ghostty/pull/4078)
+- TUI アプリ内のハイパーリンクがより安定して動作するようになりました。[#3903](https://github.com/ghostty-org/ghostty/pull/3903)
+- 設定を再読み込みしても、OSC 10/11/12 による設定が上書きされなくなりました。[#3228](https://github.com/ghostty-org/ghostty/pull/3228)
+- `scrollback-limit` 設定で 32 ビットを超える数値を指定できるようになりました。[#3906](https://github.com/ghostty-org/ghostty/pull/3906)
+- macOS と Linux の両方で、`background-opacity` の問題を修正しました。[#3347](https://github.com/ghostty-org/ghostty/pull/3347)
+- コマンドラインで `--font-family=""` を指定するとクラッシュすることがある問題を修正しました。[#4151](https://github.com/ghostty-org/ghostty/pull/4151)
+- VT: 更新された仕様に従い、OSC 10/11/12 に対してモード 2031 の DSR 応答を送らなくなりました。[#3994](https://github.com/ghostty-org/ghostty/pull/3994)
+- VT: ダイレクトカラーの解析で起きる例外的なケースを修正しました。[#4216](https://github.com/ghostty-org/ghostty/pull/4216)
+- Bash: シェル統合が `sudo` のエイリアスと組み合わせても、より適切に動作するようになりました。[#4080](https://github.com/ghostty-org/ghostty/pull/4080)
 
 ### macOS {/* #macos */}
 
-- macOS: Fixed a resource leak where windows were not fully destroyed.
-  [#4128](https://github.com/ghostty-org/ghostty/pull/4128)
-- macOS: Fixed an issue where `toggle_visibility` would bring up unusable
-  "ghost windows" in certain circumstances. [#3219](https://github.com/ghostty-org/ghostty/issues/3219)
-- macOS: Quick Terminal now works with `focus-follows-mouse`.
-  [#3337](https://github.com/ghostty-org/ghostty/issues/3337)
-- macOS: Titlebar is now opaque like the rest of Ghostty when fullscreen.
-  [#3834](https://github.com/ghostty-org/ghostty/pull/3834)
-- macOS: Exiting fullscreen now restores proper background opacity.
-  [#3553](https://github.com/ghostty-org/ghostty/issues/3553)
-- macOS: `open_config` action now prefers AppSupport path over XDG to
-  match loading priority.
-  [#3953](https://github.com/ghostty-org/ghostty/issues/3953)
-- macOS: `open_config` action now uses the `-t` flag with `open` so
-  that a text editor opens.
-  [#3284](https://github.com/ghostty-org/ghostty/issues/3284)
-- macOS: Fixed an issue that would sometimes cause the quick terminal
-  to consume 100% CPU, causing significant battery drain. The quick
-  terminal now idles with no CPU usage.
-  [#4055](https://github.com/ghostty-org/ghostty/pull/4055)
-- macOS: App bundle now contains the `nvim` directory.
-  [#3966](https://github.com/ghostty-org/ghostty/issues/3966)
-- macOS: Help menu item opens the Ghostty documentation.
-  [#3990](https://github.com/ghostty-org/ghostty/pull/3990)
-- macOS: Blur radius being unset now properly reloads at runtime.
-  [#3954](https://github.com/ghostty-org/ghostty/pull/3954)
-- macOS: Fix startup crash when `$HOME` was not writable.
-  [#3949](https://github.com/ghostty-org/ghostty/pull/3949)
+- macOS: ウィンドウが完全に破棄されずにリソースが残る問題を修正しました。[#4128](https://github.com/ghostty-org/ghostty/pull/4128)
+- macOS: 特定の状況で `toggle_visibility` により操作できない「ゴーストウィンドウ」が表示される問題を修正しました。[#3219](https://github.com/ghostty-org/ghostty/issues/3219)
+- macOS: クイックターミナルが `focus-follows-mouse` と併用できるようになりました。[#3337](https://github.com/ghostty-org/ghostty/issues/3337)
+- macOS: フルスクリーン時に、タイトルバーが Ghostty のほかの部分と同様に不透明になりました。[#3834](https://github.com/ghostty-org/ghostty/pull/3834)
+- macOS: フルスクリーンの終了時に、背景の不透明度が正しく復元されるようになりました。[#3553](https://github.com/ghostty-org/ghostty/issues/3553)
+- macOS: `open_config` アクションが設定の読み込み順と同様に、XDG のパスより AppSupport のパスを優先するようになりました。[#3953](https://github.com/ghostty-org/ghostty/issues/3953)
+- macOS: `open_config` アクションが `open` コマンドに `-t` フラグを渡し、テキストエディターで開くようになりました。[#3284](https://github.com/ghostty-org/ghostty/issues/3284)
+- macOS: クイックターミナルの CPU 使用率が 100% になり、バッテリーを大きく消耗することがある問題を修正しました。アイドル時には CPU を使用しなくなりました。[#4055](https://github.com/ghostty-org/ghostty/pull/4055)
+- macOS: アプリバンドルに `nvim` ディレクトリが含まれるようになりました。[#3966](https://github.com/ghostty-org/ghostty/issues/3966)
+- macOS: ヘルプメニューの項目から Ghostty のドキュメントを開くようになりました。[#3990](https://github.com/ghostty-org/ghostty/pull/3990)
+- macOS: ぼかし半径の指定を解除した場合も、実行中の再読み込みで正しく反映されるようになりました。[#3954](https://github.com/ghostty-org/ghostty/pull/3954)
+- macOS: `$HOME` に書き込みできない場合に起動時にクラッシュする問題を修正しました。[#3949](https://github.com/ghostty-org/ghostty/pull/3949)
 
-### Linux (GTK) {/* #linux-(gtk) */}
+### Linux（GTK） {/* #linux-(gtk) */}
 
-- GTK: Detect proper system color scheme on older GTK versions by falling
-  back to a deprecated API if the recommended one is not available.
-  [#4035](https://github.com/ghostty-org/ghostty/pull/4035)
-- GTK: Fixed a broken window when both `gtk-titlebar=false` and
-  `gtk-tabs-location=hidden`.
-  [#3178](https://github.com/ghostty-org/ghostty/issues/3178)
-- GTK: Fix version comparison that was incorrectly detecting minimum
-  GTK versions for some features.
-  [#3977](https://github.com/ghostty-org/ghostty/pull/3977)
-- GTK: Install the 1024x1024 app icon for supporting desktop environments.
-  [#4003](https://github.com/ghostty-org/ghostty/pull/4003)
-- GTK: Fix artifacting issues when `window-decoration=false` and
-  `gtk-titlebar=true`.
-  [#3999](https://github.com/ghostty-org/ghostty/pull/3999)
-- GTK: Tab overview is now styled when `window-theme=ghostty`
-  (requires libadwaita 1.8).
-  [#3920](https://github.com/ghostty-org/ghostty/pull/3920)
-- GTK: Tab overview works even when `gtk-titlebar=false`.
-  [#3940](https://github.com/ghostty-org/ghostty/pull/3940)
-- GTK: Add a small delay to title changes to avoid flickering.
-  [#3746](https://github.com/ghostty-org/ghostty/pull/3746)
-- GTK: Add `xdg-terminal-exec` fields to the desktop file.
-  [#3853](https://github.com/ghostty-org/ghostty/pull/3853)
-- GTK: Support building against libgtk without X11 support.
-  [#3748](https://github.com/ghostty-org/ghostty/pull/3748)
-- GTK: Fix possible segfault when closing surfaces.
-  [#3694](https://github.com/ghostty-org/ghostty/pull/3694)
+- GTK: 古い GTK で推奨 API が使えない場合は非推奨の API にフォールバックし、システムの配色を正しく検出するようにしました。[#4035](https://github.com/ghostty-org/ghostty/pull/4035)
+- GTK: `gtk-titlebar=false` と `gtk-tabs-location=hidden` を同時に設定するとウィンドウの表示が崩れる問題を修正しました。[#3178](https://github.com/ghostty-org/ghostty/issues/3178)
+- GTK: 一部の機能に必要な GTK の最低バージョンを誤って判定していた、バージョン比較の処理を修正しました。[#3977](https://github.com/ghostty-org/ghostty/pull/3977)
+- GTK: 対応するデスクトップ環境向けに、1024x1024 のアプリアイコンをインストールします。[#4003](https://github.com/ghostty-org/ghostty/pull/4003)
+- GTK: `window-decoration=false` と `gtk-titlebar=true` を同時に設定したときの描画の乱れを修正しました。[#3999](https://github.com/ghostty-org/ghostty/pull/3999)
+- GTK: `window-theme=ghostty` でタブ一覧にもスタイルが適用されるようになりました（libadwaita 1.8 が必要です）。[#3920](https://github.com/ghostty-org/ghostty/pull/3920)
+- GTK: `gtk-titlebar=false` の場合でも、タブ一覧が動作するようになりました。[#3940](https://github.com/ghostty-org/ghostty/pull/3940)
+- GTK: ちらつきを防ぐため、タイトルの変更をわずかに遅らせるようにしました。[#3746](https://github.com/ghostty-org/ghostty/pull/3746)
+- GTK: デスクトップファイルに `xdg-terminal-exec` のフィールドを追加しました。[#3853](https://github.com/ghostty-org/ghostty/pull/3853)
+- GTK: X11 非対応の libgtk を使ったビルドをサポートしました。[#3748](https://github.com/ghostty-org/ghostty/pull/3748)
+- GTK: サーフェスを閉じる際にセグメンテーション違反が発生する可能性があった問題を修正しました。[#3694](https://github.com/ghostty-org/ghostty/pull/3694)
 
-## Changes for Package Maintainers {/* #changes-for-package-maintainers */}
+## パッケージメンテナー向けの変更 {/* #changes-for-package-maintainers */}
 
-- The Ghostty source tarball is now named `ghostty-${VERSION}.tar.gz`
-  (from `ghostty-source.tar.gz`) and extracts to a directory named
-  `ghostty-${VERSION}` (from `ghostty-source`). This better aligns with
-  standard source tarball conventions. The `PACKAGING.md` file has been
-  updated to reflect this change.
-  [#3490](https://github.com/ghostty-org/ghostty/pull/3490)
-- `DESTDIR` now works properly as documented in `PACKAGING.md`.
-  [#3426](https://github.com/ghostty-org/ghostty/pull/3426)
+- Ghostty のソース tarball の名前が `ghostty-source.tar.gz` から `ghostty-${VERSION}.tar.gz` に変わり、展開先のディレクトリ名も `ghostty-source` から `ghostty-${VERSION}` に変わりました。一般的なソース tarball の命名慣行に合わせるための変更です。この変更を `PACKAGING.md` に反映しました。[#3490](https://github.com/ghostty-org/ghostty/pull/3490)
+- `DESTDIR` が `PACKAGING.md` の記載どおりに動作するようになりました。[#3426](https://github.com/ghostty-org/ghostty/pull/3426)
 
-## Known Issues {/* #known-issues */}
+## 既知の問題 {/* #known-issues */}
 
-Ghostty 1.0.1 still contains many known issues, but is considered stable
-for general, professional use.
+Ghostty 1.0.1 にはまだ多くの既知の問題がありますが、一般的な用途や業務用途で使える安定性に達していると考えています。
 
-We are working hard to triage and resolve these issues. This release addresses
-what we felt were the most critical issues, especially given many people are
-about to return from holiday and get back to work.
-Please see the GitHub discussions and issue tracker for more information
-on known or newly discovered issues.
+これらの問題の優先順位付けと解決に取り組んでいます。休暇を終えて仕事に戻る方が多いことも踏まえ、今回のリリースでは私たちが最も重大と判断した問題に対処しました。既知の問題や新たに見つかった問題については、GitHub の Discussions と Issue を参照してください。
 
-## Roadmap {/* #roadmap */}
+## ロードマップ {/* #roadmap */}
 
-We plan to release a version 1.0.2 in the near future. We don't want to
-get in the habit of releasing too many patch versions, but there are still
-a number of important issues discovered from our initial public release that
-we feel are important to resolve as quickly as possible.
+近いうちに 1.0.2 をリリースする予定です。パッチリリースを頻繁に出すつもりはありませんが、初の一般公開以降に見つかった重要な問題のうち、できるだけ早く解決すべきものがまだいくつか残っています。
 
-The major categories of issues we are looking into for 1.0.2 are keyboard
-input issues especially with non-US keyboard layouts, xterm compatibility
-issues, and GUI issues on both Linux and macOS.
+1.0.2 に向けて主に調査しているのは、特に US 配列以外でのキーボード入力の問題、xterm との互換性の問題、Linux と macOS の両方での GUI の問題です。
 
-Long term, we plan to follow a general pattern of only releasing one or
-two patch versions after a significant release, followed by a months-long
-period of development towards the next significant release[^1]. This pattern
-will allow package maintainers to keep up with our releases and get them into
-distribution channels without too much churn, and allow maintainers to focus
-on new features and improvements.
+長期的には、大きなリリースのあとにパッチリリースを 1 回か 2 回だけ行い、次の大きなリリースに向けて数か月を開発に充てる方針です。[^1] この流れであれば、パッケージメンテナーは過度な手戻りなくリリースに追従し、配布チャネルに載せられます。Ghostty のメンテナーも、新機能や改善に注力できます。
 
-[^1]: Barring any critical issues or security advisories that require
-      immediate attention.
+[^1]: ただし、すぐに対処が必要な重大な問題やセキュリティアドバイザリがある場合は除きます。
 

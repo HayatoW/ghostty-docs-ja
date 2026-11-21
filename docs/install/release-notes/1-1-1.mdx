@@ -1,176 +1,94 @@
 ---
 title: Ghostty 1.1.1
 description: |-
-  Release notes for Ghostty 1.1.1, released on February 13, 2025.
+  Ghostty 1.1.1（2025 年 2 月 13 日リリース）のリリースノートです。
 ---
 
-Ghostty 1.1.1 features **two weeks of work** with changes from
-**13 contributors** over **125 commits.** The focus of this release
-is on fixing regressions or bugs introduced as part of the 1.1.0
-release. We've also snuck in some nice improvements to existing
-features.
+Ghostty 1.1.1 には、**13 人の貢献者**による **125 件のコミット**にわたる、**2 週間分の成果**が含まれています。今回は、1.1.0 で生じたリグレッションやバグの修正に注力しました。既存の機能に対する便利な改善もいくつか盛り込んでいます。
 
 <Important>
-A critical regression was found in Ghostty 1.1.1 on macOS that caused
-control-modified keys to not work properly in programs using the Kitty
-Keyboard protocol such as Neovim and Fish 4.0. This was fixed in
-[1.1.2](/docs/install/release-notes/1-1-2).
+macOS 版 Ghostty 1.1.1 で、Neovim や Fish 4.0 など Kitty キーボードプロトコルを使うプログラムで、Control キーを併用した入力が正しく動作しない重大なリグレッションが見つかりました。この問題は [1.1.2](/docs/install/release-notes/1-1-2) で修正済みです。
 </Important>
 
-## Highlights {/* #highlights */}
+## 主な変更点 {/* #highlights */}
 
-### Server Side Decorations (SSD) on Linux X11 {/* #server-side-decorations-(ssd)-on-linux-x11 */}
+### Linux の X11 でのサーバー側ウィンドウ装飾（SSD） {/* #server-side-decorations-(ssd)-on-linux-x11 */}
 
 PR:
 [#5533](https://github.com/ghostty-org/ghostty/pull/5533)
 
-Ghostty 1.1.0 introduced support for
-[server-side decorations (SSD) on Linux for Wayland compositors](/docs/install/release-notes/1-1-0#server-side-decorations-(ssd)-on-linux).
-This allows Ghostty to look and feel
-more like a native application on a wider variety of desktop environments.
-Notably, however, this did not work on X11.
+Ghostty 1.1.0 で [Linux の Wayland コンポジター向けのサーバー側ウィンドウ装飾（SSD）](/docs/install/release-notes/1-1-0#server-side-decorations-(ssd)-on-linux) に対応しました。これにより、より多くのデスクトップ環境で、見た目と使い勝手がネイティブアプリに近づきます。ただし、X11 では動作していませんでした。
 
-With Ghostty 1.1.1, we've added support for SSD on X11 as well when
-`window-decoration = server`. X11 doesn't provide a standard way to
-tell us if it prefers SSD or client-side decorations (CSD), so SSD on
-X11 only works with the explicit `server` configuration and does not work
-with the `auto` value.
+Ghostty 1.1.1 では、`window-decoration = server` のときに X11 でも SSD を使えるようになりました。X11 には、SSD とクライアント側ウィンドウ装飾（CSD）のどちらを優先するかを伝える標準の手段がありません。そのため、X11 で SSD を使うには `server` を明示する必要があり、`auto` では動作しません。
 
-### Continued Input Method Editor (IME) Improvements {/* #continued-input-method-editor-(ime)-improvements */}
+### 入力メソッド（IME）のさらなる改善 {/* #continued-input-method-editor-(ime)-improvements */}
 
 PR:
 [#5550](https://github.com/ghostty-org/ghostty/pull/5550)
 [#5448](https://github.com/ghostty-org/ghostty/pull/5448)
 
-A lot of effort went into Ghostty 1.1.0 to improve IME support, but
-ironically broke the scenario where no input method was active (the
-GTK "simple" input method). This has been fixed in 1.1.1.
-A workaround in 1.1.0 was to install `ibus` or `fcitx`. This is no
-longer necessary, and the "simple" input method should work as expected.
+Ghostty 1.1.0 では IME 対応の改善に力を入れましたが、皮肉にも入力メソッドが有効でない場合（GTK の「simple」入力メソッド）の入力が壊れていました。1.1.1 では修正済みです。1.1.0 では `ibus` または `fcitx` をインストールすることで回避できましたが、今はその必要がなく、「simple」入力メソッドが意図どおりに動作します。
 
-Additionally, on macOS, improved IME support regressed the ability for
-certain keyboard layouts to input control characters (e.g. `ctrl+c`).
-This has been fixed in 1.1.1.
+また macOS では、IME 対応の改善により、一部のキーボード配列で `ctrl+c` などの制御文字が入力できなくなっていました。これも 1.1.1 で修正しました。
 
-### macOS: Renderer Improvements for Intel GPUs {/* #macos:-renderer-improvements-for-intel-gpus */}
+### macOS: Intel 搭載 Mac の GPU 描画の改善 {/* #macos:-renderer-improvements-for-intel-gpus */}
 
 PR:
 [#5625](https://github.com/ghostty-org/ghostty/pull/5625),
 [#5652](https://github.com/ghostty-org/ghostty/pull/5652)
 
-It turns out Ghostty was triggering undefined behavior on macOS
-when using discrete GPUs. Practically, this only affected Intel Macs because
-all Apple Silicon Macs have integrated GPUs and Ghostty will always prefer
-an integrated GPU if available for power efficiency.
+macOS でディスクリート GPU を使用すると、Ghostty が未定義の動作を引き起こしていました。Apple Silicon の Mac はすべて内蔵 GPU を搭載しており、Ghostty は省電力のため、内蔵 GPU があれば常にそちらを優先します。そのため、実際に影響を受けたのは Intel 搭載 Mac のみです。
 
-The undefined behavior would sometimes work but sometimes result in rendering
-artifacts or other strange visual behaviors. We now properly detect
-discrete GPUs and use the proper APIs and behaviors to avoid undefined
-behavior.
+この未定義の動作は問題なく見えることもあれば、描画の乱れなど視覚的な異常を引き起こすこともありました。今回、ディスクリート GPU を正しく検出し、適切な API と処理を使用して、未定義の動作を回避するようにしました。
 
-## Full List {/* #full-list */}
+## 変更の全一覧 {/* #full-list */}
 
-[Full list of closed issues on GitHub](https://github.com/ghostty-org/ghostty/milestone/4?closed=1).
+[対応済みの Issue の全一覧（GitHub）](https://github.com/ghostty-org/ghostty/milestone/4?closed=1)。
 
-In each section, we try to sort improvements before bug fixes.
+各節では、できる限りバグ修正より先に改善を掲載しています。
 
-- `goto_split` and `goto_tab` now work properly with the `performable:`
-  keybind prefix.
-  [#5644](https://github.com/ghostty-org/ghostty/issues/5644)
-- The `+list-actions` CLI command now includes actions that have no
-  associated documentation.
-  [#4958](https://github.com/ghostty-org/ghostty/issues/4958)
-- Added keyboard navigation to the terminal IO window for the
-  terminal inspector.
-  [#3909](https://github.com/ghostty-org/ghostty/issues/3909)
-- Fix a crash that could occur when resetting the terminal with
-  Kitty graphics on the screen.
-  [#5693](https://github.com/ghostty-org/ghostty/issues/5693)
-- Fix a crash that could occur with very large OSC8 hyperlinks. There
-  are likely other scenarios where this crash could be triggered but
-  the entire class of crash has been resolved.
-  [#5666](https://github.com/ghostty-org/ghostty/issues/5666)
-- Fix an issue where the character under the cursor would not be visible
-  when the cursor color matched the background color.
-  [#5570](https://github.com/ghostty-org/ghostty/issues/5570)
-- Fix crashes that could occur when loading themes that were not files.
-  [#5632](https://github.com/ghostty-org/ghostty/issues/5632)
-- iTerm2 color themes updated to
-  [db227d159](https://github.com/mbadolato/iTerm2-Color-Schemes/tree/db227d159adc265818f2e898da0f70ef8d7b580e)
-  [#5511](https://github.com/ghostty-org/ghostty/pull/5511)
+- `goto_split` と `goto_tab` が `performable:` キーバインドプレフィックスで正しく動作するようになりました。[#5644](https://github.com/ghostty-org/ghostty/issues/5644)
+- `+list-actions` CLI コマンドで、ドキュメントのないアクションも一覧に含めるようになりました。[#4958](https://github.com/ghostty-org/ghostty/issues/4958)
+- ターミナルインスペクターのターミナル入出力ウィンドウを、キーボードで操作できるようになりました。[#3909](https://github.com/ghostty-org/ghostty/issues/3909)
+- 画面に Kitty グラフィックスが表示されている状態でターミナルをリセットすると、クラッシュすることがある問題を修正しました。[#5693](https://github.com/ghostty-org/ghostty/issues/5693)
+- 非常に大きな OSC 8 ハイパーリンクでクラッシュすることがある問題を修正しました。ほかにも同じクラッシュに至るケースがあると考えられますが、同種の原因はまとめて解消しました。[#5666](https://github.com/ghostty-org/ghostty/issues/5666)
+- カーソルの色が背景色と同じ場合に、カーソルの下の文字が見えなくなる問題を修正しました。[#5570](https://github.com/ghostty-org/ghostty/issues/5570)
+- ファイルではないテーマを読み込もうとするとクラッシュすることがある問題を修正しました。[#5632](https://github.com/ghostty-org/ghostty/issues/5632)
+- iTerm2 のカラーテーマを [db227d159](https://github.com/mbadolato/iTerm2-Color-Schemes/tree/db227d159adc265818f2e898da0f70ef8d7b580e) に更新しました。[#5511](https://github.com/ghostty-org/ghostty/pull/5511)
 
 ### macOS {/* #macos */}
 
-- macOS: Add a handful of new alternate artist-drawn icon choices.
-  These can be set using the `macos-icon` configuration.
-  [#5696](https://github.com/ghostty-org/ghostty/issues/5696)
-- macOS: Place the window at the location of the last focused window
-  on startup, following the behavior of other native macOS applications.
-  [#5529](https://github.com/ghostty-org/ghostty/issues/5529)
-- macOS: Close confirmation now appears if there is an active but
-  hidden quick terminal that requires close confirmation.
-  [#5450](https://github.com/ghostty-org/ghostty/issues/5450)
-- macOS: Fix control characters not working with certain keyboard layouts.
-  [#5448](https://github.com/ghostty-org/ghostty/issues/5448)
-- macOS: Fix graphical flickering when invoking the `move_tab` keybind.
-  [#5729](https://github.com/ghostty-org/ghostty/issues/5729)
-- macOS: `toggle_visibility` now restores focus to the proper tab
-  when called from a global keybind.
-  [#5692](https://github.com/ghostty-org/ghostty/issues/5692)
-- macOS: Fixed an issue where some command characters such as
-  `cmd+backtick` would leak the unmodified character into the terminal.
-  [#5558](https://github.com/ghostty-org/ghostty/issues/5558)
-- macOS: `toggle_visibility` no longer has any effect while the window
-  is in native fullscreen. Previously, it would cause the window to
-  lose focus.
-  [#5472](https://github.com/ghostty-org/ghostty/issues/5472)
-- macOS: Fix undefined behavior for discrete GPUs.
-  [#5625](https://github.com/ghostty-org/ghostty/issues/5625)
-- macOS: Update our Sparkle dependency to 2.6.4 to fix security issues.
-  [#5598](https://github.com/ghostty-org/ghostty/issues/5598)
+- macOS: アーティストが手がけた新しい代替アイコンをいくつか追加しました。`macos-icon` 設定で選べます。[#5696](https://github.com/ghostty-org/ghostty/issues/5696)
+- macOS: ほかの macOS のネイティブアプリに合わせて、起動時に最後にフォーカスされていたウィンドウの位置にウィンドウを配置します。[#5529](https://github.com/ghostty-org/ghostty/issues/5529)
+- macOS: 非表示でも、閉じる確認が必要なクイックターミナルが動作中なら、確認を表示するようになりました。[#5450](https://github.com/ghostty-org/ghostty/issues/5450)
+- macOS: 一部のキーボード配列で制御文字が機能しない問題を修正しました。[#5448](https://github.com/ghostty-org/ghostty/issues/5448)
+- macOS: `move_tab` キーバインドを実行したときの描画のちらつきを修正しました。[#5729](https://github.com/ghostty-org/ghostty/issues/5729)
+- macOS: `toggle_visibility` をグローバルキーバインドから実行した場合に、正しいタブにフォーカスが戻るようになりました。[#5692](https://github.com/ghostty-org/ghostty/issues/5692)
+- macOS: `cmd+backtick` など、Command キーを併用した一部の入力で、修飾されていない文字がターミナルに送られてしまう問題を修正しました。[#5558](https://github.com/ghostty-org/ghostty/issues/5558)
+- macOS: ウィンドウがネイティブのフルスクリーン表示の間、`toggle_visibility` は何もしなくなりました。以前はウィンドウがフォーカスを失っていました。[#5472](https://github.com/ghostty-org/ghostty/issues/5472)
+- macOS: ディスクリート GPU での未定義の動作を修正しました。[#5625](https://github.com/ghostty-org/ghostty/issues/5625)
+- macOS: セキュリティ上の問題を修正するため、依存している Sparkle を 2.6.4 に更新しました。[#5598](https://github.com/ghostty-org/ghostty/issues/5598)
 
-### Linux (GTK) {/* #linux-(gtk) */}
+### Linux（GTK） {/* #linux-(gtk) */}
 
-- GTK: Server-side decorations (SSD) now work on X11.
-  [#5533](https://github.com/ghostty-org/ghostty/pull/5533)
-- GTK: Set the `WINDOWID` environment variable to the X11 window ID.
-  [#5650](https://github.com/ghostty-org/ghostty/issues/5650)
-- GTK: Fix incorrect context menu location in certain circumstances.
-  [#5710](https://github.com/ghostty-org/ghostty/issues/5710)
-- GTK: The "simple" input method now works properly.
-  [#5550](https://github.com/ghostty-org/ghostty/pull/5550)
-- GTK: Add option to disable color management to workaround GTK bugs.
-  [#5593](https://github.com/ghostty-org/ghostty/issues/5593)
-- GTK: `window-decoration=none` works properly on GNOME
-  [#5463](https://github.com/ghostty-org/ghostty/pull/5463)
-- GTK: Remove CSD styling such as borders when CSDs are not
-  in use.
-  [#5581](https://github.com/ghostty-org/ghostty/issues/5581)
-- GTK: Nautilus integration now uses a properly named file.
-  [#5469](https://github.com/ghostty-org/ghostty/pull/5469)
-- GTK: Close cgroup file descriptor after clone to prevent a
-  small fd leak.
-  [#5515](https://github.com/ghostty-org/ghostty/issues/5515)
+- GTK: サーバー側ウィンドウ装飾（SSD）が X11 でも動作するようになりました。[#5533](https://github.com/ghostty-org/ghostty/pull/5533)
+- GTK: `WINDOWID` 環境変数を X11 のウィンドウ ID に設定します。[#5650](https://github.com/ghostty-org/ghostty/issues/5650)
+- GTK: 一部の状況でコンテキストメニューが誤った位置に表示される問題を修正しました。[#5710](https://github.com/ghostty-org/ghostty/issues/5710)
+- GTK: 「simple」入力メソッドが正しく動作するようになりました。[#5550](https://github.com/ghostty-org/ghostty/pull/5550)
+- GTK: GTK のバグを回避するため、カラーマネジメントを無効にするオプションを追加しました。[#5593](https://github.com/ghostty-org/ghostty/issues/5593)
+- GTK: `window-decoration=none` が GNOME で正しく動作するようになりました。[#5463](https://github.com/ghostty-org/ghostty/pull/5463)
+- GTK: CSD を使っていない場合は、境界線などの CSD のスタイルを取り除くようにしました。[#5581](https://github.com/ghostty-org/ghostty/issues/5581)
+- GTK: Nautilus との統合で、正しい名前のファイルを使うようになりました。[#5469](https://github.com/ghostty-org/ghostty/pull/5469)
+- GTK: 軽微なファイルディスクリプターのリークを防ぐため、clone の後に cgroup のファイルディスクリプターを閉じます。[#5515](https://github.com/ghostty-org/ghostty/issues/5515)
 
-### Changes for Package Maintainers {/* #changes-for-package-maintainers */}
+### パッケージメンテナー向けの変更 {/* #changes-for-package-maintainers */}
 
-- A new Zig dependency [`zig-gobject`](https://github.com/ianprime0509/zig-gobject)
-  was introduced. This is licensed 0BSD. The introduction of this dependency
-  does not change the existing process for packaging Ghostty.
+- Zig の依存関係に [`zig-gobject`](https://github.com/ianprime0509/zig-gobject) が加わりました。ライセンスは 0BSD です。この依存関係の追加で、既存の Ghostty のパッケージ作成手順が変わることはありません。
 
-## Roadmap {/* #roadmap */}
+## ロードマップ {/* #roadmap */}
 
-At the time of this release, we do not plan to have followup patch releases.
-We believe the remaining bugs are minor and can be addressed as part of
-a future, larger 1.2.0 release. We will continue to monitor the issue
-tracker and pull requests for any critical issues that may arise.
+このリリースの時点では、後続のパッチリリースは予定していません。残っているバグは軽微で、将来のより大きなリリースである 1.2.0 で対処できると考えています。重大な問題が生じた場合に備え、引き続き Issue と PR を確認します。
 
-The focus will shift to the 1.2.0 release. This will be a larger release
-with more significant changes and features. The timeline for this release
-is not yet determined, but is likely to be several months away.
+今後は 1.2.0 のリリースに注力します。より重要な変更と機能を含む、大きなリリースになります。リリース時期は未定ですが、おそらく数か月先です。
 
-One major breaking change planned with 1.2.0 for Linux is to require
-`libadwaita`. We announced this intention as part of the 1.1.0 release
-and have asked for feedback if this is an issue. Before providing feedback,
-please
-[carefully read the details about this change](/docs/install/release-notes/1-1-0#gtk:-forcing-a-dependency-on-libadwaita).
+1.2.0 で予定している Linux 向けの大きな互換性変更の一つは、`libadwaita` の必須化です。この方針は 1.1.0 のリリース時に発表し、問題があればフィードバックを寄せていただくようお願いしています。フィードバックを送る前に、[この変更の詳細をよくお読みください](/docs/install/release-notes/1-1-0#gtk:-forcing-a-dependency-on-libadwaita)。

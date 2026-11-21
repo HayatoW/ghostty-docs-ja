@@ -1,67 +1,44 @@
 ---
 title: Ghostty 1.2.1
 description: |-
-  Release notes for Ghostty 1.2.1, released on October 6, 2025.
+  Ghostty 1.2.1（2025 年 10 月 6 日リリース）のリリースノートです。
 ---
 
-Ghostty 1.2.1 features **two weeks of work** with changes from
-**13 contributors** over **62 commits.** This is a patch release primarily
-focused on fixing issues introduced in the 1.2.0 release. It includes
-a small handful of improvements, too.
+Ghostty 1.2.1 には、**13 人の貢献者**による **62 件のコミット**にわたる、**2 週間分の成果**が含まれています。主に 1.2.0 で生じた問題を修正するパッチリリースです。いくつかの小さな改善も含まれています。
 
-## Highlights {/* #highlights */}
+## 主な変更点 {/* #highlights */}
 
-### Font Rendering Improvements {/* #font-rendering-improvements */}
+### フォント描画の改善 {/* #font-rendering-improvements */}
 
 PRs: GH-8563 GH-8580 GH-8738 GH-8720 GH-8847
 
-Ghostty 1.2.0 contained a substantial overhaul of the font rendering
-system. As expected with such a large change, some issues were discovered
-outside of our testing. Ghostty 1.2.1 addresses many of these issues.
+Ghostty 1.2.0 ではフォント描画システムを大幅に刷新しました。大きな変更にはつきものですが、テストでは見つからなかった問題がいくつか報告されました。Ghostty 1.2.1 ではその多くに対処しています。
 
-An overview of the changes:
+変更の概要は以下のとおりです。
 
-- Nerd Font icons are now larger and better matched in size relative to each
-  other, making better use of available cell space. Icons wider than a single
-  cell are now left-aligned rather than centered across cells.
-- CJK characters no longer appear oversized when using wide-aspect primary fonts.
-  The IC width (ideographic character width) is now upper-bounded by measuring
-  the overall bounding box of ASCII characters.
-- Glyph constraints are now applied before thickening and centering operations,
-  ensuring that icon sizes and positions are consistent regardless of font size,
-  thickening strength, or display DPI.
-- Fixed bugs in Nerd Font patch extraction where rules were applied to wrong
-  glyphs due to codepoint offset issues, and irrelevant patch sets were
-  incorrectly included.
-- Improved FreeType glyph measurements to ensure glyphs are measured with the
-  same hinting as they are rendered.
+- Nerd Font のアイコンを大きくし、アイコン同士の見かけのサイズを揃え、セルの領域をより有効に使うようにしました。1 セルより幅が広いアイコンは、複数のセルにまたがって中央揃えにするのではなく、左揃えにします。
+- 幅の広い主フォントを使っても、CJK の文字が大きくなりすぎなくなりました。ASCII 文字全体の境界ボックスを測り、IC 幅（表意文字の幅）の上限とします。
+- グリフのサイズ制約を太さの調整と中央揃えより先に適用するようにしました。これにより、フォントサイズ、太さの調整量、ディスプレイの DPI に関係なく、アイコンのサイズと位置が一貫します。
+- Nerd Font のパッチの抽出処理で、コードポイントのオフセットの問題により規則が誤ったグリフに適用されるバグと、無関係なパッチセットが取り込まれるバグを修正しました。
+- FreeType のグリフ測定を改善し、描画時と同じヒンティングを使って測定するようにしました。
 
-### Shell Integration Adds `ghostty` to `PATH` {/* #shell-integration-adds-ghostty-to-path */}
+### シェル統合で `PATH` に `ghostty` を追加 {/* #shell-integration-adds-ghostty-to-path */}
 
 PR: GH-8976
 
-Shell integration now automatically adds `GHOSTTY_BIN_DIR` to your PATH,
-making the `ghostty` binary available in many shells without additional
-configuration.
+シェル統合が `GHOSTTY_BIN_DIR` を PATH に自動で追加するようになりました。これにより、多くのシェルで追加設定なしに `ghostty` バイナリが使えます。
 
-Ghostty previously (and still) adds `ghostty` to your PATH prior to executing
-the shell, but many shell configurations reset PATH. This change adds an
-additional layer as part of the shell integration scripts to increase the
-chances that `ghostty` is available in your shell.
+Ghostty は以前から、シェルを実行する前に `ghostty` のあるディレクトリを PATH に追加しますが、多くのシェル設定は PATH をリセットします。今回の変更では、シェル統合スクリプトでも追加し、シェルで `ghostty` を利用できる可能性を高めます。
 
-This is supported for bash, zsh, fish, and elvish.
+Bash、Zsh、fish、Elvish に対応しています。
 
-### Mouse Scroll Multiplier for Precision Scrolling Devices {/* #mouse-scroll-multiplier-for-precision-scrolling-devices */}
+### 高精度スクロールデバイスのスクロール倍率 {/* #mouse-scroll-multiplier-for-precision-scrolling-devices */}
 
 PR: GH-8927
 
-The `mouse-scroll-multiplier` configuration now supports precision
-scrolling devices like Apple trackpads. You can now independently control
-multipliers for both discrete (mouse wheel) and precision (trackpad)
-scrolling, making navigation through large scrollback buffers smoother
-and more predictable across different input devices.
+`mouse-scroll-multiplier` 設定が、Apple のトラックパッドなどの高精度スクロールデバイスに対応しました。段階的なスクロール（マウスホイール）と高精度スクロール（トラックパッド）の倍率を個別に調整できます。入力デバイスが変わっても、大量のスクロールバックを滑らかに、意図どおりに移動できます。
 
-Examples:
+設定例:
 
 ```
 # Apply the same multiplier to both precision and discrete
@@ -74,79 +51,68 @@ mouse-scroll-multiplier = precision:0.1,discrete:3
 mouse-scroll-multiplier = precision:2
 ```
 
-The default precision multiplier is `0.1` while the default discrete
-multiplier remains `1`.
+高精度スクロールの倍率の既定値は `0.1` です。段階的スクロールの倍率の既定値は引き続き `1` です。
 
-## Full Changelog {/* #full-changelog */}
+## 変更履歴の全一覧 {/* #full-changelog */}
 
-[Full list of closed issues on GitHub](https://github.com/ghostty-org/ghostty/milestone/8?closed=1).
+[対応済みの Issue の全一覧（GitHub）](https://github.com/ghostty-org/ghostty/milestone/8?closed=1)。
 
-In each section, we try to sort improvements before bug fixes.
+各節では、できる限りバグ修正より先に改善を掲載しています。
 
-- config: `font-size` now reloads at runtime if font wasn't manually set. GH-8680
-- cli: `+list-themes` now includes cursor and selection colors in preview. GH-8446
-- cli: `+edit-config` properly handles `$EDITOR` values with arguments. GH-8898
-- config: `command-palette-entry` now supports commas in fields. GH-8849
-- config: binding values containing `=` now parse properly. GH-8675
-- Scrolling no longer reverses direction when dragging mouse outside the window. GH-8683
-- Config template creates properly even if config directory already exists. GH-8892
-- config: treat empty XDG environment variables as not existing. GH-8830
-- shell-integration: now adds `GHOSTTY_BIN_DIR` to PATH for all supported shells. GH-8976
-- shell-integration/bash: mark ssh wrapper as a function to avoid alias conflicts. GH-8647
-- i18n: add Croatian (hr_HR) translation. GH-8668
-- i18n: add Traditional Chinese (zh_TW) translation. GH-6773
-- i18n: Portuguese translation updates. GH-8633
-- contrib/vim: use `:setf` to set the filetype. GH-8914
+- 設定: フォントサイズを手動で変更していなければ、実行中に `font-size` が再読み込みされます。GH-8680
+- CLI: `+list-themes` のプレビューにカーソルと選択範囲の色も表示されるようになりました。GH-8446
+- CLI: `+edit-config` が引数付きの `$EDITOR` の値も正しく処理するようになりました。GH-8898
+- 設定: `command-palette-entry` のフィールドにカンマを含められるようになりました。GH-8849
+- 設定: `=` を含むキーバインドの値を正しく解析するようになりました。GH-8675
+- マウスをウィンドウの外にドラッグしてもスクロール方向が反転しなくなりました。GH-8683
+- 設定ディレクトリがすでに存在する場合も、設定のひな形が正しく作成されます。GH-8892
+- 設定: 空の XDG 環境変数を未設定として扱います。GH-8830
+- シェル統合: すべての対応シェルで、`GHOSTTY_BIN_DIR` を PATH に追加するようになりました。GH-8976
+- シェル統合（Bash）: エイリアスとの競合を避けるため、ssh のラッパーを関数として定義します。GH-8647
+- 国際化: クロアチア語（hr_HR）の翻訳を追加しました。GH-8668
+- 国際化: 繁体字中国語（zh_TW）の翻訳を追加しました。GH-6773
+- 国際化: ポルトガル語の翻訳を更新しました。GH-8633
+- contrib/vim: ファイルタイプの設定に `:setf` を使うようにしました。GH-8914
 
 ### macOS {/* #macos */}
 
-- macOS: implement `bell-features=border` on macOS. GH-8768
-- macOS: `bell-features=title` now works properly. GH-8766
-- macOS: progress bar widget now renders correctly on macOS 26. GH-8731 GH-8753
-- macOS: allocation error when editing config file no longer causes a crash. GH-8886
-- macOS: custom shaders now work on Intel GPUs. GH-8751 GH-8749
-- macOS: "New Terminal" shortcut properly passes desired configuration to splits. GH-8638
-- macOS: add support for `~` expansion in `macos-custom-icon`. GH-9024
-- macOS: quick terminal restores size more reliably when used with muiltiple monitors. GH-8796
-- macOS: "New Terminal" app intent now opens only one terminal when Ghostty isn't running. GH-8669
-- macOS: "Copy Screen to Temporary File and Open" action now opens the file properly. GH-8763
-- macOS: `window-position-x/y` now correctly use top-left corner as reference. GH-8672 GH-8760
-- macOS: "New Ghostty Tab Here" service now opens a tab instead of a new window. GH-8783 GH-8784
-- macOS: Services no longer show warning dialog "the service could not be used". GH-8785 GH-8790
-- macOS: `window-step-resize` now works more reliably with Stage Manager. GH-9020
-- macOS: Delay app icon update in syncAppearance to improve startup time. GH-8792
-- font/coretext: crash with certain RTL languages and trailing spaces no longer occurs. GH-9002
+- macOS: `bell-features=border` を実装しました。GH-8768
+- macOS: `bell-features=title` が正しく動作するようになりました。GH-8766
+- macOS: macOS 26 で進捗バーのウィジェットが正しく描画されるようになりました。GH-8731 GH-8753
+- macOS: 設定ファイルの編集時に割り当てエラーが発生してもクラッシュしなくなりました。GH-8886
+- macOS: カスタムシェーダーが Intel の GPU で動作するようになりました。GH-8751 GH-8749
+- macOS: 「新規ターミナル」ショートカットで、指定した設定が分割に正しく渡されるようになりました。GH-8638
+- macOS: `macos-custom-icon` が `~` の展開に対応しました。GH-9024
+- macOS: 複数のモニターでクイックターミナルを使う場合に、サイズをより確実に復元するようになりました。GH-8796
+- macOS: Ghostty が起動していない場合、「新規ターミナル」の App Intent がターミナルを一つだけ開くようになりました。GH-8669
+- macOS: 「画面を一時ファイルにコピーして開く」アクションで、ファイルが正しく開くようになりました。GH-8763
+- macOS: `window-position-x/y` が左上隅を基準とするように修正しました。GH-8672 GH-8760
+- macOS: 「この場所で Ghostty の新規タブを開く」サービスが、新規ウィンドウではなくタブを開くようになりました。GH-8783 GH-8784
+- macOS: サービスで「サービスを使用できませんでした」という警告ダイアログが表示されなくなりました。GH-8785 GH-8790
+- macOS: `window-step-resize` がステージマネージャでより確実に動作するようになりました。GH-9020
+- macOS: syncAppearance でのアプリアイコンの更新を遅らせ、起動時間を短縮しました。GH-8792
+- フォント（CoreText）: 特定の右から左に書く言語で、末尾に空白があるとクラッシュする問題を修正しました。GH-9002
 
-### GTK (Linux, FreeBSD) {/* #gtk-(linux-freebsd) */}
+### GTK（Linux、FreeBSD） {/* #gtk-(linux-freebsd) */}
 
-- GTK: Enter key now confirms "Change Terminal Title" dialog. GH-8949
-- GTK: dragging last tab out of tab overview no longer crashes. GH-8944 GH-8955
-- GTK: `minimum-contrast` for black text now sets proper color instead of being invisible. GH-8782
-- GTK: `quit-after-last-window-closed-delay` now works as expected. GH-9052 GH-9053
-- GTK: `split-divider-color` now applies correctly. GH-8853
-- GTK: `unfocused-split-fill` now renders properly. GH-8813
-- GTK: bell features now trigger on every BEL character. GH-8962
-- GTK: duplicate signal handlers no longer cause multiple toasts. GH-9001
-- GTK: Flatpak-aware resource directory support restored. GH-8816
+- GTK: 「ターミナルのタイトルを変更」ダイアログを Enter キーで確定できるようになりました。GH-8949
+- GTK: タブ一覧から最後のタブを外にドラッグしてもクラッシュしなくなりました。GH-8944 GH-8955
+- GTK: `minimum-contrast` を設定した場合に、黒い文字が見えなくならず、適切な色になるようにしました。GH-8782
+- GTK: `quit-after-last-window-closed-delay` が意図どおり動作するようになりました。GH-9052 GH-9053
+- GTK: `split-divider-color` が正しく適用されるようになりました。GH-8853
+- GTK: `unfocused-split-fill` が正しく描画されるようになりました。GH-8813
+- GTK: BEL 文字を受け取るたびにベル機能が動作するようになりました。GH-8962
+- GTK: シグナルハンドラーが重複しても、トースト通知が複数表示されなくなりました。GH-9001
+- GTK: Flatpak に対応したリソースディレクトリのサポートを復元しました。GH-8816
 
-### Changes for Package Maintainers {/* #changes-for-package-maintainers */}
+### パッケージメンテナー向けの変更 {/* #changes-for-package-maintainers */}
 
-- Ghostty now limits builds to 32 cores on Linux to workaround a known
-  memory corruption bug in Zig, allowing Ghostty to be reliably built on
-  machines with more than 32 cores. This bug has been resolved in Zig but
-  won't be backported to the 0.14.x series that Ghostty 1.2.x relies on.
-  GH-8925
+- Linux では、Zig の既知のメモリ破損バグを回避するため、ビルドに使うコア数を 32 に制限します。これにより、コア数が 32 を超えるマシンでも確実にビルドできます。このバグは Zig で修正されていますが、Ghostty 1.2.x が依存する 0.14.x 系にはバックポートされません。GH-8925
 
-## Roadmap {/* #roadmap */}
+## ロードマップ {/* #roadmap */}
 
-We believe there will likely be a 1.2.2 release at some point to continue to
-address minor issues introduced by the changes in 1.2.0 and 1.2.1. A possible
-1.2.2 release is probably going to be a mid-cycle release (months away) rather
-than a quick follow-up.
+1.2.0 と 1.2.1 の変更で生じた小さな問題に引き続き対処するため、いずれ 1.2.2 をリリースする可能性が高いと考えています。リリースする場合は、すぐではなく数か月先のリリースサイクルの途中になる見込みです。
 
-As it stands, the 1.2.x series has been very stable and we don't feel a rush to
-release any more bugfix releases. We've heard very positive feedback about the
-release and we're happy to see people enjoying the new features.
+現時点で 1.2.x 系は非常に安定しており、新たなバグ修正リリースを急ぐ必要はないと考えています。今回のリリースには非常に好意的な反響があり、皆さんが新機能を楽しんでいることをうれしく思います。
 
-See the roadmap from the [1.2.0 release notes](/docs/install/release-notes/1-2-0#roadmap)
-for bigger picture plans.
+全体の計画は、[1.2.0 のリリースノート](/docs/install/release-notes/1-2-0#roadmap) のロードマップを参照してください。
