@@ -1,309 +1,285 @@
 ---
 title: Ghostty 1.4.0
 description: |-
-  Release notes for Ghostty 1.4.0, released on October 27, 2026.
+  2026 年 10 月 27 日にリリースされた Ghostty 1.4.0 のリリースノートです。
 ---
 
-Ghostty 1.4.0 is a major release that includes large performance and
-memory improvements, a 100% complete Kitty graphics implementation including
-animation and relative placements (the first non-Kitty terminal to do so),
-SSH integration improvements, and hundreds more improvements and fixes
-across all platforms.
+Ghostty 1.4.0 は、パフォーマンスとメモリ使用量の大幅な改善、アニメーションと
+相対配置を含む Kitty グラフィックスの完全な実装（Kitty 以外のターミナルでは初）、
+SSH 統合の改善に加え、全プラットフォームでさらに数百件の改善と修正を
+盛り込んだメジャーリリースです。
 
-This release features **7 months of work** with changes from
-**172 contributors** over **2,889 commits**. Thank you to all the contributors,
-maintainers, community moderators, translators, packagers, and users
-who each helped make this release possible.
+このリリースには、**172 人のコントリビューター**による**7 か月分の作業**が
+**2,889 件のコミット**として含まれています。リリースの実現に力を貸してくださった
+コントリビューター、メンテナー、コミュニティのモデレーター、翻訳者、
+パッケージ作成者、ユーザーの皆さんに感謝します。
 
-These release notes are painstakingly and lovingly hand-crafted
-by human Ghostty maintainers, including the full changelog. They take
-a combined 16+ hours to write, so please enjoy. 🥰
+変更履歴の全文も含め、このリリースノートは Ghostty のメンテナーが人の手で、
+丹精を込めて書き上げました。執筆には延べ 16 時間以上かかっています。
+どうぞお楽しみください。🥰
 
 <SponsorBanner />
 
-## Security {/* #security */}
+## セキュリティ {/* #security */}
 
-- [GHSA-4hwh-wx3w-3fqg](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-4hwh-wx3w-3fqg).
-  Paste protection didn't treat carriage returns as line endings, so a
-  paste could run a command without confirmation in programs that don't
-  use bracketed paste. This requires user interaction (copy-paste) to
-  trigger.
-- [GHSA-mhff-mv4q-fp63](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-mhff-mv4q-fp63).
-  Malicious Kitty graphics commands could crash or hang Ghostty, force
-  huge allocations, or in limited cases read or delete files outside the
-  allowed temporary directories. This only requires displaying malicious
-  output.
-- [GHSA-hcr9-7hcr-mjm8](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-hcr9-7hcr-mjm8).
-  Malicious terminal output could crash Ghostty, closing every window,
-  via tmux control mode. tmux doesn't need to be installed. This affects
-  Ghostty 1.3.0 and 1.3.1.
-- [GHSA-hp9c-qp4q-cpw3](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-hp9c-qp4q-cpw3).
-  The same impact as above, via a tmux control mode layout with a
-  zero-sized or oversized pane. This affects Ghostty 1.3.0 and 1.3.1.
-- [GHSA-w9q4-5jvv-mcv4](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-w9q4-5jvv-mcv4).
-  Clearing the screen into scrollback could corrupt memory if it deleted
-  the scrollback page holding a styled or hyperlinked cursor. This only
-  requires displaying malicious output, but only with a small
-  `scrollback-limit` such as `0`. The default isn't known to be affected.
-- [GHSA-2r63-vmw6-3m3c](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-2r63-vmw6-3m3c).
-  A crafted directory name could make the zsh shell integration send
-  arbitrary escape sequences, such as silently replacing the clipboard via
-  OSC 52. bash was affected in a more limited way. This only requires
-  `cd`-ing into a directory from untrusted content, such as a cloned
-  repository.
-- macOS: [GHSA-cw69-wm67-5pv8](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-cw69-wm67-5pv8).
-  Cmd-clicking a crafted OSC 8 hyperlink could open unsafe local files or
-  custom URL schemes, leading to arbitrary command execution. Ghostty now
-  blocks unsafe targets and confirms custom URL schemes. This requires
-  user interaction (cmd-click) to trigger.
-- macOS: [GHSA-mfw9-xcr3-7gfp](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-mfw9-xcr3-7gfp).
-  The same issue as above for links detected by the `link` configuration,
-  including the default URL matcher. This requires user interaction
-  (cmd-click) to trigger.
-- macOS: [GHSA-v8cw-fg4j-jcc4](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-v8cw-fg4j-jcc4).
-  Drag-and-drop text skipped paste protection, with the same impact as
-  above. This requires user interaction (drag-and-drop) to trigger.
-- macOS: [GHSA-mxqx-236q-wrv7](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-mxqx-236q-wrv7).
-  Opening a file whose name contains control characters could run a
-  different command than the one shown in the confirmation dialog. This
-  requires a crafted file on your system and confirming the dialog.
+- [GHSA-4hwh-wx3w-3fqg](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-4hwh-wx3w-3fqg)。
+  貼り付け保護がキャリッジリターンを行末として扱わなかったため、ブラケット付き
+  ペーストを使わないプログラムでは、貼り付けによって確認なしにコマンドが
+  実行されるおそれがありました。発生にはユーザー操作（コピー＆ペースト）が必要です。
+- [GHSA-mhff-mv4q-fp63](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-mhff-mv4q-fp63)。
+  悪意のある Kitty グラフィックスコマンドによって、Ghostty のクラッシュや
+  ハング、大量のメモリ割り当て、また限られた場合には、許可された一時ディレクトリ外の
+  ファイルの読み取りや削除が起こるおそれがありました。悪意のある出力の表示だけで発生します。
+- [GHSA-hcr9-7hcr-mjm8](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-hcr9-7hcr-mjm8)。
+  悪意のあるターミナル出力により、tmux 制御モードを通じて Ghostty がクラッシュし、
+  すべてのウィンドウが閉じるおそれがありました。tmux がインストールされていなくても
+  発生します。Ghostty 1.3.0 と 1.3.1 が影響を受けます。
+- [GHSA-hp9c-qp4q-cpw3](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-hp9c-qp4q-cpw3)。
+  サイズがゼロまたは過大なペインを持つ tmux 制御モードのレイアウトで、
+  上記と同じ影響が生じます。Ghostty 1.3.0 と 1.3.1 が影響を受けます。
+- [GHSA-w9q4-5jvv-mcv4](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-w9q4-5jvv-mcv4)。
+  画面の内容をスクロールバックへ送って消去する際、書式やハイパーリンクが設定された
+  カーソルを保持するスクロールバックページが削除されると、メモリが破損するおそれが
+  ありました。悪意のある出力の表示だけで発生しますが、`scrollback-limit` が
+  `0` などの小さな値の場合に限られます。デフォルト値で影響が出ることは確認されていません。
+- [GHSA-2r63-vmw6-3m3c](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-2r63-vmw6-3m3c)。
+  細工されたディレクトリ名によって、zsh のシェル統合が任意のエスケープシーケンスを
+  送信し、たとえば OSC 52 で知らない間にクリップボードを置き換えるおそれが
+  ありました。影響はより限定的ですが bash にも及びました。クローンしたリポジトリ
+  など、信頼できないコンテンツ内のディレクトリに `cd` で移動するだけで発生します。
+- macOS: [GHSA-cw69-wm67-5pv8](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-cw69-wm67-5pv8)。
+  細工された OSC 8 ハイパーリンクを Cmd キーを押しながらクリックすると、
+  安全でないローカルファイルやカスタム URL スキームが開き、任意のコマンドが
+  実行されるおそれがありました。Ghostty は安全でないリンク先を拒否し、
+  カスタム URL スキームを開く前に確認するようになりました。発生にはユーザー操作
+  （Cmd キーを押しながらのクリック）が必要です。
+- macOS: [GHSA-mfw9-xcr3-7gfp](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-mfw9-xcr3-7gfp)。
+  デフォルトの URL マッチャーも含め、`link` 設定で検出するリンクにも
+  上記と同じ問題がありました。発生にはユーザー操作（Cmd キーを押しながらのクリック）が必要です。
+- macOS: [GHSA-v8cw-fg4j-jcc4](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-v8cw-fg4j-jcc4)。
+  ドラッグ＆ドロップされたテキストには貼り付け保護が適用されず、上記と同じ影響がありました。
+  発生にはユーザー操作（ドラッグ＆ドロップ）が必要です。
+- macOS: [GHSA-mxqx-236q-wrv7](https://github.com/ghostty-org/ghostty/security/advisories/GHSA-mxqx-236q-wrv7)。
+  名前に制御文字を含むファイルを開くと、確認ダイアログに表示されたものとは異なる
+  コマンドが実行されるおそれがありました。発生には、システム上に細工された
+  ファイルが存在し、確認ダイアログで承認する必要があります。
 
-Note: I requested CVEs for the above advisories weeks ago, but GitHub
-hasn't assigned them yet. If/when they're assigned, I will update the
-above with proper CVE numbers.
+注: 上記のアドバイザリの CVE は数週間前に申請しましたが、GitHub からは
+まだ割り当てられていません。割り当てられたら、上記を正式な CVE 番号で更新します。
 
-## Highlights {/* #highlights */}
+## ハイライト {/* #highlights */}
 
-### macOS 27 Support {/* #macos-27-support */}
+### macOS 27 対応 {/* #macos-27-support */}
 
-PRs: GH-12999 GH-13069 GH-13393 GH-14413 GH-14414
+関連 PR: GH-12999 GH-13069 GH-13393 GH-14413 GH-14414
 
-Ghostty 1.4 supports macOS 27 (Golden Gate). Most of the work was
-compatibility fixes:
+Ghostty 1.4 は macOS 27 (Golden Gate) に対応しています。作業の大半は
+互換性の修正でした。
 
-- Tabs in the titlebar (`macos-titlebar-style = tabs`) lay out correctly
-  again.
-- The native tab bar no longer draws as a solid gray bar on top of your
-  theme. It now lets the new glass style blend with your terminal
-  background.
-- `macos-titlebar-style = hidden` no longer covers the top lines of the
-  terminal when Reduce Transparency is on.
-- The app icon no longer has a thin border.
-- The Shortcuts "New Window" action no longer opens two windows when
-  Ghostty is running without any windows.
+- タイトルバー内のタブ（`macos-titlebar-style = tabs`）が再び正しく配置されるようになりました。
+- ネイティブのタブバーが、テーマの上にべた塗りの灰色のバーとして表示されなくなりました。
+  新しいガラス調のスタイルがターミナルの背景になじむようになりました。
+- 「透明度を下げる」が有効でも、`macos-titlebar-style = hidden` が
+  ターミナルの上端の行を覆わなくなりました。
+- アプリのアイコンに細い枠が出なくなりました。
+- Ghostty がウィンドウを開かずに動作している場合、ショートカットの
+  「New Window」（新規ウィンドウ）アクションが 2 つのウィンドウを開かなくなりました。
 
-Ghostty 1.4 remains fully compatible with prior macOS versions back to
-and including macOS 13 (Ventura). See the
-[system requirements](#system-requirements) for more details.
+Ghostty 1.4 は macOS 13 (Ventura) 以降の従来の macOS バージョンとも
+引き続き完全に互換性があります。詳しくは[システム要件](#system-requirements)をご覧ください。
 
 <Note>
-  Ghostty 1.3.1 works on macOS 27, but it has some of the visual issues
-  listed above, such as the gray tab bar.
+  Ghostty 1.3.1 は macOS 27 で動作しますが、灰色のタブバーなど、
+  上記の表示上の問題の一部が発生します。
 </Note>
 
-### Kitty Graphics Animation and Relative Placements {/* #kitty-graphics-animation-and-relative-placements */}
+### Kitty グラフィックスのアニメーションと相対配置 {/* #kitty-graphics-animation-and-relative-placements */}
 
-PRs: GH-13943 GH-13939 GH-13935 GH-13934 GH-13893 GH-13933 GH-13389
+関連 PR: GH-13943 GH-13939 GH-13935 GH-13934 GH-13893 GH-13933 GH-13389
 GH-13270 GH-13281
 
-Ghostty now supports Kitty graphics
-[animation](https://sw.kovidgoyal.net/kitty/graphics-protocol/#animation)
-and [relative placements](https://sw.kovidgoyal.net/kitty/graphics-protocol/#relative-placements).
-These were the last major features of the Kitty graphics protocol that
-Ghostty didn't support.
+Ghostty は Kitty グラフィックスの
+[アニメーション](https://sw.kovidgoyal.net/kitty/graphics-protocol/#animation)と
+[相対配置](https://sw.kovidgoyal.net/kitty/graphics-protocol/#relative-placements)に
+対応しました。これらは、Ghostty がまだ対応していなかった Kitty グラフィックス
+プロトコルの最後の主要機能です。
 
-Programs that display animated images with the Kitty protocol, such as an
-animated GIF shown with `kitten icat`, now animate in Ghostty instead of
-showing a single still frame. Frame transmission, composition, and playback
-control are all supported, and animations pause while the terminal isn't
-visible. Relative placements let a program position one image relative to
-another image's placement, so the child image moves along with its parent.
+`kitten icat` でアニメーション GIF を表示する場合など、Kitty プロトコルで
+アニメーション画像を表示するプログラムで、静止画 1 枚ではなく実際にアニメーションが
+表示されます。フレームの転送、合成、再生制御のすべてに対応し、ターミナルが
+非表示の間はアニメーションを一時停止します。相対配置を使うと、ある画像を
+別の画像の配置に対して相対的に置けるため、子画像が親画像と一緒に移動します。
 
-We also did a full conformance pass against the specification and Kitty
-itself, fixing dozens of behavioral differences. For example, images now
-scroll with text inside scroll regions (GH-4323), retransmitting an image
-ID replaces the old image (GH-6711), and invalid image data now gets an
-error response instead of silence, which could leave clients hanging. The
-full list is in the [terminal capabilities](#terminal-capabilities) section.
+また、仕様と Kitty 本体に照らして適合性を全面的に確認し、数十件の動作の違いを
+修正しました。たとえば、スクロール領域で画像がテキストと一緒に移動するように
+なり（GH-4323）、画像 ID を再送すると古い画像が置き換わります（GH-6711）。
+無効な画像データを受け取ったときには、応答せずにクライアントを待たせるのではなく
+エラーを返します。全項目は[ターミナルの機能](#terminal-capabilities)に記載しています。
 
-Kitty graphics are faster, too. Image payloads are now parsed in bulk
-with SIMD instead of one byte at a time, making large image transfers
-**about 16x faster** to parse in our benchmarks (64 MiB of image data,
-x86_64 Linux), and drawing images costs much less per frame.
+Kitty グラフィックスは高速にもなりました。画像データを 1 バイトずつではなく
+SIMD で一括解析するようにしたため、大きな画像の転送データの解析は
+ベンチマークで**約 16 倍に高速化**しました（x86_64 Linux、64 MiB の画像データ）。
+描画にかかるフレームあたりの処理負荷も大幅に減りました。
 
-Our Kitty graphics implementation now covers 100% of the published
-specification, making Ghostty (and libghostty) the first terminal
-to do this outside of Kitty itself.
+Kitty グラフィックスの公開仕様を 100% 実装し、Ghostty（および libghostty）は
+Kitty 自体を除いて初めてこれを達成したターミナルとなりました。
 
-### Scrollback Compression and Lower Memory Usage {/* #scrollback-compression-and-lower-memory-usage */}
+### スクロールバックの圧縮とメモリ使用量の削減 {/* #scrollback-compression-and-lower-memory-usage */}
 
-PRs: GH-13264 GH-13473 GH-13240 GH-13245 GH-14130 GH-14137 GH-14138
+関連 PR: GH-13264 GH-13473 GH-13240 GH-13245 GH-14130 GH-14137 GH-14138
 GH-14017
 
-Ghostty now transparently compresses scrollback that isn't visible,
-reducing the physical memory those pages use by **70% to 90%** for typical
-text-heavy history. Compression only runs while the terminal is idle and
-pages are decompressed on demand when you scroll back or search, so it
-has no measurable impact on I/O throughput.
+Ghostty は非表示のスクロールバックを透過的に圧縮するようになりました。
+テキストが主体の一般的な履歴では、そのページに使う物理メモリを
+**70% から 90%** 削減できます。圧縮はターミナルがアイドル状態のときだけ行い、
+スクロールバックの表示や検索時に必要なページだけを展開するので、
+I/O のスループットに測定可能な影響はありません。
 
-Thanks to compression, **the default scrollback limit has been raised from
-10 MB to 50 MB** per terminal. On platforms that support compression, a
-full scrollback still generally uses less physical memory than the old
-10 MB limit did.
+圧縮のおかげで、**スクロールバックのデフォルト上限がターミナルあたり
+10 MB から 50 MB に増えました。** 圧縮に対応するプラットフォームでは、
+上限まで使っても、一般に従来の 10 MB の上限より物理メモリの使用量が少なくなります。
 
 <Note>
-  Compression lowers _resident_ (physical) memory, not _virtual_ memory, so
-  look at resident memory when measuring it. It is currently available on
-  macOS and 64-bit Linux.
+  圧縮で減るのは*常駐*（物理）メモリで、*仮想*メモリではありません。
+  測定時は常駐メモリを確認してください。現在は macOS と 64 ビット Linux で利用できます。
 </Note>
 
-Beyond scrollback, memory usage is lower in many places:
+スクロールバック以外でも、多くの箇所でメモリ使用量が減りました。
 
-- A new, empty terminal now uses about **16 KiB** of terminal page memory
-  on macOS, down from 128 KiB in Ghostty 1.3.1.
-- On macOS and Linux, memory freed by clearing or trimming scrollback is
-  now returned to the OS instead of being held until the terminal closes.
-- Hidden tabs release their GPU resources. On macOS, with one visible tab
-  and 20 hidden tabs, GPU memory dropped from about 385 MiB to 18 MiB.
-  Rebuilding them when a tab becomes visible again takes under a
-  millisecond.
+- macOS で空のターミナルを新しく開くときに使うターミナルページ用メモリは、
+  Ghostty 1.3.1 の 128 KiB から約 **16 KiB** に減りました。
+- macOS と Linux では、スクロールバックの消去や切り詰めで解放したメモリを、
+  ターミナルを閉じるまで保持せずに OS に返却するようになりました。
+- 非表示のタブは GPU リソースを解放します。macOS で表示中のタブが 1 つ、
+  非表示のタブが 20 ある場合、GPU メモリは約 385 MiB から 18 MiB に減りました。
+  タブが再び表示されたときのリソースの再構築には 1 ミリ秒もかかりません。
 
-### Performance Improvements {/* #performance-improvements */}
+### パフォーマンスの改善 {/* #performance-improvements */}
 
-PRs: GH-13209 GH-13220 GH-13226 GH-13227 GH-13537 GH-13827 GH-13587
+関連 PR: GH-13209 GH-13220 GH-13226 GH-13227 GH-13537 GH-13827 GH-13587
 GH-14011 GH-13722 GH-14035 GH-12760
 
-There are performance improvements across the board in Ghostty 1.4
-that yield significant gains compared to prior Ghostty versions.
+Ghostty 1.4 では多方面でパフォーマンスを改善し、以前のバージョンを大幅に
+上回る性能を実現しました。
 
-The biggest win came from a surprising discovery: on macOS, the kernel
-caps every read from a pty at about 1 KiB no matter how large the read
-buffer is. Previously, Ghostty processed each read as it arrived, so per-read
-overhead was paid every kilobyte, and the program writing output sat
-blocked while we parsed. Ghostty now drains the pty on one thread while
-parsing on another, raising end-to-end I/O throughput by **25% to 55%**
-on macOS (M4 Max, plain and Unicode text) over Ghostty 1.3.x.
+最も効果が大きかったのは、意外な発見がきっかけでした。macOS のカーネルは、
+読み取りバッファのサイズに関係なく、PTY からの 1 回の読み取りを約 1 KiB に
+制限していました。以前の Ghostty は読み取りのたびに処理していたため、
+1 KiB ごとに読み取りのオーバーヘッドが発生し、解析の間、出力を書き込む
+プログラムは待たされていました。現在は、あるスレッドで PTY からデータを
+読み取りつつ、別のスレッドで解析します。Ghostty 1.3.x に比べて macOS 上での
+I/O 全体のスループットが **25% から 55%** 向上しました（M4 Max、プレーンテキストと Unicode テキスト）。
 
-VT processing itself is also much faster. In parser benchmarks, plain
-ASCII text went from 128 MB/s to 725 MB/s (5.7x), CJK text got 3.4x
-faster, and a 2.6 GB dataset of real-world terminal recordings
-from [asciinema](https://asciinema.org/) is processed about 25% faster.
-Together, these changes took `cat`-ing a 150 MB text file on macOS from
-1.5 seconds to 566 milliseconds.
+VT 処理自体も大幅に速くなりました。パーサーのベンチマークでは、プレーンな
+ASCII テキストが 128 MB/s から 725 MB/s（5.7 倍）に、CJK テキストが 3.4 倍に
+高速化し、[asciinema](https://asciinema.org/) の実際のターミナル録画
+2.6 GB の処理は約 25% 速くなりました。これらの変更により、macOS で 150 MB の
+テキストファイルを `cat` で出力する時間が 1.5 秒から 566 ミリ秒に短縮されました。
 
-Other notable improvements:
+ほかの主な改善です。
 
-- **Resize:** resizing a terminal with a large scrollback is about **6x
-  faster** (120x80 with 10,000 lines of scrollback), and 3x to 5x faster
-  with history full of CJK text or emoji.
-- **Rendering:** the renderer holds the terminal lock **2.7x to 11x**
-  less per frame, leaving more time for the I/O thread during heavy
-  output.
-- **Copy and search:** formatting terminal contents as plain text, HTML,
-  or VT, which backs clipboard copy, `write_screen_file`, and scrollback
-  search, is 1.5x to 8x faster.
-- **Launch (macOS):** about 15% faster from launch to visible window, and
-  27% faster to the first rendered frame.
-- **Idle energy:** on macOS, the renderer's display link now sleeps when
-  there's nothing to draw. On GTK, hidden tabs stop rendering, matching
-  macOS.
-- **Large OSC sequences:** OSC 52 clipboard payloads parse about **30x
-  faster**, and even short sequences like title changes are about 6x
-  faster.
+- **サイズ変更:** 大きなスクロールバックを持つターミナルのサイズ変更が
+  **約 6 倍**に高速化しました（120×80、スクロールバック 10,000 行）。
+  CJK テキストや絵文字の多い履歴では 3 倍から 5 倍に高速化しました。
+- **描画:** レンダラーが 1 フレームあたりにターミナルのロックを保持する時間を
+  **2.7 分の 1 から 11 分の 1** に短縮し、大量出力時に I/O スレッドが
+  処理できる時間を増やしました。
+- **コピーと検索:** クリップボードへのコピー、`write_screen_file`、
+  スクロールバック検索で使われる、ターミナルの内容のプレーンテキスト、
+  HTML、VT への整形が 1.5 倍から 8 倍に高速化しました。
+- **起動 (macOS):** 起動からウィンドウ表示までが約 15%、最初のフレームの描画までが
+  27% 高速化しました。
+- **アイドル時の電力消費:** macOS では描画するものがないときに、
+  レンダラーのディスプレイリンクを休止します。GTK では macOS と同様、
+  非表示のタブの描画を停止します。
+- **大きな OSC シーケンス:** OSC 52 のクリップボードデータの解析が**約 30 倍**に、
+  タイトル変更のような短いシーケンスでも約 6 倍に高速化しました。
 
-### New OpenGL Renderer (Linux, FreeBSD) {/* #new-opengl-renderer-(linux-freebsd) */}
+### 新しい OpenGL レンダラー (Linux, FreeBSD) {/* #new-opengl-renderer-(linux-freebsd) */}
 
-PRs: GH-14052 GH-14269
+関連 PR: GH-14052 GH-14269
 
-The GTK app has a new rendering pipeline. It no longer uses `GtkGLArea`.
-Instead, the renderer draws with EGL on its own thread, exports each frame
-as a DMABUF, and hands it to GTK to display. Rendering is now
-triple-buffered, which should greatly reduce tearing, and no OpenGL calls
-run on the main thread anymore, which let us remove a number of
-workarounds.
+GTK 版の描画パイプラインが新しくなり、`GtkGLArea` を使わなくなりました。
+レンダラーが専用スレッドで EGL を使って描画し、各フレームを DMABUF として
+エクスポートして、表示を担当する GTK に渡します。トリプルバッファリングで
+ティアリングを大幅に減らせるはずです。メインスレッドで OpenGL を呼び出さなくなり、
+いくつもの回避処理を取り除けました。
 
-The most visible result is crisp text under fractional scaling. Text and
-box-drawing characters are no longer blurry with fractional display
-scaling such as 125% or 150% (GH-1938). We fixed this once before, but it
-came back after upstream GTK changes. Ghostty now renders at the window's
-true fractional scale, so every rendered pixel maps to exactly one pixel
-on screen.
+最も目に見える成果は、整数倍でないスケーリングでも文字がくっきり表示されることです。
+125% や 150% といった表示倍率でテキストや罫線文字がぼやけなくなりました（GH-1938）。
+以前一度修正しましたが、上流の GTK の変更で再発していました。Ghostty は
+ウィンドウの実際の倍率で描画するため、描画上の 1 ピクセルが画面上の
+ちょうど 1 ピクセルに対応します。
 
-The new render surface needs a system EGL library (see
-[Changes for Package Maintainers](#changes-for-package-maintainers)).
-On GPU drivers that can't export DMABUFs, Ghostty falls back to copying
-frames through the CPU, which is slower but works.
+新しい描画サーフェスにはシステムの EGL ライブラリが必要です
+（[パッケージメンテナー向けの変更](#changes-for-package-maintainers)を参照）。
+DMABUF をエクスポートできない GPU ドライバーでは、Ghostty は CPU 経由で
+フレームをコピーします。速度は落ちますが、使用は可能です。
 
-### Kitty Clipboard Protocol {/* #kitty-clipboard-protocol */}
+### Kitty クリップボードプロトコル {/* #kitty-clipboard-protocol */}
 
-PRs: GH-13962 GH-13993 GH-13995 GH-13998 GH-14002 GH-14061
+関連 PR: GH-13962 GH-13993 GH-13995 GH-13998 GH-14002 GH-14061
 
-Ghostty now implements the
-[Kitty clipboard protocol](https://sw.kovidgoyal.net/kitty/clipboard/)
-(OSC 5522) on both macOS and GTK. Ghostty 1.3 could parse the protocol
-but didn't implement it.
+Ghostty は macOS と GTK の両方に
+[Kitty クリップボードプロトコル](https://sw.kovidgoyal.net/kitty/clipboard/)
+（OSC 5522）を実装しました。Ghostty 1.3 ではプロトコルの解析はできましたが、
+実装はしていませんでした。
 
-OSC 52 can only read and write plain text. The Kitty clipboard protocol
-lets programs running in the terminal read and write any kind of clipboard
-data, such as images or HTML, and lets them pick among the formats on the
-clipboard. Programs can also enable paste events (mode 5522), which tell
-the program what formats a paste contains so it can read the one it
-wants. This is how a terminal program can accept a pasted image, for
-example.
+OSC 52 はプレーンテキストしか読み書きできません。Kitty クリップボードプロトコルにより、
+ターミナル内のプログラムが画像や HTML などあらゆる種類のクリップボードデータを
+読み書きし、クリップボード上の形式から選べます。プログラムはペーストイベント
+（モード 5522）を有効化することもできます。貼り付けデータに含まれる形式が通知されるため、
+必要なものを読み取れます。たとえば、ターミナルプログラムが貼り付けた画像を受け取れます。
 
-Clipboard access follows the existing `clipboard-read` and
-`clipboard-write` configurations. By default, reads prompt for permission
-and writes are allowed. The permission prompt shows a preview of the
-clipboard contents, including images. Programs that send a password can
-have your answer remembered for the rest of that terminal session. A new
-`clipboard-write-limit-bytes` configuration limits the size of a single
-write (default 64 MiB). A write over the limit fails and leaves the
-clipboard untouched.
+クリップボードへのアクセスは既存の `clipboard-read` と `clipboard-write` 設定に
+従います。デフォルトでは、読み取り時に許可を求め、書き込みは許可します。
+許可を求める画面では、画像も含めてクリップボードの内容をプレビューできます。
+パスワードを送るプログラムについては、そのターミナルセッションが終了するまで
+回答を保持できます。新しい `clipboard-write-limit-bytes` 設定で、1 回あたりの
+書き込みサイズを制限します（デフォルトは 64 MiB）。上限を超える書き込みは失敗し、
+クリップボードの内容は変わりません。
 
-### Split Drag and Drop (GTK) {/* #split-drag-and-drop-(gtk) */}
+### 分割のドラッグ＆ドロップ (GTK) {/* #split-drag-and-drop-(gtk) */}
 
-PRs: GH-10423 GH-13706
+関連 PR: GH-10423 GH-13706
 
-You can now rearrange splits on GTK by dragging them, matching the macOS
-feature introduced in Ghostty 1.3. When a tab has two or more splits, each
-split shows a drag handle at the top. Grab the handle and drop the split
-onto any other split, including splits in other tabs and windows. An
-overlay shows which side of the target split it will land on. The terminal
-contents, working directory, and running processes all move with it.
+Ghostty 1.3 で macOS に導入した機能と同じように、GTK でもドラッグして分割を
+並べ替えられるようになりました。タブに分割が 2 つ以上あると、各分割の上端に
+ドラッグハンドルが表示されます。ハンドルをつかみ、別のタブやウィンドウも含め、
+ほかの任意の分割にドロップできます。オーバーレイで、移動先の分割のどちら側に
+配置されるかが分かります。ターミナルの内容、作業ディレクトリ、実行中のプロセスは
+すべて一緒に移動します。
 
-A new `drag-handle` configuration controls when drag handles are shown on
-both macOS and GTK: `auto` (default), `always`, or `never`. With `never`,
-splits can't be rearranged with the mouse. Hiding the handles was a
-common request from users who found them in the way.
+macOS と GTK の両方に、ドラッグハンドルの表示条件を制御する新しい `drag-handle`
+設定を追加しました。`auto`（デフォルト）、`always`、`never` から選べます。
+`never` では、マウスで分割を並べ替えられません。ハンドルが邪魔なので隠したいという
+要望は、ユーザーからよく寄せられていました。
 
-On GTK, splits can only be dropped onto other splits. Dragging a split out
-to create a new tab or window is macOS-only.
+GTK では、分割はほかの分割の上にしかドロップできません。分割を外へドラッグして
+新しいタブやウィンドウを作成できるのは macOS だけです。
 
-### Terminal Emulation Accuracy {/* #terminal-emulation-accuracy */}
+### ターミナルエミュレーションの精度 {/* #terminal-emulation-accuracy */}
 
-PRs: GH-14454 GH-13494 GH-14483 GH-14538 GH-14673 GH-14375 GH-14144
+関連 PR: GH-14454 GH-13494 GH-14483 GH-14538 GH-14673 GH-14375 GH-14144
 
-Ghostty 1.4 includes dozens of improvements to core terminal emulation. We
-now run [esctest](https://github.com/ThomasDickey/esctest2), Thomas Dickey's
-terminal conformance suite, against Ghostty's terminal core in CI.
-Alongside that, we fixed many differences from xterm in cursor movement
-within margins, tab stops, character sets, mode reports, and more. You
-can find the full list of related changes in the
-[terminal capabilities](#terminal-capabilities) section.
+Ghostty 1.4 には、ターミナルエミュレーションの中核部分に数十件の改善が含まれています。
+Thomas Dickey のターミナル適合性テストスイートである
+[esctest](https://github.com/ThomasDickey/esctest2) を、CI で Ghostty の
+ターミナルコアに対して実行するようにしました。それに併せて、マージン内の
+カーソル移動、タブストップ、文字セット、モード報告など、xterm との差を多数
+修正しました。関連する変更の全一覧は[ターミナルの機能](#terminal-capabilities)をご覧ください。
 
-Ghostty also supports several new sequences, including soft terminal reset
-(DECSTR), extended cursor position reports (DECXCPR), backarrow key mode
-(DECBKM), and screen size reports in characters (`CSI 19 t`). Programs can
-also now ask whether the terminal is visible using
-[visibility reports](https://rockorager.dev/misc/visibility-reports/)
-(mode 2033), so they can stop rendering while hidden.
+ソフトターミナルリセット（DECSTR）、拡張カーソル位置報告（DECXCPR）、
+後退キーのモード（DECBKM）、文字数単位での画面サイズ報告（`CSI 19 t`）など、
+複数の新しいシーケンスにも対応しました。プログラムは
+[可視性レポート](https://rockorager.dev/misc/visibility-reports/)（モード 2033）で
+ターミナルが表示中かを問い合わせ、非表示の間に描画を止められるようになりました。
 
-Keyboard encoding also matches xterm more closely, with fixes for
-`modifyOtherKeys` mode 2 and legacy Alt-as-Escape encoding of non-ASCII
-keys.
+キーボードのエンコードも、`modifyOtherKeys` のモード 2 と非 ASCII キーで Alt を
+Escape として扱う従来のエンコードを修正し、xterm により近づきました。
 
-Two new sequences are disabled by default because they can be abused by
-untrusted programs, including ones running on a remote machine:
+リモートマシン上のものも含め、信頼できないプログラムに悪用されるおそれがあるため、
+次の 2 つの新しいシーケンスはデフォルトで無効です。
 
 ```
 # Allow programs to resize the window (CSI 8 t)
@@ -313,15 +289,14 @@ vt-window-resize-allowed = true
 vt-xt-checksum-report = true
 ```
 
-### SSH Integration with `ghostty +ssh` {/* #ssh-integration-with-ghostty-+ssh */}
+### `ghostty +ssh` による SSH 統合 {/* #ssh-integration-with-ghostty-+ssh */}
 
-PRs: GH-12582 GH-12814 GH-13533 GH-13844 GH-14472 GH-14854
+関連 PR: GH-12582 GH-12814 GH-13533 GH-13844 GH-14472 GH-14854
 
-Ghostty 1.2 introduced [SSH shell integration features](/docs/features/ssh)
-as a work in progress. In Ghostty 1.4, they're backed by a new
-`ghostty +ssh` CLI action: a drop-in `ssh` wrapper that prepares the
-remote session for Ghostty and then runs the real `ssh` with your
-arguments forwarded unchanged.
+Ghostty 1.2 では[SSH シェル統合機能](/docs/features/ssh)を開発途中の機能として
+導入しました。Ghostty 1.4 では、新しい CLI アクション `ghostty +ssh` が
+これらの機能を担います。`ssh` の代わりにそのまま使えるラッパーで、
+リモートセッションを Ghostty 用に準備し、引数を変更せずに本来の `ssh` を実行します。
 
 ```sh
 ghostty +ssh user@example.com
@@ -330,944 +305,465 @@ ghostty +ssh user@example.com
 alias ssh='ghostty +ssh --'
 ```
 
-Before connecting, `+ssh` installs Ghostty's terminfo on the remote host
-so the proper `xterm-ghostty` `TERM` value can be used, and forwards
-`COLORTERM`, `TERM_PROGRAM`, and `TERM_PROGRAM_VERSION`. If the terminfo
-install fails (for example, `tic` isn't available on the remote), it falls
-back to `TERM=xterm-256color`. Flags such as `--terminfo=false`,
-`--forward-env=false`, and `--verbose` control each step.
+接続前に、`+ssh` は Ghostty の terminfo をリモートホストにインストールして
+`TERM` に適切な値 `xterm-ghostty` を使えるようにし、`COLORTERM`、
+`TERM_PROGRAM`、`TERM_PROGRAM_VERSION` を転送します。terminfo の
+インストールに失敗した場合（リモート側に `tic` がない場合など）は
+`TERM=xterm-256color` にフォールバックします。`--terminfo=false`、
+`--forward-env=false`、`--verbose` などのフラグで各段階を制御できます。
 
-The `ssh-env` and `ssh-terminfo` shell integration features (still opt-in)
-now call `+ssh` too. Previously, each shell integration carried its own copy
-of this logic, which made up roughly a third of our shell integration
-scripts. Now bash, zsh, fish, elvish, and Nushell all behave identically,
-and you can get the same behavior from scripts or anywhere else by calling
-`ghostty +ssh` directly.
+明示的に有効にする必要があるシェル統合機能 `ssh-env` と `ssh-terminfo` も、
+`+ssh` を呼び出すようになりました。以前はシェルごとにこの処理を実装し、
+シェル統合スクリプトのおよそ 3 分の 1 を占めていました。現在は bash、zsh、fish、
+elvish、Nushell のすべてで同じように動きます。スクリプトなど、どこからでも
+`ghostty +ssh` を直接呼び出せば、同じ動作を利用できます。
 
-The terminfo install itself is also more reliable. Ghostty now always
-installs its own bundled terminfo rather than accepting whatever
-`xterm-ghostty` entry the remote already has, and it reinstalls
-automatically when a Ghostty update changes the terminfo. It also no longer
-needs `infocmp` or Ghostty's terminfo on the local machine. Installs are
-cached per host *and* port, so two machines behind one address no longer
-share a cache entry. And `ssh-env` no longer silently overrides `SetEnv`
-entries in your `~/.ssh/config` (GH-11518).
+terminfo のインストール自体もより確実になりました。リモートに既存の
+`xterm-ghostty` があってもそれを使わず、常に Ghostty 同梱の terminfo を
+インストールします。Ghostty のアップデートによって terminfo が変われば、
+自動で再インストールします。また、ローカルマシンの `infocmp` や Ghostty の
+terminfo は不要になりました。インストールはホスト*と*ポートの組み合わせごとに
+キャッシュされ、同じアドレスの先にある 2 台のマシンがキャッシュ項目を
+共有することはありません。`ssh-env` が `~/.ssh/config` の `SetEnv` の
+指定を黙って上書きすることもなくなりました（GH-11518）。
 
-The `+ssh-cache` command that manages this cache now takes positional
-destinations (`ghostty +ssh-cache user@example.com`) and has a new
-`--prune=30d` flag. See the [breaking changes](#breaking-changes) if you
-script against `+ssh-cache`.
+このキャッシュを管理する `+ssh-cache` コマンドは、接続先を位置引数で
+受け付けるようになり（`ghostty +ssh-cache user@example.com`）、新しい
+`--prune=30d` フラグも加わりました。スクリプトで `+ssh-cache` を使う場合は、
+[互換性を壊す変更](#breaking-changes)をご覧ください。
 
-## System Requirements {/* #system-requirements */}
+## システム要件 {/* #system-requirements */}
 
-**macOS:** The minimum required macOS version for Ghostty 1.4 remains
-unchanged (macOS 13 Ventura). Ghostty is now compatible with macOS 27.
+**macOS:** Ghostty 1.4 が必要とする最小 macOS バージョンは、
+macOS 13 Ventura のままです。Ghostty は macOS 27 に対応しました。
 
-**GTK:** Ghostty 1.4 requires **GTK 4.18** and **libadwaita 1.7**, up from
-GTK 4.14 and libadwaita 1.5 in Ghostty 1.3. This aligns with our
-[GTK/Adwaita version policy](/docs/linux/#supported-gtkadwaita-versions).
-Notably, Ubuntu 24.04 LTS doesn't meet this requirement. Systems with
-older GTK or Adwaita versions can work around this requirement by using an
-older version of Ghostty or the Flatpak package. GH-14330
+**GTK:** Ghostty 1.4 には **GTK 4.18** と **libadwaita 1.7** が必要です。
+Ghostty 1.3 では GTK 4.14 と libadwaita 1.5 でした。これは
+[GTK/Adwaita のバージョン方針](/docs/linux/#supported-gtkadwaita-versions)に
+沿った要件です。特に Ubuntu 24.04 LTS はこの要件を満たしません。
+古い GTK や Adwaita を使うシステムでは、Ghostty の旧バージョンや
+Flatpak パッケージを使うことで、この要件を回避できます。GH-14330
 
-**OpenGL (GTK):** The minimum required OpenGL version remains 4.3, but
-Ghostty now renders through EGL instead of GTK's OpenGL widget. This
-should be invisible for nearly everyone, but if Ghostty fails to start
-with an EGL error, please make sure your GPU driver provides a working
-EGL implementation.
+**OpenGL (GTK):** 必要な OpenGL の最低バージョンは 4.3 のままですが、
+Ghostty は GTK の OpenGL ウィジェットではなく EGL で描画するようになりました。
+ほとんどの方は違いを意識せずに使えるはずですが、EGL エラーで Ghostty が
+起動しない場合は、GPU ドライバーが動作する EGL 実装を提供しているか確かめてください。
 
 <Important>
-  We previously announced that Ghostty 1.4 would require macOS 14.
-  Nothing forced our hand to do this in this release, so we kept macOS
-  13 support. **We still plan to drop macOS 13 in a future release.** Apple
-  dropped security support for macOS 13 in the fall of 2025, so we
-  recommend upgrading regardless.
+  以前は Ghostty 1.4 で macOS 14 が必要になるとお知らせしました。
+  今回のリリースではそうする必要がなかったため、macOS 13 のサポートを残しました。
+  **将来のリリースで macOS 13 の対応を終了する予定に変わりはありません。**
+  Apple は 2025 年秋に macOS 13 のセキュリティサポートを終了しているため、
+  いずれにせよアップグレードをおすすめします。
 </Important>
 
-## Breaking Changes {/* #breaking-changes */}
+## 互換性を壊す変更 {/* #breaking-changes */}
 
-The following behaviors have changed in 1.4.0:
+1.4.0 では、次の動作が変わりました。
 
-- `copy-on-select` has been reworked and now accepts `none`, `primary`,
-  `clipboard`, or `both`. **The meaning of `clipboard` has changed:** it
-  previously copied to both the selection clipboard and the system
-  clipboard, and now copies only to the system clipboard. If you set
-  `copy-on-select = clipboard` and want the old behavior, change it to
-  `both`. GH-12600 GH-12604
-- macOS: `copy-on-select` now defaults to `none` (previously `true`), so
-  selecting text no longer copies it anywhere and middle-click paste of the
-  selection no longer works by default. To restore the 1.3 behavior, set
-  `copy-on-select = primary`. Note that an explicit `copy-on-select = true`
-  on macOS now copies selections to the system clipboard, which is
-  different from 1.3. GH-12600 GH-12604
-- macOS: `cmd+arrow_up` and `cmd+arrow_down` now run `jump_to_prompt` again,
-  matching Terminal.app and Ghostty 1.2. In 1.3, these keys were hardcoded
-  to scroll to the top and bottom and couldn't be rebound. To keep the 1.3
-  behavior, set `keybind = cmd+arrow_up=scroll_to_top` and
-  `keybind = cmd+arrow_down=scroll_to_bottom`. GH-12245
-- GTK: The default `ctrl+shift+page_up` and `ctrl+shift+page_down` keybinds
-  now move the current tab left and right (`move_tab`), matching Firefox,
-  GNOME Terminal, and VS Code. `jump_to_prompt` moved to
-  `ctrl+shift+arrow_up` and `ctrl+shift+arrow_down`, so programs running in
-  the terminal no longer receive those keys. If a program you use needs
-  them, unbind them with `keybind = ctrl+shift+arrow_up=unbind` and
-  `keybind = ctrl+shift+arrow_down=unbind`. GH-4998 GH-12458
+- `copy-on-select` を作り直し、`none`、`primary`、`clipboard`、`both` を受け付けます。
+  **`clipboard` の意味が変わりました。** 以前は選択クリップボードとシステムクリップボードの
+  両方にコピーしていましたが、現在はシステムクリップボードだけにコピーします。
+  `copy-on-select = clipboard` を指定していて以前の動作に戻したい場合は、
+  `both` に変更してください。GH-12600 GH-12604
+- macOS: `copy-on-select` のデフォルトが `true` から `none` になりました。
+  デフォルトではテキストを選択してもコピーされず、中クリックによる選択内容の
+  貼り付けも機能しません。1.3 の動作に戻すには `copy-on-select = primary` を指定してください。
+  なお、macOS で `copy-on-select = true` を明示するとシステムクリップボードに
+  選択内容がコピーされ、1.3 の動作とは異なります。GH-12600 GH-12604
+- macOS: `cmd+arrow_up` と `cmd+arrow_down` が Terminal.app および Ghostty 1.2 と
+  同じように、再び `jump_to_prompt` を実行するようになりました。1.3 では最上部と
+  最下部へのスクロールに固定され、再割り当てはできませんでした。1.3 の動作を維持するには、
+  `keybind = cmd+arrow_up=scroll_to_top` と
+  `keybind = cmd+arrow_down=scroll_to_bottom` を指定してください。GH-12245
+- GTK: デフォルトの `ctrl+shift+page_up` と `ctrl+shift+page_down` は、
+  Firefox、GNOME Terminal、VS Code と同じように、現在のタブを左右に移動します（`move_tab`）。
+  `jump_to_prompt` は `ctrl+shift+arrow_up` と `ctrl+shift+arrow_down` に
+  移ったため、ターミナル内で実行するプログラムにはこれらのキー入力が渡らなくなります。
+  使用しているプログラムで必要なら、`keybind = ctrl+shift+arrow_up=unbind` と
+  `keybind = ctrl+shift+arrow_down=unbind` で割り当てを解除してください。GH-4998 GH-12458
 
-### Deprecations {/* #deprecations */}
+### 非推奨になった項目 {/* #deprecations */}
 
-The list below contains deprecations that remain compatible today through
-a compatibility layer, but may break in a future release if they are
-ignored:
+以下の非推奨になった項目は互換レイヤーによって現時点では動作しますが、
+そのまま使い続けると将来のリリースでは動作しなくなる可能性があります。
 
-- `scrollback-limit` has been renamed to `scrollback-limit-bytes`, to make
-  room for the new `scrollback-limit-lines`. GH-13473
-- `copy-on-select = true` is replaced with `copy-on-select = primary` on
-  Linux and FreeBSD, or `copy-on-select = clipboard` on macOS.
-  `copy-on-select = false` is replaced with `copy-on-select = none`.
+- 新しい `scrollback-limit-lines` を追加するため、`scrollback-limit` の名前を
+  `scrollback-limit-bytes` に変更しました。GH-13473
+- `copy-on-select = true` は Linux および FreeBSD では `copy-on-select = primary`、
+  macOS では `copy-on-select = clipboard` に置き換わります。
+  `copy-on-select = false` は `copy-on-select = none` に置き換わります。
   GH-12600 GH-12604
 
-There is no set timeline to remove these deprecations, but we recommend
-adapting to the new configurations sooner rather than later to avoid
-any possible disruptions in the future.
+これらの非推奨項目を削除する時期は未定ですが、将来起こりうる問題を避けるため、
+早めに新しい設定へ移行することをおすすめします。
 
-## Full Changelog {/* #full-changelog */}
+## 変更履歴の全文 {/* #full-changelog */}
 
-- Scrollback history is now transparently compressed while the terminal
-  is idle, reducing the physical memory used by compressed scrollback by
-  70% to 90% for typical text. Compression is available on macOS and 64-bit
-  Linux and can be disabled with the new `scrollback-compression`
-  configuration. Because of this, the default scrollback limit has been
-  raised from 10 MB to 50 MB, which on average still uses less memory than
-  a full scrollback did previously. GH-13264
-- A new configuration `scrollback-limit-lines` limits scrollback by number
-  of lines instead of bytes. The existing `scrollback-limit` configuration
-  has been renamed to `scrollback-limit-bytes` (the old name continues to
-  work). If both are set, the first limit reached applies, and both accept
-  `unlimited`. GH-13473
-- `copy-on-select` now accepts `none`, `primary`, `clipboard`, and `both`
-  and no longer affects middle-click paste (see `middle-click-action`).
-  `clipboard` now copies only to the system clipboard, so use `both` for the
-  previous behavior. The default on macOS is now `none`. See the
-  [breaking changes](#breaking-changes) for migration details. GH-12600
-- A new configuration `middle-click-action` configures the behavior of
-  middle-clicking: `primary-paste` (default) pastes from the selection
-  clipboard, `clipboard-paste` pastes from the system clipboard, and
-  `ignore` does nothing. GH-12478
-- A new binding action `move_tab_to_new_window` moves the current tab into
-  a new window of its own. It is also available in the command palette.
-  GH-2630
-- A new CLI command `+explain-config` prints the documentation for a
-  configuration option or binding action, e.g.
-  `ghostty +explain-config font-size`. GH-11546
-- The `+explain-config` and `+show-config` CLI commands now page their
-  output through `$GHOSTTY_PAGER` or `$PAGER` (falling back to `less`) when
-  run interactively. Paging can be disabled with `--no-pager` or by setting
-  the pager to an empty value. GH-11940
-- A new configuration `drag-handle` controls when the split drag handles
-  are shown: `auto` (default), `always`, or `never`. GH-13706 GH-13709
-- Scrollback search now wraps around when navigating past the first or
-  last match. GH-11449
-- A new configuration `link-osc8` (default `true`) can be set to `false` to
-  disable OSC 8 hyperlinks entirely. Disabled OSC 8 hyperlinks are not
-  highlighted, previewed, copied, or opened. GH-13634
-- Processes running in Ghostty now receive a `GHOSTTY_SURFACE_ID`
-  environment variable that uniquely identifies the terminal they are
-  running in. GH-12027
-- The right-click context menu now has a "Close Split" item. GH-11173
-  GH-11174
-- Upgrade to Unicode 18. GH-14293
-- I/O throughput is 25% to 55% higher on macOS by reading from the pty
-  concurrently with parsing previously read output. GH-13209
-- VT processing is significantly faster across the board. Plain text is up
-  to ~6x faster, real-world output (measured against a large asciinema
-  dataset) is ~24% faster, grapheme-heavy output is ~3x faster, and DEC
-  special graphics (line drawing), repeated characters (`REP`),
-  hyperlink-heavy output, and scroll regions are all faster. GH-13220
-  GH-13226 GH-13231 GH-13294 GH-13625 GH-13826 GH-14356
-- Large OSC sequences, such as OSC 52 clipboard writes, are parsed ~30x
-  faster and small OSC sequences, such as title changes, ~6x faster.
-  GH-14011 GH-13565
-- Resizing with reflow is ~6x faster with large scrollback and 3x to 5x
-  faster with scrollback heavy in wide characters such as CJK or emoji.
-  GH-13537 GH-13827
-- Terminals use significantly less memory. A new terminal now uses ~16 KiB
-  of physical memory for its screen instead of 128 KiB on macOS, every
-  terminal page uses 30% less memory, and memory freed from scrollback
-  (such as by clearing it) is now returned to the operating system.
-  GH-13240 GH-13245 GH-14130 GH-14137 GH-14138
-- Kitty graphics are faster. Large image transfers are parsed in bulk using
-  SIMD, zlib-compressed images decompress ~17% faster, pixel format
-  conversion avoids an extra copy, and the per-frame cost of drawing images
-  is much lower, especially with Unicode placeholder images on screen or
-  long scrollback. GH-13270 GH-13281 GH-13987 GH-14422 GH-14780 GH-14789
-- Formatting terminal contents is 1.5x to 8x faster, which speeds up
-  clipboard copy (plain, HTML, and VT), `write_screen_file` and related
-  actions, and scrollback search. GH-13587
-- The renderer holds the terminal lock 2.7x to 11x less time per frame,
-  and glyph and font lookups are faster. GH-13227 GH-14300 GH-14301 GH-14420
-  GH-14406 GH-13258
-- `command-palette-entry = clear` removes all command palette entries,
-  including the default entries. GH-12682
-- `window-padding-balance` has a new value `equal` that balances padding
-  equally on all four sides without capping the top padding. GH-11491
-- `theme` now expands `~` to the home directory in theme file paths,
-  including in separate light and dark themes. GH-13840
-- `+list-themes` now supports `g` and `G` to jump to the first and
-  last theme, and `ctrl+d` and `ctrl+u` to page down and up. GH-13681
-  GH-14607
-- The terminal inspector can now copy terminal I/O events or export them
-  to a file. GH-13519
-- Bundled themes updated to [release-20261019-151001-86a776d](https://github.com/mbadolato/iTerm2-Color-Schemes/releases/tag/release-20261019-151001-86a776d).
-  This adds 356 new themes and renames or removes none. The colors of 10
-  existing themes changed upstream: Adwaita, Adwaita Dark, Atom One Light,
-  Catppuccin Frappe, Catppuccin Latte, Catppuccin Macchiato, Catppuccin
-  Mocha, Cursor Dark, Dark Modern, and Electron Highlighter.
-- Fix configuration parsing silently ignoring all settings after a comment
-  or blank line that happened to end at an internal buffer boundary. This
-  typically only affected long configuration files. GH-13638
-- Fix a performance degradation where, after a long uptime, the renderer
-  rebuilt its full terminal state on every frame. GH-13585
-- Fix the automatically created configuration file being empty instead of
-  containing the configuration template. GH-13774
-- `+edit-config` works when `$EDITOR` or `$VISUAL` contains arguments,
-  such as `zed --new`. GH-11897
-- `adjust-cursor-height` works again. GH-13225
-- Mouse selection improvements: dragging after a `ctrl`/`cmd` triple-click
-  output selection now extends the selection by command output, autoscroll
-  stops when the screen switches (e.g. to the alternate screen), a force
-  touch on macOS selects the word at the press location without starting a
-  drag, and releasing a drag no longer activates a link or prompt click.
-  GH-12830
-- Double-click word selection no longer continues across hard line breaks,
-  and double-clicking either half of a wide character (such as CJK) selects
-  the whole word. GH-14354 GH-14391
-- Wide characters at the edges of a selection are now consistently rendered
-  as selected and included when copying, including when the wide character
-  wraps onto a new internal page. GH-14632 GH-14651
-- Triple-click line selection no longer pulls in neighboring prompt text
-  when clicking blank cells between OSC 133 prompt boundaries. GH-14553
-- Link detection and double-click selection no longer merge prompt text
-  with the command text next to it when shell integration is active.
-  GH-12435
-- File paths opened with `cmd`/`ctrl`-click no longer include trailing
-  spaces, which broke opening paths printed by some TUIs. GH-13505
-- Mouse releases are now reported to the program that received the mouse
-  press when clicking at a shell prompt with click-to-move enabled. This
-  fixes double-click selection in programs like fzf's `ctrl+r` history
-  search. GH-14710
-- Shell redraws after a resize are no longer processed at the old terminal
-  size. This fixes one cause of duplicated or misplaced prompts after
-  resizing. GH-14706
-- Scrolling, such as clicking in the scrollbar, now works with very large
-  scrollback (millions of lines). GH-13048
-- Custom `command-palette-entry` actions with string parameters, such as
-  `set_tab_title`, no longer have their parameters escaped when run from
-  the command palette. GH-13609
-- HTML clipboard copies no longer include a superfluous trailing newline.
-  GH-13543
-- Copying as VT (`copy_to_clipboard:vt`) and VT screen files now preserve
-  OSC 8 hyperlinks, empty gaps between text, and cells that only have
-  a background color, such as colored status bars. VT screen files also
-  keep trailing blank rows. GH-14711 GH-14725 GH-14766
-- The mouse pointer now restores the shape set by the running program
-  (OSC 22) after releasing modifier keys instead of resetting to the
-  default. GH-14128
-- Custom shaders no longer receive swapped selection foreground and
-  background color uniforms. GH-14460
-- Ghostty no longer floods the logs with "adjusting page capacity"
-  messages during output with many styles, graphemes, or hyperlinks.
-  GH-14631
-- Fix stale wrap and prompt state on rows reused after scrolling or
-  erasing, which could cause incorrect copy, search, selection, and reflow
-  results. GH-14010
-- Fix stale rendering of the previous row after erasing or deleting a
-  wrapped wide character. GH-14054
-- Fix a freeze when reloading the configuration while a program is flooding
-  the terminal with queries, such as color queries. GH-14833
-- `+list-themes` no longer crashes on some keys when the search
-  matches no themes, and the keypad down key now moves one row instead of
-  21. GH-14612 GH-14605
-- Fix crashes in scrollback search after clearing the scrollback, resizing,
-  or erasing history. GH-11957 GH-13274 GH-13282
-- Fix crashes and viewport corruption when resizing with scrolled-back
-  history or with the cursor near the bottom of the screen. GH-12300
-  GH-12907 GH-12935
-- Fix a use-after-free crash when clicking or selecting text during heavy
-  output. GH-12463
-- Fix a possible crash when reflowing hyperlinks during a resize. GH-13524
-- Fix possible crashes or memory corruption when scrolling or erasing rows
-  across a page boundary that needed more capacity. GH-13394 GH-13397
-- Fix possible crashes and memory corruption found via fuzzing when
-  printing causes a page to grow, or after clearing the screen into
-  scrollback. GH-11261 GH-13997
-- Fix many latent crashes and undefined behavior in selection, pins,
-  search, title and working directory updates, and resize error handling.
-  GH-12894 GH-13275 GH-13278 GH-13367
-- Fix a possible crash or corrupted input when many pty writes are queued,
-  such as during large pastes. GH-13659
-- Fix an out-of-bounds access when IME preedit text with wide characters
-  is composed between existing wide characters, such as with Korean input.
-  GH-12479
-- Fix a crash when pressing or releasing mouse button 11. GH-14759
-- Fix the `write_screen_file`, `write_scrollback_file`, and
-  `write_selection_file` actions leaking two file descriptors on each use,
-  which could eventually prevent opening new terminals. GH-13644
-- Fix memory and file descriptor leaks in terminal I/O, including for writes
-  in read-only mode and files read via the `input` configuration.
-  GH-13574 GH-13579 GH-13931
+- ターミナルがアイドル状態の間に、スクロールバック履歴を透過的に圧縮するようになりました。一般的なテキストでは、圧縮されたスクロールバックが使う物理メモリを 70% から 90% 削減できます。macOS と 64 ビット Linux で利用でき、新しい `scrollback-compression` 設定で無効にできます。この変更に伴い、スクロールバックのデフォルト上限を 10 MB から 50 MB に引き上げました。上限まで使っても、平均では以前よりメモリ使用量が少なくなります。GH-13264
+- 新しい `scrollback-limit-lines` 設定では、バイト数ではなく行数でスクロールバックを制限できます。既存の `scrollback-limit` は `scrollback-limit-bytes` に改名しました（旧名でも引き続き動作します）。両方指定した場合は、先に達した上限が適用されます。どちらにも `unlimited` を指定できます。GH-13473
+- `copy-on-select` に `none`、`primary`、`clipboard`、`both` を指定でき、中クリックの貼り付けには影響しなくなりました（`middle-click-action` を参照）。`clipboard` はシステムクリップボードにのみコピーします。以前の動作に戻すには `both` を使ってください。macOS でのデフォルトは `none` です。移行の詳細は[互換性を壊す変更](#breaking-changes)をご覧ください。GH-12600
+- 新しい設定 `middle-click-action` は中クリックの動作を指定します。`primary-paste`（デフォルト）は選択クリップボードから、`clipboard-paste` はシステムクリップボードから貼り付け、`ignore` は何もしません。GH-12478
+- 新しいキーバインドアクション `move_tab_to_new_window` は現在のタブを専用の新規ウィンドウへ移動します。コマンドパレットからも使えます。GH-2630
+- 新しい CLI コマンド `+explain-config` は設定項目やキーバインドアクションのドキュメントを表示します。例: `ghostty +explain-config font-size`。GH-11546
+- CLI コマンド `+explain-config` と `+show-config` を対話的に実行すると、`$GHOSTTY_PAGER` または `$PAGER`（どちらもなければ `less`）に出力を渡してページ表示します。`--no-pager` を使うか、ページャーに空の値を設定すると無効にできます。GH-11940
+- 新しい `drag-handle` 設定で分割のドラッグハンドルを表示する条件を指定できます。`auto`（デフォルト）、`always`、`never` から選べます。GH-13706 GH-13709
+- スクロールバック検索で最初や最後の一致箇所を越えると、反対側に戻るようになりました。GH-11449
+- 新しい `link-osc8` 設定（デフォルトは `true`）を `false` にすると、OSC 8 ハイパーリンクを完全に無効にできます。無効化された OSC 8 ハイパーリンクは強調表示、プレビュー、コピー、リンクを開く操作の対象になりません。GH-13634
+- Ghostty 内で実行するプロセスに、実行先のターミナルを一意に識別する環境変数 `GHOSTTY_SURFACE_ID` を渡すようになりました。GH-12027
+- 右クリックのコンテキストメニューに「Close Split」（分割を閉じる）を追加しました。GH-11173 GH-11174
+- Unicode 18 に更新しました。GH-14293
+- macOS では、前回読み取った出力の解析と並行して PTY を読み込むことで、I/O のスループットが 25% から 55% 向上しました。GH-13209
+- VT 処理が全般的に大幅に高速化しました。プレーンテキストは最大で約 6 倍、実際の出力は約 24%（大規模な asciinema データセットで測定）、書記素の多い出力は約 3 倍に高速化しました。DEC 特殊グラフィックス（罫線描画）、繰り返し文字（`REP`）、ハイパーリンクの多い出力、スクロール領域の処理も高速化しました。GH-13220 GH-13226 GH-13231 GH-13294 GH-13625 GH-13826 GH-14356
+- OSC 52 のクリップボード書き込みなど、大きな OSC シーケンスの解析が約 30 倍に、タイトル変更など小さな OSC シーケンスの解析も約 6 倍に高速化しました。GH-14011 GH-13565
+- テキストの折り返しを再計算しながらのサイズ変更は、大きなスクロールバックで約 6 倍に、CJK や絵文字など幅の広い文字が多い場合に 3 倍から 5 倍に高速化しました。GH-13537 GH-13827
+- ターミナルのメモリ使用量が大幅に減りました。macOS で新しいターミナルが画面に使う物理メモリは 128 KiB から約 16 KiB に減り、ターミナルの各ページはメモリ使用量が 30% 減りました。消去などでスクロールバックから解放したメモリは OS に返すようになりました。GH-13240 GH-13245 GH-14130 GH-14137 GH-14138
+- Kitty グラフィックスが高速化しました。大きな画像の転送データを SIMD で一括解析し、zlib 圧縮画像の展開が約 17% 高速になりました。ピクセル形式の変換で余計なコピーを省き、画像描画のフレームあたりの負荷も大幅に下がりました。とくに画面上に Unicode プレースホルダー画像がある場合や、スクロールバックが長い場合に効果があります。GH-13270 GH-13281 GH-13987 GH-14422 GH-14780 GH-14789
+- ターミナルの内容の整形が 1.5 倍から 8 倍に高速化しました。クリップボードへのコピー（プレーンテキスト、HTML、VT）、`write_screen_file` と関連アクション、スクロールバック検索が速くなりました。GH-13587
+- レンダラーが 1 フレームあたりにターミナルのロックを保持する時間が 2.7 分の 1 から 11 分の 1 に短縮され、グリフとフォントの検索も速くなりました。GH-13227 GH-14300 GH-14301 GH-14420 GH-14406 GH-13258
+- `command-palette-entry = clear` はデフォルトも含め、コマンドパレットの全項目を削除します。GH-12682
+- `window-padding-balance` に値 `equal` が加わりました。上余白に上限を設けず、四辺の余白を均等にします。GH-11491
+- `theme` がテーマファイルのパス内にある `~` をホームディレクトリに展開するようになりました。ライトとダークで別々のテーマを指定した場合にも対応します。GH-13840
+- `+list-themes` で、`g` と `G` で最初と最後のテーマへ移動し、`ctrl+d` で 1 ページ下へ、`ctrl+u` で 1 ページ上へ移動できるようになりました。GH-13681 GH-14607
+- ターミナルインスペクターで、ターミナルの I/O イベントをコピーしたり、ファイルに書き出したりできるようになりました。GH-13519
+- 同梱テーマを [release-20261019-151001-86a776d](https://github.com/mbadolato/iTerm2-Color-Schemes/releases/tag/release-20261019-151001-86a776d) に更新しました。356 個の新規テーマが追加され、改名や削除はありません。上流で既存テーマ 10 個の色が変わりました: Adwaita、Adwaita Dark、Atom One Light、Catppuccin Frappe、Catppuccin Latte、Catppuccin Macchiato、Catppuccin Mocha、Cursor Dark、Dark Modern、Electron Highlighter。
+- コメントや空行が内部バッファの境界で終わると、その行より後にある設定をすべて通知なしに無視する解析の問題を修正しました。通常は長い設定ファイルにのみ影響していました。GH-13638
+- 長時間の起動後にレンダラーが毎フレームでターミナルの状態を一から構築し直し、性能が低下する問題を修正しました。GH-13585
+- 自動作成される設定ファイルに設定テンプレートが入らず、空になる問題を修正しました。GH-13774
+- `$EDITOR` や `$VISUAL` が `zed --new` のように引数を含んでいても `+edit-config` が動作します。GH-11897
+- `adjust-cursor-height` が再び動作するようになりました。GH-13225
+- マウス選択の改善: `ctrl`/`cmd` を押しながらのトリプルクリックで出力を選択した後にドラッグすると、コマンド出力単位で選択範囲が広がります。画面が切り替わると（代替画面への切り替えなど）、自動スクロールが止まります。macOS で感圧タッチ（Force Touch）でクリックすると、ドラッグを始めず押した位置の単語を選択します。ドラッグを終えたときにリンクやプロンプトのクリックが作動しなくなりました。GH-12830
+- ダブルクリックによる単語選択が、明示的な改行を越えなくなりました。CJK 文字など幅の広い文字は、左右どちらの半分をダブルクリックしても単語全体が選択されます。GH-14354 GH-14391
+- 選択範囲の端にある幅の広い文字は、内部で次のページへ折り返す場合も、必ず選択状態で描画され、コピーに含まれるようになりました。GH-14632 GH-14651
+- OSC 133 のプロンプトの境界間にある空のセルをトリプルクリックして行選択しても、隣のプロンプトのテキストが選択に混ざらなくなりました。GH-14553
+- シェル統合が有効なとき、リンクの検出やダブルクリックによる選択で、プロンプトと隣のコマンドのテキストが一緒に扱われなくなりました。GH-12435
+- `cmd`/`ctrl` を押しながらのクリックで開くファイルパスに末尾の空白が含まれなくなりました。一部の TUI が表示したパスを開けない原因でした。GH-13505
+- クリックでカーソルを移動できるシェルプロンプトでクリックした際、マウスボタンを離したイベントは、押したイベントを受け取ったプログラムに報告されるようになりました。fzf の `ctrl+r` による履歴検索などでダブルクリック選択ができない問題を修正します。GH-14710
+- サイズ変更後にシェルが再描画する際、変更前のターミナルサイズを使って処理しなくなりました。サイズ変更後にプロンプトが重複したり位置がずれたりする原因のひとつを修正しました。GH-14706
+- 数百万行に及ぶ大きなスクロールバックでも、スクロールバーのクリックなどによるスクロールが機能するようになりました。GH-13048
+- `set_tab_title` など、文字列パラメーターを取るカスタム `command-palette-entry` アクションをコマンドパレットから実行しても、パラメーターがエスケープされなくなりました。GH-13609
+- クリップボードへの HTML コピーから、不要な末尾の改行を除きました。GH-13543
+- VT 形式でのコピー（`copy_to_clipboard:vt`）と VT 画面ファイルで、OSC 8 ハイパーリンク、テキスト間の空白、色付きのステータスバーなど背景色だけを持つセルを保持します。VT 画面ファイルでは末尾の空行も保持します。GH-14711 GH-14725 GH-14766
+- 修飾キーを離したとき、マウスポインターの形状がデフォルトに戻らず、実行中のプログラムが設定した形状（OSC 22）に戻るようになりました。GH-14128
+- カスタムシェーダーに、選択範囲の前景色と背景色のユニフォーム変数が入れ替わって渡されないようになりました。GH-14460
+- スタイル、書記素、ハイパーリンクが多い出力を処理するときに、「adjusting page capacity」というメッセージが大量にログに出なくなりました。GH-14631
+- スクロールや消去後に再利用される行に、折り返しやプロンプトの古い状態が残り、コピー、検索、選択、折り返しの再計算の結果が誤る問題を修正しました。GH-14010
+- 折り返された幅の広い文字を消去または削除した後、前の行の描画が更新されない問題を修正しました。GH-14054
+- 色の問い合わせなどをプログラムが大量に送信している間に設定を再読み込みすると、フリーズする問題を修正しました。GH-14833
+- `+list-themes` で検索に一致するテーマがないとき、一部のキーを押してもクラッシュしなくなりました。テンキーの下キーも、21 行ではなく 1 行だけ移動します。GH-14612 GH-14605
+- スクロールバックの消去、サイズ変更、履歴の消去後に、スクロールバック検索でクラッシュする問題を修正しました。GH-11957 GH-13274 GH-13282
+- スクロールバックで履歴を表示中、またはカーソルが画面下部付近にあるときにサイズを変更すると、クラッシュしたりビューポートが壊れたりする問題を修正しました。GH-12300 GH-12907 GH-12935
+- 大量の出力中にクリックやテキスト選択を行うと、解放済みメモリへのアクセスでクラッシュする問題を修正しました。GH-12463
+- サイズ変更時にハイパーリンクの折り返しを再計算すると、クラッシュする場合がある問題を修正しました。GH-13524
+- 容量を増やす必要のあるページ境界をまたいで行をスクロールまたは消去すると、クラッシュやメモリ破損が起こりうる問題を修正しました。GH-13394 GH-13397
+- 文字の表示でページが拡張されたときや、画面をスクロールバックに送って消去した後に、クラッシュやメモリ破損が起こりうる問題をファジングで見つけ、修正しました。GH-11261 GH-13997
+- 選択、ピン、検索、タイトルと作業ディレクトリの更新、サイズ変更時のエラー処理に潜在していたクラッシュや未定義動作を多数修正しました。GH-12894 GH-13275 GH-13278 GH-13367
+- 大きな貼り付けなどで PTY への書き込みが大量にキューに入ると、クラッシュしたり入力が壊れたりすることがある問題を修正しました。GH-13659
+- 韓国語入力などで、幅の広い文字を含む IME の未確定テキストを既存の幅の広い文字の間に入力すると、範囲外アクセスが起きる問題を修正しました。GH-12479
+- マウスボタン 11 を押すか離すとクラッシュする問題を修正しました。GH-14759
+- `write_screen_file`、`write_scrollback_file`、`write_selection_file` の各アクションを実行するたびにファイルディスクリプターが 2 つリークし、いずれ新規ターミナルを開けなくなるおそれがある問題を修正しました。GH-13644
+- 読み取り専用モードでの書き込みや、`input` 設定を通じて読み込むファイルなど、ターミナル I/O のメモリリークとファイルディスクリプターのリークを修正しました。GH-13574 GH-13579 GH-13931
 
-### Terminal Capabilities {/* #terminal-capabilities */}
+### ターミナルの機能 {/* #terminal-capabilities */}
 
-- vt: Kitty graphics animation is now fully supported: frame transmission,
-  composition, animation control, and rendering. GH-5255 GH-13943
-- vt: Kitty graphics relative placements (`P=`, `Q=`, `H=`, `V=`) are now
-  supported, allowing images to be positioned relative to other images.
-  GH-13939
-- vt: Support the Kitty graphics transient image usage hint. Transient
-  images are evicted first when image storage is full. GH-13389
-- vt: The Kitty clipboard protocol (OSC 5522) is now implemented on macOS
-  and GTK, including paste events (mode 5522). Reads and writes follow
-  `clipboard-read` and `clipboard-write`, and a new
-  `clipboard-write-limit-bytes` configuration limits the size of a single
-  write. GH-10549 GH-13962 GH-13993 GH-13995 GH-13998 GH-14002 GH-14061
-- vt: Support visibility reports (mode 2033 and `CSI ? 998 n`), which tell
-  programs when the terminal is not visible, such as in a background tab
-  or on another workspace, so they can stop rendering. GH-13494
-- vt: Programs can resize the window with the xterm `CSI 8 ; rows ; cols t`
-  sequence if the new `vt-window-resize-allowed` configuration is enabled
-  (default off). The request is ignored in splits, windows with multiple
-  tabs, the quick terminal, and fullscreen, maximized, or tiled windows.
-  GH-1115 GH-14375
-- vt: Support OSC 133 `click_events=2`, which reports prompt clicks with
-  row coordinates relative to the prompt. GH-10865 GH-12953
-- vt: Support soft terminal reset (DECSTR, `CSI ! p`), which resets
-  modes, margins, and text attributes without clearing the screen.
-  GH-14538
-- vt: Support backarrow key mode (DECBKM, mode 67), which lets programs
-  choose whether backspace sends `DEL` (`0x7f`, the default) or `BS`
-  (`0x08`). GH-12226
-- vt: Support the DECRQCRA and XTCHECKSUM screen checksum reports, which
-  are mostly used by terminal test suites. Because a program can use these
-  to read the screen contents, they are disabled unless the new
-  `vt-xt-checksum-report` configuration is enabled. The new
-  `vt-xt-checksum-extension` configuration controls how the checksum is
-  calculated. GH-14483
-- vt: Respond to `CSI 19 t` (report screen size in characters) and to
-  DECXCPR (`CSI ? 6 n`) extended cursor position requests. GH-14633
-  GH-14673
-- vt: DECRQM now answers ANSI mode queries (`CSI Ps $ p`), reports DECECM
-  and other unimplemented ANSI modes as permanently reset like xterm, and
-  no longer truncates mode numbers above 32767 in its reply. GH-12505
-  GH-14236 GH-14237 GH-14672
-- vt: Ghostty terminfo now advertises overline support (`Smol`/`Rmol`),
-  which lets tmux pass overlines through. DECRQSS SGR replies now include
-  overline and curly, double, dotted, and dashed underline styles.
-  GH-13649 GH-13653 GH-13470
-- vt: The terminfo `Se` capability now resets the cursor to the configured
-  `cursor-style` instead of a steady block. This fixes programs like Neovim
-  leaving a block cursor behind on exit. GH-12482
-- vt: OSC payloads are now limited to 8 MiB, Kitty graphics payloads to
-  65 MiB, and each cell to 64 combining codepoints, so terminal output
-  can't easily exhaust memory. This also fixes a memory leak on invalid
-  Kitty graphics data. GH-12349 GH-13633
-- vt: Experimental support for the
-  [Glyph Protocol](https://github.com/raphamorim/rio/pull/1542)
-  (APC `25a1`), which lets programs register custom glyphs. Ghostty parses
-  and answers requests but doesn't render registered glyphs yet.
-  GH-12352 GH-12930 GH-12937
-- vt: Parse the new program status protocol (OSC 7501), which lets programs
-  report whether they are idle, working, done, blocked, or failed. This is
-  the first terminal specification pioneered by the Ghostty project.
-  libghostty can parse it all, but the Ghostty GUI ignores it for now.
-  GH-14560
-- vt: Parse (but do not implement) the Kitty desktop notification protocol
-  (OSC 99). GH-10467
-- vt: Parse (but do not implement) the Kitty drag and drop protocol
-  (OSC 72). GH-13029
-- vt: More tmux control mode fixes, including crashes that running
-  `tmux -CC` could trigger. tmux control mode is still not hooked up to
-  the GUI. GH-11395 GH-11935 GH-14262 GH-14680
-- vt: Clearing the screen at a prompt (e.g. `ctrl+l` in bash or zsh) now
-  moves prior output into scrollback even when the prompt is not on the
-  last row. Previously, the output was erased. GH-14660 GH-14668
-- vt: Kitty graphics: transmitting an image with an existing ID now
-  replaces the image and removes its old placements, as the spec requires.
-  Interrupted or failed retransmissions no longer leave stale images on
-  screen. GH-6711 GH-13723 GH-13893
-- vt: Kitty graphics: images now move with the text when a program scrolls
-  with `CSI S`, `CSI T`, or scroll margins, and are clipped to the scroll
-  region. GH-4323 GH-13935
-- vt: Kitty graphics: automatically assigned image IDs no longer collide
-  with IDs chosen by the program. GH-2197 GH-13934
-- vt: Kitty graphics: delete commands now match the spec and Kitty. Point
-  deletes (`d=p`, `d=c`) only remove placements at that cell, `d=a` only
-  removes placements on the visible screen, range deletes accept empty
-  ranges, and deleting a missing placement no longer frees the image.
-  GH-13652 GH-13895 GH-13898 GH-13932
-- vt: Kitty graphics: command validation and responses now match Kitty.
-  This fixes missing responses for invalid image data that could hang
-  clients, false positive query replies, lost IDs in chunked transfer
-  replies, file transfers with an exact `S` size, and loads interrupted by
-  a non-chunk transmission. GH-13889 GH-13892 GH-13896 GH-13897 GH-13933
-  GH-14811
-- vt: Kitty graphics: cropped source rectangles are no longer stretched,
-  and `X`/`Y` offsets are kept within the first cell. GH-13890 GH-13891
-- vt: Kitty graphics: the cursor moves after tall images like Kitty does,
-  so consecutive images no longer overlap. GH-13887
-- vt: Full reset (RIS) no longer resets `image-storage-limit` to the
-  default. GH-13951
-- vt: OSC and APC sequences (such as Kitty graphics commands) canceled by
-  CAN or SUB, or aborted by another control character, are now discarded
-  instead of executed, matching xterm. GH-14453 GH-14812
-- vt: With modifyOtherKeys level 2, control keys, keypad keys, and
-  `alt+escape` now encode like xterm. F13 to F25, Help, and Menu now send
-  xterm's function key sequences in all legacy encoding modes. GH-14144
-  GH-14145
-- vt: Legacy alt-as-escape encoding now sends the full UTF-8 sequence for
-  non-ASCII keys. GH-14146
-- vt: Kitty keyboard protocol release events no longer repeat the typed
-  text for dead keys or level 5 keys on GTK, which caused duplicated
-  characters in programs like Neovim. GH-13861
-- vt: `ctrl+alt+shift+backspace` now sends `ESC BS` in legacy key encoding,
-  matching xterm. GH-14508
-- vt: UTF-8 mouse mode (1005) now encodes the button correctly, fixing
-  invalid reports for the back and forward mouse buttons. GH-14532
-- vt: Foreground, background, and cursor colors reset with OSC 110, 111,
-  or 112 now follow later configuration changes, such as a light/dark
-  theme switch. GH-13650
-- vt: Full reset (RIS) now restores palette colors changed with OSC 4.
-  GH-14480
-- vt: An empty OSC 22 now resets the mouse pointer shape to the default.
-  GH-14495
-- vt: Long desktop notifications (OSC 9 and OSC 777) with multibyte UTF-8
-  text are no longer dropped or shown as invalid UTF-8 when truncated.
-  GH-13795 GH-13811
-- vt: DCS strings now carry UTF-8 data. Previously, some UTF-8 bytes were
-  dropped, ended the string early, or started a new control sequence.
-  GH-14016
-- vt: C0 controls `0x10` to `0x1F` are now executed instead of printed
-  as text, and UTF-8 encoded C1 controls are ignored, matching xterm.
-  GH-14022 GH-14023
-- vt: Erasing a full line (`CSI 2 K`) now clears its soft-wrap state, so
-  erased rows no longer join together when the window is resized. GH-13637
-- vt: The cursor and saved cursor keep the correct position when a resize
-  reflows text, fixing an extra line wrap or overwritten text after
-  resizing. GH-12598 GH-14458 GH-14478
-- vt: Variation selectors (VS15/VS16) now apply to the preceding codepoint,
-  fixing the rendering of some ZWJ emoji such as the pirate flag. GH-12596
-- vt: Combining marks printed after a character in the last column now
-  attach to that character. GH-12581
-- vt: Characters above U+00FF, such as emoji, now print as-is instead of as
-  a blank while a non-UTF-8 character set such as DEC line drawing is
-  active. GH-14554
-- vt: Single shifts (SS2/SS3) now apply only to the next printed character.
-  GH-14576
-- vt: Tab clear (TBC) fixes: `CSI 0 g` no longer sets a tab stop where
-  there wasn't one, and `CSI g` with no parameter clears the tab stop at
-  the cursor. GH-13900 GH-14644
-- vt: Printing with autowrap (DECAWM) disabled clears the pending wrap, so
-  re-enabling autowrap doesn't cause a spurious line wrap. GH-14652
-- vt: With reverse wrap enabled, moving left after restoring a cursor with
-  a pending wrap no longer jumps the cursor. GH-14390
-- vt: Cursor movement respects margins and origin mode: CUB and backspace
-  stop at the left margin, and CHA, HPA, VPA, HPR, and VPR no longer apply
-  the margin offset twice in origin mode. GH-14761 GH-14762
-- vt: Fix a crash when VS15 narrows a wide character under the cursor.
-  GH-13631
-- vt: Fix a crash or memory corruption after narrowing the terminal cuts a
-  wide character in half on the alternate screen or with wraparound
-  disabled. GH-14509
-- vt: Fix a crash when a grapheme cluster widens in the last column and
-  wraps inside or below a scroll region with grapheme clustering (mode
-  2027) enabled. GH-14552
-- vt: Fix a slow memory and performance leak in graphics-heavy sessions
-  where evicted Kitty images left their placements' tracked positions
-  behind. GH-13656
-- vt: Fix a memory leak when an OSC color sequence contains more than two
-  requests. GH-13239
+- VT: Kitty グラフィックスのアニメーションに完全対応しました。フレームの転送、合成、アニメーションの制御、描画に対応します。GH-5255 GH-13943
+- VT: Kitty グラフィックスの相対配置（`P=`、`Q=`、`H=`、`V=`）に対応し、ほかの画像を基準に画像を配置できるようになりました。GH-13939
+- VT: Kitty グラフィックスで画像が一時的にしか使われないことを示すヒントに対応しました。画像ストレージが満杯になると、一時画像から先に追い出されます。GH-13389
+- VT: Kitty クリップボードプロトコル（OSC 5522）を macOS と GTK に実装しました。ペーストイベント（モード 5522）も含みます。読み書きは `clipboard-read` と `clipboard-write` に従い、新しい `clipboard-write-limit-bytes` 設定で 1 回あたりの書き込みサイズを制限します。GH-10549 GH-13962 GH-13993 GH-13995 GH-13998 GH-14002 GH-14061
+- VT: 可視性レポート（モード 2033 と `CSI ? 998 n`）に対応しました。バックグラウンドのタブや別のワークスペースなどでターミナルが非表示になったことをプログラムに伝え、描画を止められるようにします。GH-13494
+- VT: 新しい `vt-window-resize-allowed` 設定（デフォルトは無効）を有効にすると、プログラムから xterm の `CSI 8 ; rows ; cols t` シーケンスでウィンドウのサイズを変更できます。分割、複数タブのあるウィンドウ、クイックターミナル、フルスクリーン・最大化・タイル表示中のウィンドウでは要求を無視します。GH-1115 GH-14375
+- VT: OSC 133 の `click_events=2` に対応しました。プロンプト内のクリックを、プロンプトからの相対行座標で報告します。GH-10865 GH-12953
+- VT: ソフトターミナルリセット（DECSTR、`CSI ! p`）に対応しました。画面を消去せずに、モード、マージン、テキスト属性をリセットします。GH-14538
+- VT: 後退キーのモード（DECBKM、モード 67）に対応しました。プログラムは Backspace で `DEL`（`0x7f`、デフォルト）と `BS`（`0x08`）のどちらを送るか選べます。GH-12226
+- VT: 主にターミナルのテストスイートで使う画面チェックサム報告 DECRQCRA と XTCHECKSUM に対応しました。プログラムが画面の内容を読み取るのに使えるため、新しい `vt-xt-checksum-report` 設定を有効にしない限り無効です。新しい `vt-xt-checksum-extension` 設定でチェックサムの計算方法を指定できます。GH-14483
+- VT: `CSI 19 t`（文字数単位での画面サイズ報告）と DECXCPR（`CSI ? 6 n`）の拡張カーソル位置要求に応答します。GH-14633 GH-14673
+- VT: DECRQM が ANSI モードの問い合わせ（`CSI Ps $ p`）に応答するようになりました。DECECM など未実装の ANSI モードは xterm と同様に常にリセット状態として報告し、32767 を超えるモード番号も応答で切り詰めなくなりました。GH-12505 GH-14236 GH-14237 GH-14672
+- VT: Ghostty の terminfo が上線への対応（`Smol`/`Rmol`）を示すため、tmux が上線を通せるようになりました。DECRQSS の SGR 応答には上線と、波線、二重線、点線、破線の各下線スタイルが含まれます。GH-13649 GH-13653 GH-13470
+- VT: terminfo の `Se` 機能は、カーソルを点滅しないブロックにするのではなく、設定した `cursor-style` に戻すようになりました。Neovim などを終了した後にブロックカーソルが残る問題を修正します。GH-12482
+- VT: ターミナル出力でメモリが簡単に枯渇しないよう、OSC データは 8 MiB、Kitty グラフィックスのデータは 65 MiB、各セルの結合コードポイントは 64 個に制限しました。無効な Kitty グラフィックスデータでのメモリリークも修正しました。GH-12349 GH-13633
+- VT: プログラムがカスタムグリフを登録できる [Glyph Protocol](https://github.com/raphamorim/rio/pull/1542)（APC `25a1`）に実験的に対応しました。Ghostty は要求を解析して応答しますが、登録したグリフはまだ描画しません。GH-12352 GH-12930 GH-12937
+- VT: プログラムが待機中、作業中、完了、ブロック中、失敗のいずれかを報告できる、新しいプログラム状態プロトコル（OSC 7501）を解析します。Ghostty プロジェクトが主導した初のターミナル仕様です。libghostty はすべて解析できますが、Ghostty の GUI は現時点では無視します。GH-14560
+- VT: Kitty のデスクトップ通知プロトコル（OSC 99）を解析します（実装はまだです）。GH-10467
+- VT: Kitty のドラッグ＆ドロッププロトコル（OSC 72）を解析します（実装はまだです）。GH-13029
+- VT: `tmux -CC` の実行で発生しうるクラッシュなど、tmux 制御モードの問題をさらに修正しました。tmux 制御モードは、まだ GUI には接続されていません。GH-11395 GH-11935 GH-14262 GH-14680
+- VT: プロンプトで画面を消去する際（bash や zsh での `ctrl+l` など）、プロンプトが最終行にない場合も、それ以前の出力をスクロールバックに送るようになりました。以前は出力が消去されていました。GH-14660 GH-14668
+- VT: Kitty グラフィックスでは、仕様どおり既存の ID で画像を転送すると画像が置き換わり、古い配置が削除されます。再転送が中断または失敗しても、画面に古い画像が残りません。GH-6711 GH-13723 GH-13893
+- VT: Kitty グラフィックスでは、プログラムが `CSI S`、`CSI T`、スクロールマージンを使ってスクロールすると、画像がテキストと一緒に移動し、スクロール領域からはみ出た部分が切り取られます。GH-4323 GH-13935
+- VT: Kitty グラフィックスで自動的に割り当てる画像 ID が、プログラムで指定した ID と衝突しなくなりました。GH-2197 GH-13934
+- VT: Kitty グラフィックスの削除コマンドが、仕様および Kitty と一致するようになりました。点を指定する削除（`d=p`、`d=c`）は該当セルの配置だけを、`d=a` は表示中の画面の配置だけを削除します。範囲を指定する削除は空の範囲を受け付け、存在しない配置を削除しても画像を解放しなくなりました。GH-13652 GH-13895 GH-13898 GH-13932
+- VT: Kitty グラフィックスのコマンド検証と応答が Kitty と一致するようになりました。無効な画像データへの応答がなくクライアントがハングしうる問題、問い合わせに誤って肯定応答を返す問題、分割転送の応答から ID が欠落する問題、厳密に `S` のサイズを指定したファイル転送の問題、分割ではない転送で中断された読み込みの問題を修正しました。GH-13889 GH-13892 GH-13896 GH-13897 GH-13933 GH-14811
+- VT: Kitty グラフィックスで、切り抜いた元画像の矩形が引き伸ばされなくなり、`X`/`Y` オフセットが最初のセル内に収まるようになりました。GH-13890 GH-13891
+- VT: Kitty グラフィックスでは、Kitty と同様に縦長の画像の後でカーソルが移動するため、連続する画像が重ならなくなりました。GH-13887
+- VT: 完全リセット（RIS）が `image-storage-limit` をデフォルトに戻さなくなりました。GH-13951
+- VT: CAN や SUB で取り消されたり、ほかの制御文字によって中断されたりした OSC と APC シーケンス（Kitty グラフィックスのコマンドなど）は、xterm と同様に、実行せず破棄します。GH-14453 GH-14812
+- VT: modifyOtherKeys レベル 2 では、制御キー、テンキー、`alt+escape` が xterm と同じようにエンコードされます。F13 から F25、Help、Menu は、従来のすべてのエンコードモードで xterm のファンクションキーシーケンスを送ります。GH-14144 GH-14145
+- VT: Alt を Escape として扱う従来のエンコードが、非 ASCII のキーに対して完全な UTF-8 シーケンスを送るようになりました。GH-14146
+- VT: GTK で Kitty キーボードプロトコルのキー解放イベントが、デッドキーやレベル 5 のキーで入力したテキストを繰り返さなくなりました。Neovim などで文字が重複する原因でした。GH-13861
+- VT: 従来のキーエンコードで `ctrl+alt+shift+backspace` が xterm と同じく `ESC BS` を送ります。GH-14508
+- VT: UTF-8 マウスモード（1005）がボタンを正しくエンコードするようになり、戻る・進むマウスボタンの誤った報告を修正しました。GH-14532
+- VT: OSC 110、111、112 でリセットした前景色、背景色、カーソル色が、ライト・ダークテーマの切り替えなど、その後の設定変更に従うようになりました。GH-13650
+- VT: 完全リセット（RIS）で、OSC 4 で変更したパレットの色が元に戻るようになりました。GH-14480
+- VT: 空の OSC 22 でマウスポインターの形状がデフォルトに戻ります。GH-14495
+- VT: マルチバイト UTF-8 テキストを含む長いデスクトップ通知（OSC 9、OSC 777）が、切り詰められたときに破棄されたり不正な UTF-8 として表示されたりしなくなりました。GH-13795 GH-13811
+- VT: DCS 文字列が UTF-8 データを扱えるようになりました。以前は、一部の UTF-8 バイトが欠落したり、文字列を途中で終了させたり、新しい制御シーケンスを開始したりしていました。GH-14016
+- VT: xterm と同様に、C0 制御文字の `0x10` から `0x1F` をテキストとして表示せずに実行し、UTF-8 でエンコードされた C1 制御文字を無視するようになりました。GH-14022 GH-14023
+- VT: 行全体を消去（`CSI 2 K`）すると、その行の自動折り返しの状態も消去するため、ウィンドウのサイズを変更しても消去した行が連結されなくなりました。GH-13637
+- VT: サイズ変更に伴ってテキストの折り返しを再計算するとき、カーソルと保存済みカーソルが正しい位置を保ちます。サイズ変更後に余計な折り返しが入ったりテキストが上書きされたりする問題を修正しました。GH-12598 GH-14458 GH-14478
+- VT: 異体字セレクター（VS15/VS16）が直前のコードポイントに適用されるようになり、海賊旗など一部の ZWJ 絵文字の描画を修正しました。GH-12596
+- VT: 最終列の文字に続く結合文字が、その文字に結合されるようになりました。GH-12581
+- VT: DEC 罫線描画など非 UTF-8 の文字セットが有効な場合、絵文字など U+00FF を超える文字は空白ではなくそのまま表示されます。GH-14554
+- VT: シングルシフト（SS2/SS3）は直後に表示する 1 文字にのみ適用されます。GH-14576
+- VT: タブ消去（TBC）を修正しました。`CSI 0 g` がタブストップのなかった位置にタブストップを作らなくなり、パラメーターなしの `CSI g` はカーソル位置のタブストップを消去します。GH-13900 GH-14644
+- VT: 自動折り返し（DECAWM）が無効な状態で文字を表示すると、保留中の折り返しが解除されます。自動折り返しを再び有効にしても、意図しない折り返しは起こりません。GH-14652
+- VT: 逆方向の折り返しが有効なとき、折り返しが保留されたカーソルを復元してから左に移動しても、カーソルが飛ばなくなりました。GH-14390
+- VT: カーソル移動がマージンと原点モードに従います。CUB と Backspace は左マージンで止まり、CHA、HPA、VPA、HPR、VPR は原点モードでマージンのオフセットを二重に適用しなくなりました。GH-14761 GH-14762
+- VT: VS15 がカーソル位置にある幅の広い文字を狭くするとクラッシュする問題を修正しました。GH-13631
+- VT: 代替画面上や折り返しが無効な場合に、ターミナルを狭くすると幅の広い文字が半分に切れ、クラッシュやメモリ破損が起こる問題を修正しました。GH-14509
+- VT: 書記素クラスタリング（モード 2027）が有効なとき、最終列で書記素クラスタの幅が広がり、スクロール領域内やその下で折り返すとクラッシュする問題を修正しました。GH-14552
+- VT: グラフィックスの多いセッションで、追い出された Kitty 画像の配置位置の追跡情報が残り、メモリ使用量が次第に増えて性能が低下する問題を修正しました。GH-13656
+- VT: OSC の色シーケンスに 3 件以上の要求が含まれる場合のメモリリークを修正しました。GH-13239
 
-### Shell Integration {/* #shell-integration */}
+### シェル統合 {/* #shell-integration */}
 
-- A new `ghostty +ssh` CLI action wraps `ssh` and sets up Ghostty on remote
-  hosts: it forwards Ghostty's environment and installs Ghostty's terminfo
-  on the first connection to each host, caching successful installs. It can
-  be used directly (`ghostty +ssh user@example.com`) or as an alias
-  (`alias ssh='ghostty +ssh --'`) without shell integration. The `ssh-env`
-  and `ssh-terminfo` shell integration features now use it for every
-  shell. GH-12582
-- `ssh-terminfo` now always installs Ghostty's bundled terminfo on remote
-  hosts instead of keeping an existing, possibly outdated, `xterm-ghostty`
-  entry, and reinstalls it when a newer Ghostty changes its terminfo.
-  GH-13844
-- `ghostty +ssh-cache` has been reworked with positional destinations, a
-  new `--prune` option, consistent output and exit codes, and error
-  messages that name the cache file. See the
-  [breaking changes](#breaking-changes) above. GH-12814 GH-13533
-- `ssh-terminfo` now tells apart the same host on different ports, so
-  terminfo is installed on each of them. `ghostty +ssh-cache` accepts
-  `host:port` destinations. GH-14472
-- `ssh-env` no longer overrides `SetEnv` entries in your `~/.ssh/config`.
-  GH-11518 GH-14854
-- bash: Failed commands now report their real exit status on Bash 4.4+,
-  so command finished notifications no longer report every command as
-  successful. GH-14247 GH-14250
-- nu: Tab completion for `ssh` and `sudo` now works with external
-  completers such as carapace. GH-13310
-- bash: The bundled bash-preexec, used only for Bash versions older than
-  4.4 such as macOS's `/bin/bash`, has been updated to 0.7.0. GH-14120
-- zsh: Fix a stray `{` in the prompt and broken prompt marking when `PS1`
-  or `PS2` ends with a bare `%`. GH-11832
-- bash: Fix "command not found" errors in subshells that inherit
-  `PROMPT_COMMAND`. GH-11690
-- bash: Fix a syntax error when an existing `PROMPT_COMMAND` ends with a
-  newline. GH-11621
-- bash: Fix extra blank lines at the prompt when using ble.sh. GH-11644
-- bash: Fix the shell integration hook being added twice when it is
-  sourced again with an array `PROMPT_COMMAND`. GH-14266
+- 新しい CLI アクション `ghostty +ssh` は、`ssh` をラップし、リモートホストで Ghostty を使えるように準備します。Ghostty の環境変数を転送し、各ホストへの初回接続時に Ghostty の terminfo をインストールし、成功した結果をキャッシュします。シェル統合なしで、直接（`ghostty +ssh user@example.com`）またはエイリアス（`alias ssh='ghostty +ssh --'`）で使えます。シェル統合の `ssh-env` と `ssh-terminfo` は、すべてのシェルでこれを利用します。GH-12582
+- `ssh-terminfo` はリモートホストに既存の `xterm-ghostty` があっても、古い可能性があるため、常に Ghostty 同梱の terminfo をインストールするようになりました。新しい Ghostty で terminfo が変わったときには再インストールします。GH-13844
+- `ghostty +ssh-cache` を作り直しました。接続先の位置引数、新しい `--prune` オプション、統一された出力と終了コード、キャッシュファイル名を含むエラーメッセージに対応します。上記の[互換性を壊す変更](#breaking-changes)をご覧ください。GH-12814 GH-13533
+- `ssh-terminfo` が同じホストでもポートを区別し、それぞれに terminfo をインストールするようになりました。`ghostty +ssh-cache` は `host:port` 形式の接続先を受け付けます。GH-14472
+- `ssh-env` が `~/.ssh/config` の `SetEnv` の指定を上書きしなくなりました。GH-11518 GH-14854
+- bash: Bash 4.4 以降では、失敗したコマンドが実際の終了ステータスを報告します。コマンドの終了通知ですべてのコマンドが成功したと報告されなくなりました。GH-14247 GH-14250
+- nu: `ssh` と `sudo` の Tab 補完が、carapace などの外部補完ツールと併用できるようになりました。GH-13310
+- bash: macOS の `/bin/bash` など Bash 4.4 より前のバージョンでのみ使う、同梱の bash-preexec を 0.7.0 に更新しました。GH-14120
+- zsh: `PS1` や `PS2` の末尾が単独の `%` のときに、プロンプトに余分な `{` が表示され、プロンプトのマーク付けが壊れる問題を修正しました。GH-11832
+- bash: `PROMPT_COMMAND` を継承するサブシェルの「command not found」エラーを修正しました。GH-11690
+- bash: 既存の `PROMPT_COMMAND` が改行で終わる場合の構文エラーを修正しました。GH-11621
+- bash: ble.sh の利用時にプロンプトで余分な空行が入る問題を修正しました。GH-11644
+- bash: `PROMPT_COMMAND` が配列の場合に再度読み込むと、シェル統合フックが二重に追加される問題を修正しました。GH-14266
 
 ### macOS {/* #macos */}
 
-- macOS: Support macOS 27. This fixes the layout and background color of
-  titlebar tabs, a thin border around the app icon, hidden titlebars
-  covering the top lines of the terminal with Reduce Transparency enabled,
-  and the Shortcuts "New Window" action opening two windows. GH-13001
-  GH-13390 GH-14107 GH-14411 GH-12999 GH-13069
-- macOS: When a terminal's process exits, a native bar now appears at the
-  bottom of the terminal instead of text being written into the terminal.
-  Commands that fail or exit faster than `abnormal-command-exit-runtime`
-  are highlighted in red. GH-7649 GH-12251
-- macOS: Quitting, or closing a window, when multiple windows or tabs have
-  running processes now offers "Review Windows...", which steps through
-  each one so you can decide what to close. GH-12742 GH-14062
-- macOS: The command palette now highlights matching text, matches
-  initials, searches action descriptions, and ranks results by where they
-  matched. GH-12264 GH-13610 GH-13624
-- macOS: The search bar now remembers the last search and shares it with
-  other apps through the system find pasteboard, like Safari and
-  Terminal.app. GH-12516 GH-12712
-- macOS: Screen readers such as VoiceOver are now notified when the
-  selection changes instead of reading a stale selection. GH-12902
-- macOS: The AppleScript `terminal` class and the Shortcuts terminal entity
-  now expose `pid` (of the foreground process) and `tty`. GH-11592
-  GH-10756 GH-11922
-- macOS: AppleScript tabs and terminals have a new read-write
-  `name override` property to set or clear a custom title. GH-12048
-  GH-14733
-- macOS: Middle-clicking a tab closes it with
-  `macos-titlebar-style = tabs`. GH-11962 GH-11963
-- macOS: The version in the About window now links to the release notes
-  for that version. GH-11964
-- macOS: Updates that are downloaded and installed automatically no longer
-  prompt you to restart. Checking for updates manually still offers to
-  restart. GH-13623
-- macOS: `toggle_background_opacity` now applies to every tab in the
-  window, and new windows inherit the current state. GH-11583
-- macOS: `cmd+arrow_up` and `cmd+arrow_down` now run their configured
-  keybinds, which default to `jump_to_prompt`. Ghostty 1.3 always scrolled
-  to the top or bottom of the scrollback instead, ignoring the
-  configuration. To scroll to the top or bottom, use `cmd+home` and
-  `cmd+end`. GH-12245
-- macOS: In the configuration errors window, Return reloads the
-  configuration and Escape ignores the errors. GH-12601
-- macOS: Ghostty launches about 15% faster to a visible window and draws
-  its first frame about 27% sooner. GH-13722
-- macOS: Terminals that aren't visible, such as background tabs, now
-  release their GPU resources and rebuild them when shown again. With 20
-  background tabs, GPU memory drops from about 385 MiB to 18 MiB. Metal
-  buffers also no longer over-allocate when they grow. GH-14017 GH-13490
-- macOS: Lower idle CPU and energy use. The display link now pauses when
-  there is nothing to draw, and unfocused terminals that are animating
-  draw at most once per display refresh instead of once per write.
-  GH-14035 GH-14068
-- macOS: Update Sparkle to 2.9.6, which fixes several security advisories
-  in Sparkle, including CVE-2026-47121 and CVE-2026-47122. GH-14072 GH-14082
-- macOS: Global keybinds no longer stop working after macOS disables
-  Ghostty's event tap. GH-12294 GH-12714
-- macOS: Fix IME composition issues. Korean text being composed is now
-  committed instead of lost when pressing an arrow key, and control-key
-  IME shortcuts such as Japanese input's `ctrl+j` no longer send control
-  characters to the terminal. GH-11461 GH-12447 GH-12518 GH-12547
-- macOS: Text from input methods, dictation, and the emoji picker is now
-  sent as typed input instead of pasted text. Programs no longer treat
-  dictation as a paste, and switching input sources mid-composition sends
-  the pending text as keys, matching Terminal.app. GH-13195 GH-13222
-  GH-13817
-- macOS: Unicode Hex Input can now enter characters outside the Basic
-  Multilingual Plane, such as emoji, typed as surrogate pairs. GH-13733
-  GH-13737
-- macOS: `font-thicken` now also applies to IME preedit text. GH-14230
-- macOS: `option+backspace` and other modified Backspace keys now report
-  their modifiers with the Kitty keyboard protocol instead of sending a
-  bare DEL. GH-13871
-- macOS: Pasting and dropping text now prefer plain text over URLs, so a
-  path copied from apps like Transmit pastes as a path instead of an
-  `sftp://` URL. GH-13152 GH-13170 GH-13212
-- macOS: The search bar keeps focus when you click in it or on the
-  next/previous buttons, and the terminal's focus state is now correct
-  while search is open. GH-11872 GH-11978
-- macOS: The Find Next and Find Previous menu items and the
-  `navigate_search` and `end_search` keybinds now work correctly,
-  including while the search field is focused. GH-12070 GH-12492
-- macOS: Pressing Enter in the search bar no longer blocks confirming an
-  IME candidate. GH-12781
-- macOS: Clicking a command palette entry with the mouse now runs it
-  instead of closing the palette. GH-11665
-- macOS: The command palette now gets focus and paste when opened from the
-  inline tab title editor. GH-12524
-- macOS: Holding `cmd+t` to create many tabs now leaves the newest tab
-  focused. GH-13725 GH-13985
-- macOS: Fix an empty "ghost" tab or window that could appear when a tab
-  was closed right after it was opened. GH-12119
-- macOS: Titlebar tabs no longer disappear after creating a tab from
-  "Show All Tabs". GH-12949 GH-13017
-- macOS: Double-clicking the window title now zooms the window with
-  `macos-titlebar-style = tabs`. GH-12219
-- macOS: Moving a tab with `macos-titlebar-style = tabs` on macOS 26 no
-  longer briefly shows the neighboring tab. GH-14847
-- macOS: The inline tab title editor stays in place while the window is
-  resized. GH-12220
-- macOS: Fix tabs flashing when switching tabs after a program changed the
-  background color with OSC 11, and the window chrome keeping the old
-  color after a light/dark theme switch. GH-12825 GH-12828 GH-12822
-- macOS: The `macos-glass-regular` and `macos-glass-clear` options for
-  `background-blur` now layer the glass over the background color, and
-  focused windows are no longer less transparent than unfocused ones.
-  GH-13914 GH-13928
-- macOS: The native titlebar no longer cuts off the end of the title when
-  using a custom `window-title-font-family`. GH-14135 GH-14217
-- macOS: Fix terminals rendering at a stale size under heavy system load or
-  during rapid resizes from window managers. GH-12143
-- macOS: Splits dragged into another tab or window now render immediately,
-  and the source window keeps keyboard focus. GH-12343 GH-12338
-- macOS: The split zoom indicator no longer stays visible after the other
-  splits of a zoomed split are closed, such as with AppleScript. GH-14703
-- macOS: The split divider now uses the standard row and column resize
-  pointers. GH-13433
-- macOS: `window-save-state = never` now also stops macOS from taking
-  window restoration snapshots, which could stall focus changes between
-  windows. GH-14506
-- macOS: Window state saved by Ghostty 1.2 or later is now migrated, so
-  windows and tabs are restored after updating Ghostty. GH-12461
-- macOS: Tabs created while the screen is locked now initialize correctly.
-  GH-13639
-- macOS: Quitting now asks for confirmation when windows with running
-  processes are minimized or the quick terminal is hidden. GH-13686
-- macOS: OSC 52 clipboard read confirmations no longer steal focus. If the
-  terminal is unfocused, Ghostty rings the bell and shows the prompt when
-  you return to it. GH-13744
-- macOS: Splits in the quick terminal now also set
-  `GHOSTTY_QUICK_TERMINAL=1`. GH-12895 GH-12896
-- macOS: The quick terminal no longer reopens at a stale size after a
-  display is reconnected at a different resolution. GH-13250
-- macOS: The "New Ghostty Tab Here" and "New Ghostty Window Here" services
-  now open the correct directory when given a plain-text path. GH-12727
-  GH-12731
-- macOS: Working directories passed from Services, Shortcuts, and
-  AppleScript are now normalized, fixing Nushell and zsh `%1~` prompts.
-  GH-12614 GH-14051
-- macOS: `ghostty -e` no longer opens the command's file arguments as
-  extra terminals, e.g. `ghostty -e vim file.txt`. GH-13748
-- macOS: Opening a `.command` file from Finder no longer corrupts
-  non-ASCII characters in its path. GH-13862
-- macOS: The Shortcuts terminal entity now reports the correct kind,
-  title, working directory, and screenshot for new terminals. GH-13007
-- macOS: The Shortcuts "New Terminal" action now works with commands that
-  have arguments and with a command field that was cleared. GH-12391
-  GH-12392
-- macOS: AppleScript `send key` now works for character keys, not only
-  special keys like `enter`, and respects `macos-option-as-alt`. GH-13205
-- macOS: Update pill fixes: update errors are now shown, "Install and
-  Relaunch" no longer asks for confirmation, and the cancel option is
-  hidden once an update can no longer be canceled. GH-13540 GH-13562
-  GH-13612
-- macOS: The default app icon follows the system icon style again after
-  changing it in System Settings, and custom icons now apply to the app in
-  Finder. GH-12180 GH-12344
-- macOS: The dock icon bell badge now appears when notification permission
-  was granted earlier without badge permission. GH-12133
-- macOS: The Copy menu item is disabled when nothing is selected. GH-12521
-- macOS: Menu items now show the correct shortcut for keybinds on physical
-  keys (e.g. `super+backquote`), uppercase letters, forward delete, and
-  the `scroll_to_selection` and `search_selection` actions. GH-13888
-  GH-12039 GH-12011 GH-12281
-- macOS: The secure input indicator's popover arrow now points at the
-  icon. GH-12249
-- macOS: Fix a rare permanent freeze after waking from sleep or changing
-  displays. macOS did not mark the app as "Not Responding", so it could
-  only be killed. GH-14691
-- macOS: Fix a crash when closing a tab, most easily triggered with
-  `undo-timeout = 0`. GH-13359 GH-13364
-- macOS: Fix a crash when opening a new tab from a native fullscreen
-  window. GH-13636
-- macOS: Fix a crash caused by a data race when reading cached terminal
-  contents. GH-13646
-- macOS: Fix a crash when OSC 52 clipboard confirmation prompts overlap.
-  GH-13648
-- macOS: Fix crashes when CoreText returns null, such as for fonts without
-  a display name or under severe memory pressure. GH-13642 GH-13679
-- macOS: Fix closed windows leaking with transparent titlebars (the
-  default), which made Ghostty and WindowServer use more CPU and memory
-  over time. GH-13601
-- macOS: Fix a memory leak each time Ghostty reads terminal text, such as
-  for copy, Quick Look, or accessibility. GH-12020 GH-12025
-- macOS: Fix an IOSurface memory leak when scripts rapidly create and close
-  terminals. GH-13640
-- macOS: Fix a Mach port leak, and a gradual slowdown, while global
-  keybinds wait for Accessibility permission. GH-13590
+- macOS: macOS 27 に対応しました。タイトルバータブの配置と背景色、アプリアイコンの細い枠、「透明度を下げる」が有効な場合に非表示のタイトルバーがターミナルの上端を覆う問題、ショートカットの「New Window」（新規ウィンドウ）がウィンドウを 2 つ開く問題を修正しました。GH-13001 GH-13390 GH-14107 GH-14411 GH-12999 GH-13069
+- macOS: ターミナルのプロセスが終了すると、ターミナルにテキストを書き込む代わりに、下端にネイティブのバーを表示するようになりました。失敗したコマンドや `abnormal-command-exit-runtime` より短時間で終了したコマンドは赤で強調されます。GH-7649 GH-12251
+- macOS: 複数のウィンドウやタブでプロセスが動いているときに終了やウィンドウを閉じる操作を行うと、「Review Windows...」（ウィンドウを確認）が表示されます。ひとつずつ確認し、どれを閉じるか決められます。GH-12742 GH-14062
+- macOS: コマンドパレットが一致するテキストを強調し、頭文字やアクションの説明も検索し、一致した箇所に応じて結果を並べるようになりました。GH-12264 GH-13610 GH-13624
+- macOS: 検索バーが前回の検索内容を記憶し、Safari や Terminal.app と同様に、システムの検索用ペーストボードでほかのアプリと共有するようになりました。GH-12516 GH-12712
+- macOS: 選択が変わると VoiceOver などのスクリーンリーダーに通知し、古い選択範囲を読み上げなくなりました。GH-12902
+- macOS: AppleScript の `terminal` クラスとショートカットのターミナルエンティティから、`pid`（フォアグラウンドプロセスの ID）と `tty` を取得できるようになりました。GH-11592 GH-10756 GH-11922
+- macOS: AppleScript のタブとターミナルに、カスタムタイトルを設定または解除する読み書き可能な `name override` プロパティを追加しました。GH-12048 GH-14733
+- macOS: `macos-titlebar-style = tabs` では、タブを中クリックすると閉じられます。GH-11962 GH-11963
+- macOS: 「このアプリケーションについて」ウィンドウのバージョン表示から、そのバージョンのリリースノートを開けるようになりました。GH-11964
+- macOS: 自動的にダウンロードしてインストールしたアップデートで、再起動を求めなくなりました。手動でアップデートを確認する場合は、引き続き再起動を選べます。GH-13623
+- macOS: `toggle_background_opacity` がウィンドウ内のすべてのタブに適用され、新しいウィンドウも現在の状態を継承します。GH-11583
+- macOS: `cmd+arrow_up` と `cmd+arrow_down` は設定されたキーバインドを実行します。デフォルトは `jump_to_prompt` です。Ghostty 1.3 では設定を無視してスクロールバックの先頭と末尾へ移動していました。先頭と末尾に移動するには `cmd+home` と `cmd+end` を使ってください。GH-12245
+- macOS: 設定エラーのウィンドウで、Return を押すと設定を再読み込みし、Escape を押すとエラーを無視します。GH-12601
+- macOS: Ghostty の起動からウィンドウ表示までが約 15%、最初のフレームの描画までが約 27% 高速化しました。GH-13722
+- macOS: バックグラウンドのタブなど非表示のターミナルは、GPU リソースを解放し、再び表示されるときに再構築します。バックグラウンドにタブが 20 個ある場合、GPU メモリは約 385 MiB から 18 MiB に減ります。また、Metal バッファーの拡張時に過剰な割り当てを行わなくなりました。GH-14017 GH-13490
+- macOS: アイドル時の CPU 使用率と電力消費が減りました。描画するものがない場合はディスプレイリンクが一時停止します。アニメーション表示中でもフォーカスされていないターミナルでは、書き込みごとではなく、ディスプレイの更新ごとに最大 1 回だけ描画します。GH-14035 GH-14068
+- macOS: Sparkle を 2.9.6 に更新しました。CVE-2026-47121 と CVE-2026-47122 を含む、Sparkle の複数のセキュリティ問題が修正されています。GH-14072 GH-14082
+- macOS: macOS が Ghostty のイベントタップを無効にした後も、グローバルキーバインドが動作し続けます。GH-12294 GH-12714
+- macOS: IME での文字入力の問題を修正しました。韓国語で入力中のテキストは矢印キーを押すと消えずに確定されます。日本語入力の `ctrl+j` など、Control キーを使う IME ショートカットがターミナルに制御文字を送ることもなくなりました。GH-11461 GH-12447 GH-12518 GH-12547
+- macOS: 入力メソッド、音声入力、絵文字ピッカーからのテキストは、貼り付けではなくキー入力として送るようになりました。プログラムが音声入力を貼り付けとして扱うことはなく、文字の変換中に入力ソースを切り替えると Terminal.app と同様に未確定のテキストをキー入力として送ります。GH-13195 GH-13222 GH-13817
+- macOS: Unicode Hex Input で、絵文字など基本多言語面の外にある文字をサロゲートペアとして入力できるようになりました。GH-13733 GH-13737
+- macOS: `font-thicken` が IME の未確定テキストにも適用されます。GH-14230
+- macOS: `option+backspace` など、修飾キー付きの Backspace は、単なる DEL ではなく Kitty キーボードプロトコルで修飾キーを報告するようになりました。GH-13871
+- macOS: テキストの貼り付けとドロップで URL よりプレーンテキストを優先するようになりました。Transmit などでコピーしたパスは、`sftp://` の URL ではなくパスとして貼り付けられます。GH-13152 GH-13170 GH-13212
+- macOS: 検索バーの内部や次・前ボタンをクリックしても、検索バーのフォーカスが維持されます。検索中にターミナルのフォーカス状態も正しくなりました。GH-11872 GH-11978
+- macOS: 「Find Next」（次を検索）と「Find Previous」（前を検索）のメニュー項目や、`navigate_search` と `end_search` のキーバインドが、検索欄にフォーカスがある場合も正しく機能します。GH-12070 GH-12492
+- macOS: 検索バーで Enter を押しても、IME の候補の確定を妨げなくなりました。GH-12781
+- macOS: コマンドパレットの項目をマウスでクリックすると、パレットを閉じるだけでなく項目を実行するようになりました。GH-11665
+- macOS: タブタイトルのインライン編集欄からコマンドパレットを開くと、フォーカスが移って貼り付けもできるようになりました。GH-12524
+- macOS: `cmd+t` を長押ししてタブを多数作成すると、最新のタブにフォーカスが残ります。GH-13725 GH-13985
+- macOS: 開いた直後にタブを閉じると、空の「ゴースト」タブやウィンドウが現れる場合がある問題を修正しました。GH-12119
+- macOS: 「Show All Tabs」（すべてのタブを表示）からタブを作成した後にタイトルバータブが消えなくなりました。GH-12949 GH-13017
+- macOS: `macos-titlebar-style = tabs` でも、ウィンドウタイトルをダブルクリックするとウィンドウが拡大されるようになりました。GH-12219
+- macOS: macOS 26 で `macos-titlebar-style = tabs` を指定してタブを移動するとき、隣のタブが一瞬表示されなくなりました。GH-14847
+- macOS: ウィンドウのサイズを変更している間、タブタイトルのインライン編集欄が同じ位置にとどまります。GH-12220
+- macOS: プログラムが OSC 11 で背景色を変更した後にタブを切り替えると点滅する問題と、ライト・ダークテーマ切り替え後もウィンドウ装飾に古い色が残る問題を修正しました。GH-12825 GH-12828 GH-12822
+- macOS: `background-blur` の `macos-glass-regular` と `macos-glass-clear` が背景色の上にガラス効果を重ねるようになりました。フォーカス中のウィンドウの透明度が、非フォーカス時より低くなることもなくなりました。GH-13914 GH-13928
+- macOS: `window-title-font-family` を指定した場合に、ネイティブのタイトルバーでタイトルの末尾が切れなくなりました。GH-14135 GH-14217
+- macOS: システム負荷が高いときやウィンドウマネージャーが高速でサイズ変更を行うときに、ターミナルが古いサイズで描画される問題を修正しました。GH-12143
+- macOS: 別のタブやウィンドウにドラッグした分割がすぐに描画されるようになり、移動元のウィンドウはキーボードフォーカスを保ちます。GH-12343 GH-12338
+- macOS: AppleScript などを使って、ズーム中の分割以外の分割を閉じた後に、分割のズーム表示が残らなくなりました。GH-14703
+- macOS: 分割の境界線が、行や列のサイズ変更に使われる標準のポインターを表示するようになりました。GH-13433
+- macOS: `window-save-state = never` は macOS がウィンドウ復元用のスナップショットを取ることも防ぎます。スナップショットがウィンドウ間のフォーカス移動を遅らせる場合がありました。GH-14506
+- macOS: Ghostty 1.2 以降で保存したウィンドウ状態が移行されるようになり、Ghostty のアップデート後にウィンドウとタブが復元されます。GH-12461
+- macOS: 画面のロック中に作成したタブが正しく初期化されます。GH-13639
+- macOS: プロセスが動いているウィンドウが最小化されている場合や、クイックターミナルが非表示の場合も、アプリの終了時に確認を求めます。GH-13686
+- macOS: OSC 52 によるクリップボードの読み取り確認が、フォーカスを奪わなくなりました。ターミナルにフォーカスがなければ、ベルを鳴らして、戻ってきたときに確認画面を表示します。GH-13744
+- macOS: クイックターミナル内の分割でも `GHOSTTY_QUICK_TERMINAL=1` が設定されるようになりました。GH-12895 GH-12896
+- macOS: ディスプレイを別の解像度で再接続しても、クイックターミナルが古いサイズで開き直されなくなりました。GH-13250
+- macOS: サービスの「New Ghostty Tab Here」（ここで Ghostty の新規タブを開く）と「New Ghostty Window Here」（ここで Ghostty の新規ウィンドウを開く）が、プレーンテキストでパスを受け取った場合に正しいディレクトリを開きます。GH-12727 GH-12731
+- macOS: サービス、ショートカット、AppleScript から渡された作業ディレクトリを正規化し、Nushell や zsh の `%1~` プロンプトの問題を修正しました。GH-12614 GH-14051
+- macOS: `ghostty -e vim file.txt` のような `ghostty -e` の実行時に、コマンドに渡すファイル引数が別のターミナルで開かれなくなりました。GH-13748
+- macOS: Finder から `.command` ファイルを開いても、パス内の非 ASCII 文字が壊れなくなりました。GH-13862
+- macOS: ショートカットのターミナルエンティティが、新しいターミナルの種類、タイトル、作業ディレクトリ、スクリーンショットを正しく報告します。GH-13007
+- macOS: ショートカットの「New Terminal」（新規ターミナル）アクションが、引数付きのコマンドでも、コマンド欄を消去した場合でも機能します。GH-12391 GH-12392
+- macOS: AppleScript の `send key` が、`enter` のような特殊キーに加え文字キーにも対応し、`macos-option-as-alt` に従うようになりました。GH-13205
+- macOS: カプセル型のアップデート通知を修正しました。アップデートのエラーを表示するようになり、「Install and Relaunch」（インストールして再起動）で確認を求めなくなりました。アップデートを取り消せなくなった段階で、取り消しの選択肢を非表示にします。GH-13540 GH-13562 GH-13612
+- macOS: システム設定でアイコンのスタイルを変更すると、デフォルトのアプリアイコンが再びシステムに従います。カスタムアイコンは Finder に表示されるアプリにも適用されます。GH-12180 GH-12344
+- macOS: 通知を以前に許可していてバッジは許可していなかった場合にも、Dock のアイコンにベルのバッジを表示します。GH-12133
+- macOS: 何も選択していないと「Copy」（コピー）のメニュー項目が無効になります。GH-12521
+- macOS: 物理キー（`super+backquote` など）、大文字、前方削除や、`scroll_to_selection` と `search_selection` アクションのキーバインドが、メニュー項目に正しいショートカットを表示するようになりました。GH-13888 GH-12039 GH-12011 GH-12281
+- macOS: セキュア入力のインジケーターのポップオーバーの矢印が、アイコンを指すようになりました。GH-12249
+- macOS: スリープからの復帰やディスプレイの変更後に、まれにフリーズして復帰しない問題を修正しました。macOS は「応答なし」と表示しなかったため、強制終了するしかありませんでした。GH-14691
+- macOS: タブを閉じるとクラッシュする問題を修正しました。`undo-timeout = 0` のときに最も発生しやすい問題でした。GH-13359 GH-13364
+- macOS: ネイティブフルスクリーンのウィンドウから新しいタブを開くとクラッシュする問題を修正しました。GH-13636
+- macOS: キャッシュされたターミナルの内容を読み取る際、データ競合が原因でクラッシュする問題を修正しました。GH-13646
+- macOS: OSC 52 のクリップボード確認画面が重なるとクラッシュする問題を修正しました。GH-13648
+- macOS: 表示名のないフォントやメモリが極端に逼迫したときなど、CoreText が null を返すとクラッシュする問題を修正しました。GH-13642 GH-13679
+- macOS: デフォルトの透明なタイトルバーを使用している場合に、閉じたウィンドウが解放されず、Ghostty と WindowServer の CPU やメモリの使用量が時間とともに増える問題を修正しました。GH-13601
+- macOS: コピー、クイックルック、アクセシビリティなどのために Ghostty がターミナルのテキストを読み取るたびに発生していたメモリリークを修正しました。GH-12020 GH-12025
+- macOS: スクリプトがターミナルをすばやく作成・終了するときの IOSurface のメモリリークを修正しました。GH-13640
+- macOS: グローバルキーバインドがアクセシビリティの許可を待つ間に Mach ポートがリークし、徐々に動作が遅くなる問題を修正しました。GH-13590
 
 ### GTK (Linux, FreeBSD) {/* #gtk-(linux-freebsd) */}
 
-- GTK: Splits can now be rearranged with drag and drop, matching macOS.
-  Drag a split by its handle and drop it onto another split, including
-  splits in other tabs and windows. GH-10224 GH-10423
-- GTK: Ghostty now renders at the true fractional scale (e.g. 125% or
-  150%), so text and box-drawing characters are sharp instead of blurry
-  under fractional scaling. GH-1938 GH-14269
-- GTK: The renderer no longer uses `GtkGLArea`. Ghostty now renders with
-  EGL entirely on the render thread and hands finished frames to GTK as
-  DMABUFs, so the main thread no longer does any OpenGL work. GH-14052
-  GH-14636
-- GTK: Windows can now be renamed using the menu, command palette, or the
-  new `prompt_window_title` and `set_window_title` binding actions.
-  GH-10469 GH-10999
-- GTK: A new `+new-tab` CLI command opens a new tab in a running Ghostty
-  instance. When run from inside Ghostty, the tab opens in the same
-  window. It accepts the same `-e`, `--working-directory`, and `--title`
-  flags as `+new-window`. GH-11762
-- GTK: A new `+toggle-quick-terminal` CLI command toggles the quick
-  terminal of a running Ghostty instance, useful for binding in window
-  managers without global shortcut support. GH-12661
-- GTK: Global keybinds now use the `vicinae-hotkey-v1` Wayland protocol
-  when the compositor supports it (e.g. Hyprland 0.56+), falling back to
-  the XDG desktop portal otherwise. Ghostty shows a desktop notification if
-  a global keybind can't be registered. GH-13464
-- GTK: `quick-terminal-screen` is now supported on Wayland. The default,
-  `main`, places the quick terminal on the compositor's primary output
-  (or the first monitor if the compositor doesn't report one). Set it to
-  `mouse` to let the compositor choose, which was the previous behavior.
-  GH-11117
-- GTK: On Wayland, `background-blur` now uses the compositor-agnostic
-  `ext-background-effect-v1` protocol instead of KDE's blur protocol,
-  enabling blur on compositors such as Niri. The blur region also no longer
-  covers the window's client-side shadows. GH-10721 GH-10720 GH-10727
-- GTK: On GTK 4.23.3 and newer, `background-blur` uses GTK's built-in
-  background blur, which covers the window more accurately. GH-13581
-  GH-13586
-- GTK: The `open_config` binding action now accepts `new_window` to
-  edit the configuration in `$VISUAL` or `$EDITOR` in a new Ghostty
-  window. The default, `os_open`, keeps the previous behavior. GH-11905
-- GTK: A new configuration `gtk-horizontal-tab-scroll` (default `true`)
-  can be set to `false` to stop two-finger horizontal scrolling from
-  switching tabs, passing the scroll to the terminal application instead.
-  GH-12659
-- GTK: A new configuration `gtk-tabs-inverted` moves the close button to
-  the start of each tab, in both the tab bar and the tab overview.
-  GH-14657
-- GTK: The default command palette entries are now translatable. GH-11641
-- GTK: The embedded Noto emoji fonts were updated, so newer emoji and ZWJ
-  sequences such as the head-shaking faces render as one glyph instead of
-  overlapping neighboring cells. GH-14047
-- GTK: `ctrl+shift+page_up` and `ctrl+shift+page_down` now move the current
-  tab left and right (`move_tab`), matching Firefox, GNOME Terminal, and
-  VS Code. `jump_to_prompt` moved to `ctrl+shift+arrow_up` and
-  `ctrl+shift+arrow_down`. GH-4998 GH-12458
-- GTK: URLs now open through the XDG desktop portal, falling back to
-  `xdg-open` if the portal is unavailable. Ghostty passes an activation
-  token so the opened application, such as your browser, can come to the
-  front on compositors that require one. GH-5991 GH-11754 GH-14785
-  GH-14787
-- GTK: Desktop notifications are now withdrawn when their terminal is
-  focused or closed, and repeated notifications with the same text
-  replace each other, matching macOS. GH-14108
-- GTK: Tabs that aren't visible no longer render, saving CPU and GPU.
-  This matches macOS. GH-12760
-- GTK: The Dolphin "Open Ghostty Here" action now opens a new window in
-  the running Ghostty instance instead of launching a separate one.
-  GH-11614
-- GTK: Fix Ghostty sometimes failing to launch with systemd 262, which
-  refused to start the service because Ghostty reported readiness before
-  it could handle reload signals. GH-14398 GH-14399
-- GTK: Fix deeply nested splits sometimes becoming invisible or losing
-  focus. GH-11193 GH-12698
-- GTK: Resizing splits, especially with `resize_split` keybinds, no
-  longer flickers. GH-13414
-- GTK: `resize_split` on nested splits no longer causes large jumps in
-  size. GH-12699
-- GTK: Splits can no longer be resized smaller than one cell, by dragging
-  the divider or with `resize_split`. GH-14476
-- GTK: High-resolution scroll wheels no longer scroll much faster than
-  standard scroll wheels. GH-12483
-- GTK: Disable unwanted kinetic scrolling on trackpads with GTK versions
-  older than 4.20.1. GH-11793
-- GTK: Middle clicks are once again sent to terminal applications using
-  mouse reporting when `gtk-enable-primary-paste` is disabled in
-  GSettings. GH-12940 GH-13108
-- GTK: The quick terminal no longer breaks when toggled off manually
-  while `quick-terminal-autohide` is enabled. GH-11679 GH-12471
-- GTK: Opening the right-click context menu no longer hides the quick
-  terminal when `quick-terminal-autohide` is enabled. GH-12843
-- GTK: The resize overlay no longer keeps reappearing when the scrollbar
-  is visible and no longer blocks mouse input while shown. GH-11970
-  GH-11972
-- GTK: The maximum window size is now based on the monitor the window is
-  currently on, not the monitor it was opened on. GH-13171
-- GTK: `+new-window -e` now works when `shell-integration` is set to a
-  specific shell. `+new-window` and `+new-tab` also accept a new
-  `--shell-integration` flag. GH-12378 GH-13741
-- GTK: Keys remapped to modifiers with XKB (e.g. Delete remapped to
-  `ISO_Level3_Shift`) no longer also send the original key. GH-13967
-- GTK: On Wayland, the IME candidate window now follows the cursor while
-  composing and no longer covers the line being edited. GH-14729
-- GTK: Splits in a tab that was moved to another window now act on the
-  new window (e.g. `toggle_fullscreen`). GH-14474
-- GTK: The mouse cursor keeps its text shape while selecting text.
-  GH-14558
-- GTK: The command palette now uses the terminal colors when
-  `window-theme = ghostty`. GH-14662
-- GTK: Opening URLs no longer fails when the fallback opener (`xdg-open`)
-  produces large output. GH-12797
-- GTK: Clicking a desktop notification no longer focuses the wrong
-  terminal when the one that sent it has since been closed. GH-12028
-- GTK: A bell in the focused terminal no longer leaves the bell
-  indicator set. GH-13597
-- GTK: Fix the window continuously redrawing in the background after an
-  indeterminate progress bar (OSC 9;4) was removed. GH-14704 GH-14738
-- GTK: Log missing or invalid `gtk-xft-dpi` values once instead of
-  repeatedly. GH-14410 GH-14085 GH-14434
-- GTK: Fix a crash when closing tabs or splits on GTK 4.20 (GNOME 49).
-  GH-12426
-- GTK: Fix a crash with global keybinds or on configuration reload when
-  no D-Bus connection is available. GH-13101
-- GTK: Fix a possible crash when Fontconfig reports a font's language as a
-  plain string instead of a language set. GH-14853
-- GTK: Fix a leak where every audio bell started a new GStreamer pipeline
-  and threads that were never cleaned up, slowly raising CPU usage.
-  GH-13647 GH-12815 GH-13657
-- Snap: Link the system FreeType, Fontconfig, HarfBuzz, libpng, and zlib
-  instead of bundled copies, fixing frequent crashes caused by two copies
-  of the same library in one process. GH-14392 GH-14682
-- Snap: The snap's own GIO modules and XDG data directories now take
-  priority over the host's. GH-12045
-- Snap: Programs running inside Ghostty, such as `clear`, now find the
-  `xterm-ghostty` terminfo entry. GH-12662
-- Flatpak: Commands started by Ghostty on the host are now terminated if
-  Ghostty crashes. GH-12427
+- GTK: macOS と同様に、ドラッグ＆ドロップで分割を並べ替えられるようになりました。分割のハンドルをつかみ、別のタブやウィンドウの分割も含めて、別の分割の上にドロップします。GH-10224 GH-10423
+- GTK: Ghostty が実際の表示倍率（125% や 150% など）で描画するため、整数倍でないスケーリングでもテキストや罫線文字がぼやけず、くっきり表示されます。GH-1938 GH-14269
+- GTK: レンダラーは `GtkGLArea` を使わなくなりました。Ghostty は描画スレッド内で EGL による描画を完結させ、描画済みのフレームを DMABUF として GTK に渡すので、メインスレッドで OpenGL の処理を行いません。GH-14052 GH-14636
+- GTK: メニュー、コマンドパレット、新しいキーバインドアクション `prompt_window_title` と `set_window_title` からウィンドウの名前を変更できます。GH-10469 GH-10999
+- GTK: 新しい CLI コマンド `+new-tab` は、実行中の Ghostty インスタンスに新しいタブを開きます。Ghostty 内で実行した場合は同じウィンドウに開きます。`+new-window` と同じく `-e`、`--working-directory`、`--title` の各フラグを受け付けます。GH-11762
+- GTK: 新しい CLI コマンド `+toggle-quick-terminal` は、実行中の Ghostty インスタンスのクイックターミナルを切り替えます。グローバルショートカット非対応のウィンドウマネージャーで、キーに割り当てるのに便利です。GH-12661
+- GTK: コンポジターが対応している場合（Hyprland 0.56 以降など）、グローバルキーバインドは Wayland の `vicinae-hotkey-v1` プロトコルを使うようになりました。対応していなければ XDG デスクトップポータルにフォールバックします。グローバルキーバインドを登録できなかった場合、Ghostty はデスクトップ通知を表示します。GH-13464
+- GTK: Wayland で `quick-terminal-screen` に対応しました。デフォルトの `main` はコンポジターの主出力（コンポジターが主出力を報告しない場合は最初のモニター）にクイックターミナルを配置します。以前と同様にコンポジターに選択を任せるには、`mouse` に設定してください。GH-11117
+- GTK: Wayland で `background-blur` は KDE のぼかしプロトコルではなく、コンポジターに依存しない `ext-background-effect-v1` プロトコルを使うようになりました。Niri などでもぼかしを使えます。また、ぼかし領域にウィンドウのクライアント側の影を含めなくなりました。GH-10721 GH-10720 GH-10727
+- GTK: GTK 4.23.3 以降では、`background-blur` が GTK 内蔵の背景ぼかしを使い、ウィンドウをより正確に覆います。GH-13581 GH-13586
+- GTK: `open_config` キーバインドアクションに `new_window` を指定すると、新しい Ghostty ウィンドウで `$VISUAL` や `$EDITOR` を使って設定を編集できます。デフォルトの `os_open` では以前の動作を維持します。GH-11905
+- GTK: 新しい `gtk-horizontal-tab-scroll` 設定（デフォルトは `true`）を `false` にすると、2 本指での水平スクロールでタブを切り替えず、ターミナルアプリケーションにスクロールを渡します。GH-12659
+- GTK: 新しい `gtk-tabs-inverted` 設定は、タブバーとタブ一覧の両方で、それぞれのタブの先頭に閉じるボタンを移動します。GH-14657
+- GTK: コマンドパレットのデフォルト項目を翻訳できるようになりました。GH-11641
+- GTK: 同梱の Noto 絵文字フォントを更新しました。首を振る顔など、新しい絵文字や ZWJ シーケンスが、隣のセルに重ならずにひとつのグリフとして描画されます。GH-14047
+- GTK: Firefox、GNOME Terminal、VS Code と同様に、`ctrl+shift+page_up` と `ctrl+shift+page_down` で現在のタブを左右に移動します（`move_tab`）。`jump_to_prompt` は `ctrl+shift+arrow_up` と `ctrl+shift+arrow_down` に移りました。GH-4998 GH-12458
+- GTK: URL は XDG デスクトップポータルを介して開き、ポータルが使えない場合は `xdg-open` にフォールバックします。Ghostty はアクティベーショントークンを渡すため、これを必要とするコンポジターでもブラウザーなどの開いたアプリケーションを前面に表示できます。GH-5991 GH-11754 GH-14785 GH-14787
+- GTK: macOS と同様に、通知を送ったターミナルにフォーカスが当たるか閉じられるとデスクトップ通知を取り消します。同じテキストの通知が繰り返された場合は、古い通知を置き換えます。GH-14108
+- GTK: macOS と同様に、非表示のタブを描画しなくなり、CPU と GPU の使用量を抑えます。GH-12760
+- GTK: Dolphin の「Open Ghostty Here」（ここで Ghostty を開く）アクションが別のインスタンスを起動せず、実行中の Ghostty インスタンスに新しいウィンドウを開くようになりました。GH-11614
+- GTK: systemd 262 で Ghostty が起動に失敗することがある問題を修正しました。Ghostty が、再読み込みのシグナルを処理できるようになる前に準備完了を報告し、systemd がサービスの起動を拒否していました。GH-14398 GH-14399
+- GTK: 深く入れ子になった分割が非表示になったり、フォーカスを失ったりすることがある問題を修正しました。GH-11193 GH-12698
+- GTK: 分割のサイズを変更するとき、特に `resize_split` キーバインドを使った際のちらつきがなくなりました。GH-13414
+- GTK: 入れ子の分割に `resize_split` を使っても、サイズが急激に変化しなくなりました。GH-12699
+- GTK: 境界線のドラッグでも `resize_split` でも、分割を 1 セル未満に縮小できなくなりました。GH-14476
+- GTK: 高分解能のスクロールホイールが、通常のスクロールホイールより大幅に速くスクロールしなくなりました。GH-12483
+- GTK: GTK 4.20.1 より前のバージョンで、トラックパッドの意図しない慣性スクロールを無効にしました。GH-11793
+- GTK: GSettings の `gtk-enable-primary-paste` が無効な場合に、中クリックがマウスイベント報告を使うターミナルアプリケーションに再び送信されるようになりました。GH-12940 GH-13108
+- GTK: `quick-terminal-autohide` が有効な間にクイックターミナルを手動で非表示にしても、クイックターミナルが正常に動作し続けます。GH-11679 GH-12471
+- GTK: `quick-terminal-autohide` が有効なときに右クリックのコンテキストメニューを開いても、クイックターミナルが非表示にならなくなりました。GH-12843
+- GTK: スクロールバーが表示されているときにサイズ変更オーバーレイが何度も表示されなくなり、表示中にマウス入力を妨げなくなりました。GH-11970 GH-11972
+- GTK: ウィンドウの最大サイズが、ウィンドウを開いたモニターではなく、現在表示しているモニターに基づいて決まるようになりました。GH-13171
+- GTK: `shell-integration` に特定のシェルを指定していても `+new-window -e` が動作するようになりました。`+new-window` と `+new-tab` は、新しい `--shell-integration` フラグも受け付けます。GH-12378 GH-13741
+- GTK: XKB で修飾キーに割り当て直したキー（Delete を `ISO_Level3_Shift` に割り当てた場合など）が、元のキーも送信することがなくなりました。GH-13967
+- GTK: Wayland では、変換中に IME の候補ウィンドウがカーソルに追従し、編集中の行を覆わなくなりました。GH-14729
+- GTK: 別のウィンドウに移したタブ内の分割で、`toggle_fullscreen` などの操作が移動先のウィンドウに適用されるようになりました。GH-14474
+- GTK: テキストを選択している間、マウスカーソルがテキスト選択用の形状を保ちます。GH-14558
+- GTK: `window-theme = ghostty` の場合、コマンドパレットがターミナルの色を使うようになりました。GH-14662
+- GTK: フォールバック先の `xdg-open` が大量の出力を生成しても URL を開けるようになりました。GH-12797
+- GTK: 通知を送ったターミナルをすでに閉じている場合、デスクトップ通知をクリックしても別のターミナルに誤ってフォーカスが移らなくなりました。GH-12028
+- GTK: フォーカス中のターミナルでベルが鳴った場合に、ベルのインジケーターが残らなくなりました。GH-13597
+- GTK: 不定の進捗バー（OSC 9;4）を取り除いた後に、バックグラウンドでウィンドウが再描画され続ける問題を修正しました。GH-14704 GH-14738
+- GTK: `gtk-xft-dpi` の値がないか無効な場合に、ログへ出力するのは 1 回だけになりました。GH-14410 GH-14085 GH-14434
+- GTK: GTK 4.20 (GNOME 49) でタブや分割を閉じるとクラッシュする問題を修正しました。GH-12426
+- GTK: D-Bus 接続がない場合に、グローバルキーバインドの使用や設定の再読み込みでクラッシュする問題を修正しました。GH-13101
+- GTK: Fontconfig がフォントの言語を言語セットではなく単なる文字列として報告すると、クラッシュすることがある問題を修正しました。GH-14853
+- GTK: ベル音のたびに新しく起動した GStreamer パイプラインとスレッドが解放されず、CPU 使用率が徐々に上がるリークを修正しました。GH-13647 GH-12815 GH-13657
+- Snap: 同梱の FreeType、Fontconfig、HarfBuzz、libpng、zlib ではなくシステムのものをリンクします。ひとつのプロセス内に同じライブラリが 2 つあるために頻繁にクラッシュする問題を修正しました。GH-14392 GH-14682
+- Snap: ホスト側よりも、Snap 自身の GIO モジュールと XDG データディレクトリを優先するようになりました。GH-12045
+- Snap: `clear` など Ghostty 内で動くプログラムが `xterm-ghostty` の terminfo エントリーを見つけられるようになりました。GH-12662
+- Flatpak: Ghostty がクラッシュすると、Ghostty がホスト側で起動したコマンドも終了するようになりました。GH-12427
 
-### Localization {/* #localization */}
+### ローカライズ {/* #localization */}
 
-Ghostty 1.4 introduces full localization for the command palette and adds
-support for **4 new languages**:
+Ghostty 1.4 ではコマンドパレットが全面的にローカライズに対応し、
+**新たに 4 言語**に対応しました。
 
-- Basque
-- Belarusian
-- Danish
-- Serbian (Cyrillic and Latin scripts)
+- バスク語
+- ベラルーシ語
+- デンマーク語
+- セルビア語（キリル文字とラテン文字）
 
-Localization is maintained by volunteer contributors. If you want to
-help localize Ghostty in your language, please open a discussion on the
-GitHub repo. Thank you to all the volunteers who contributed to Ghostty's
-localization!
+ローカライズはボランティアのコントリビューターが維持しています。
+ご自身の言語で Ghostty のローカライズに協力できる方は、GitHub リポジトリで
+ディスカッションを立ち上げてください。Ghostty のローカライズに貢献してくださった
+すべてのボランティアの方々に感謝します。
 
-### Changes for Package Maintainers {/* #changes-for-package-maintainers */}
+### パッケージメンテナー向けの変更 {/* #changes-for-package-maintainers */}
 
-- Ghostty now requires Zig 0.17 to build. GH-14518 GH-14519
-- GTK builds now require **GTK 4.18** and **libadwaita 1.7**, up from
-  GTK 4.14 and libadwaita 1.5. Builds against older headers fail at
-  compile time, and Ghostty exits at startup if older libraries are
-  loaded at runtime. GH-14330
-- GTK builds now link the system EGL library (pkg-config `egl`, usually
-  provided by libglvnd or Mesa) for the new renderer. At runtime, Ghostty
-  uses GTK's EGL display when it can, and otherwise needs an EGL driver
-  that supports the surfaceless platform. GH-14052 GH-14636
-- A new `-Dinstalled-exe-path` build option sets the absolute executable
-  path written into the desktop file, D-Bus services, and systemd user
-  service. Previously this path came from the install prefix. Without the
-  option, these files now name `ghostty` alone, which systemd only finds in
-  `/usr/bin` or `/usr/local/bin`, so set it for any other prefix.
-  GH-14805 GH-14806
-- When linking the system gtk4-layer-shell (`-fsys=gtk4-layer-shell`),
-  version 1.0.4 or newer is now required. Ghostty no longer disables the
-  quick terminal on older versions, which can crash on some compositors.
-  GH-11559
+- Ghostty のビルドには Zig 0.17 が必要になりました。GH-14518 GH-14519
+- GTK ビルドの要件を GTK 4.14 と libadwaita 1.5 から **GTK 4.18** と **libadwaita 1.7** に引き上げました。古いヘッダーでビルドするとコンパイル時に失敗し、実行時に古いライブラリが読み込まれると Ghostty は起動時に終了します。GH-14330
+- GTK ビルドでは、新しいレンダラー用にシステムの EGL ライブラリ（pkg-config の `egl`。通常は libglvnd または Mesa が提供）をリンクします。実行時には、可能なら GTK の EGL ディスプレイを使用し、不可能な場合はサーフェスレスプラットフォームに対応する EGL ドライバーが必要です。GH-14052 GH-14636
+- 新しいビルドオプション `-Dinstalled-exe-path` で、デスクトップファイル、D-Bus サービス、systemd のユーザーサービスに書き込む実行ファイルの絶対パスを指定します。以前はインストールプレフィックスからパスを取得していました。このオプションを省略すると、各ファイルには `ghostty` だけが書き込まれます。systemd が見つけられるのは `/usr/bin` と `/usr/local/bin` にある場合だけなので、それ以外のプレフィックスでは指定してください。GH-14805 GH-14806
+- システムの gtk4-layer-shell をリンクする場合（`-fsys=gtk4-layer-shell`）、1.0.4 以降が必要になりました。古いバージョンでも Ghostty がクイックターミナルを無効にしなくなったため、一部のコンポジターでクラッシュする可能性があります。GH-11559
 
 ## Libghostty {/* #libghostty */}
 
-As with 1.3, libghostty isn't directly part of the Ghostty 1.4 release.
-But a large part of the 1.4 development cycle went into libghostty, so
-here's an update.
+1.3 と同じく、libghostty は Ghostty 1.4 のリリースに直接含まれていません。
+ただし 1.4 の開発サイクルの多くを libghostty に費やしたので、進捗をお伝えします。
 
-Over the past 6 months, the C API for libghostty-vt has grown from a
-parser and a few encoders into a complete terminal emulator API, adopted
-by dozens of free and commercial terminal emulators used by millions of
-people. It's hard to quantify exactly, but the number of people using a
-libghostty-based terminal is confidently several times the number of
-people using the Ghostty GUI.
+過去 6 か月で、libghostty-vt の C API はパーサーと数個のエンコーダーから、
+完全なターミナルエミュレーター API に成長しました。数百万人が利用する、
+数十の無償・商用ターミナルエミュレーターに採用されています。
+正確に測るのは難しいものの、libghostty ベースのターミナルの利用者は、
+Ghostty の GUI の利用者の数倍に上ると見ています。
 
-libghostty-vt now builds for macOS, Linux, Windows (MSVC and GNU), FreeBSD,
-Android, iOS, and WebAssembly, and CI continuously verifies every one of
-these targets. The goal is for libghostty-vt to be generally usable everywhere,
-within reason, so if you want more target support, let us know!
+libghostty-vt は、macOS、Linux、Windows (MSVC と GNU)、FreeBSD、Android、
+iOS、WebAssembly 向けにビルドでき、そのすべてを CI で継続的に検証しています。
+無理のない範囲でどこでも使えるようにすることが目標なので、ほかのターゲットへの
+対応をご希望ならお知らせください。
 
-It's also easier to integrate libghostty-vt into existing build systems.
-There's CMake support, Nix packaging, an xcframework, and a source
-tarball, in addition to the existing pkg-config file. **libghostty-vt no
-longer needs libc++, and it can build freestanding.**
+既存のビルドシステムへの libghostty-vt の組み込みも簡単になりました。
+既存の pkg-config ファイルに加えて、CMake のサポート、Nix パッケージ、
+xcframework、ソースの tarball がそろっています。
+**libghostty-vt に libc++ は不要になり、フリースタンディングでビルドできます。**
 
-The API is still marked as a work in progress and broke compatibility
-several times during this cycle, so expect more breaking changes before
-a tagged release. The [API documentation](https://libghostty.tip.ghostty.org/index.html)
-and the [Zig, C, C++, Swift, and WebAssembly examples](https://github.com/ghostty-org/ghostty/tree/main/example)
-(now over 30) are kept up to date with `main`.
+API はまだ開発中と明記しており、この開発サイクルでも何度か互換性が壊れました。
+タグ付きリリースまでに、さらに互換性を壊す変更が入ると見込んでください。
+[API ドキュメント](https://libghostty.tip.ghostty.org/index.html)と、
+現在 30 件を超える [Zig、C、C++、Swift、WebAssembly のサンプル](https://github.com/ghostty-org/ghostty/tree/main/example)は、
+`main` に合わせて更新しています。
 
-We're going to do a final pass over the C API, break ABI one more time,
-and then likely tag a libghostty 1.0 release very soon.
+C API を最後にもう一度見直し、ABI の互換性をもう一度壊す変更を加えてから、
+おそらくもう間もなく libghostty 1.0 のリリースタグを付ける予定です。
 
-## Financial Update {/* #financial-update */}
+## 財務状況の報告 {/* #financial-update */}
 
-Ghostty is a [non-profit project](/docs/sponsor), fiscally sponsored
-by [Hack Club](https://hackclub.com).
-All of our finances are [public on HCB](https://hcb.hackclub.com/ghostty),
-so you can see exactly where every dollar goes.
+Ghostty は [Hack Club](https://hackclub.com) が財務スポンサーを務める
+[非営利プロジェクト](/docs/sponsor)です。すべての財務情報を
+[HCB で公開](https://hcb.hackclub.com/ghostty)しているので、資金の使途を細かく確認できます。
 
-During the 1.4 cycle, we paid **$41,820** to contributors under contract and
-spent about **$1,260** on infrastructure such as website hosting.
+1.4 の開発サイクルでは、契約したコントリビューターに **41,820 ドル**を支払い、
+ウェブサイトのホスティングなどのインフラに約 **1,260 ドル**を使いました。
 
-I'm happy to share that we've now signed our first two **12-month contracts**,
-which give contributors stable, long-term paid work on Ghostty and help
-ensure the ongoing stability and sustainability of the project:
+このたび、初めての**12 か月契約を 2 件**締結したことを、うれしく思います。
+コントリビューターに Ghostty での安定した長期の有償業務を提供し、
+プロジェクトの継続的な安定性と持続可能性を確保する助けとなります。
 
-- [@trag1c](https://github.com/trag1c) is Ghostty's head of operations.
-  He manages the community on GitHub and Discord, coordinates our
-  volunteer translators, and maintains various other important project
-  systems.
-- [@vancluever](https://github.com/vancluever) works on various Ghostty
-  subsystems. In this cycle, he led the upgrade to Zig 0.16, moved the
-  build off Zig's deprecated `@cImport`, updated the bundled Fontconfig,
-  and more. He's also the author of
-  [z2d](https://github.com/vancluever/z2d), the 2D graphics library Ghostty
-  uses to draw box-drawing characters and other sprite glyphs.
+- [@trag1c](https://github.com/trag1c) は Ghostty の運営責任者です。
+  GitHub と Discord のコミュニティの管理、ボランティア翻訳者の調整、
+  プロジェクトにとって重要なその他の各種システムの維持を担当しています。
+- [@vancluever](https://github.com/vancluever) は Ghostty のさまざまな
+  サブシステムを手がけています。今回の開発サイクルでは Zig 0.16 への移行を
+  主導し、ビルドが Zig の非推奨の `@cImport` に依存しないように変更したほか、
+  同梱の Fontconfig の更新などを行いました。Ghostty が罫線文字やその他の
+  スプライトグリフの描画に使う 2D グラフィックスライブラリ
+  [z2d](https://github.com/vancluever/z2d) の作者でもあります。
 
-If you'd like to support Ghostty, please visit our [sponsorship page](/docs/sponsor).
+Ghostty を支援したい方は、[スポンサーシップのページ](/docs/sponsor)をご覧ください。
 
-## Roadmap {/* #roadmap */}
+## ロードマップ {/* #roadmap */}
 
-The primary focus of the roadmap continues to be libghostty functionality,
-stability, and portability. During the last release cycle, I said I aimed to
-tag a libghostty release. We haven't done that yet, but I'm confident we will
-do so before Ghostty 1.5.
+ロードマップでは引き続き、libghostty の機能、安定性、移植性に最も力を入れます。
+前回のリリースサイクルでは、libghostty のリリースタグを付けることを目標に
+掲げました。まだ実現していませんが、Ghostty 1.5 までにはできると確信しています。
 
-libghostty is a project that continues to be the tide that lifts all boats.
-libghostty improvements tie directly to Ghostty GUI improvements as well as
-dozens of other large projects in the ecosystem. As more large projects adopt
-libghostty, libghostty tends to get more testing and attention, and this
-creates a cycle that yields the most gain for terminal emulators everywhere.
+libghostty は引き続き、すべてを底上げするプロジェクトです。libghostty の改善は
+Ghostty の GUI だけでなく、同じエコシステムにある数十の大規模プロジェクトの改善に
+直接つながります。大規模プロジェクトの採用が増えれば、libghostty に対する
+テストや関心も増えやすくなり、その好循環があらゆるターミナルエミュレーターに
+最大の恩恵をもたらします。
 
-macOS and GTK builds of Ghostty have talented, capable maintainer teams that
-are continuing to improve them, so they're not neglected by any means!
-As a project, we've decided to drop any roadmap for Windows support in the
-Ghostty GUI. libghostty fully supports Windows (and we test it in CI), and the
-official stance now is that downstream projects should use that.
+Ghostty の macOS 版と GTK 版では、有能なメンテナーチームが改善を続けており、
+決しておろそかにされてはいません。プロジェクトとして、Ghostty の GUI の
+Windows 対応はロードマップから外すことにしました。libghostty は Windows に
+完全に対応しており、CI でもテストしています。下流のプロジェクトには
+libghostty を使ってもらう、というのが現在の公式見解です。
 
-Our release cycle remains 6 months. This release was delayed by one month,
-but Ghostty 1.5 is planned for March 2027. libghostty will have a separate
-release cycle.
+リリースサイクルは 6 か月のままです。今回のリリースは 1 か月遅れましたが、
+Ghostty 1.5 は 2027 年 3 月を予定しています。libghostty は別のリリースサイクルになります。
