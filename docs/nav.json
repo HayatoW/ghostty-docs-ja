@@ -3,42 +3,42 @@
     {
       "type": "link",
       "path": "/about",
-      "title": "About Ghostty"
+      "title": "Ghostty について"
     },
     {
       "type": "folder",
       "path": "/install",
-      "title": "Install",
+      "title": "インストール",
       "children": [
         {
           "type": "link",
           "path": "/binary",
-          "title": "Binaries and Packages"
+          "title": "バイナリとパッケージ"
         },
         {
           "type": "link",
           "path": "/build",
-          "title": "Build from Source"
+          "title": "ソースからビルド"
         },
         {
           "type": "link",
           "path": "/package",
-          "title": "Packaging Ghostty"
+          "title": "Ghostty のパッケージ化"
         },
         {
           "type": "link",
           "path": "/pre",
-          "title": "Prerelease Builds"
+          "title": "プレリリースビルド"
         },
         {
           "type": "folder",
           "path": "/release-notes",
-          "title": "Release Notes",
+          "title": "リリースノート",
           "children": [
             {
               "type": "link",
               "path": "/",
-              "title": "Overview"
+              "title": "概要"
             },
             {
               "type": "link",
@@ -107,37 +107,37 @@
     {
       "type": "folder",
       "path": "/config",
-      "title": "Configuration",
+      "title": "設定",
       "children": [
         {
           "type": "link",
           "path": "/",
-          "title": "Overview"
+          "title": "概要"
         },
         {
           "type": "link",
           "path": "/reference",
-          "title": "Option Reference"
+          "title": "設定オプション一覧"
         },
         {
           "type": "folder",
           "path": "/keybind",
-          "title": "Keybindings",
+          "title": "キーバインド",
           "children": [
             {
               "type": "link",
               "path": "/",
-              "title": "Overview"
+              "title": "概要"
             },
             {
               "type": "link",
               "path": "/sequence",
-              "title": "Trigger Sequences"
+              "title": "トリガーシーケンス"
             },
             {
               "type": "link",
               "path": "/reference",
-              "title": "Action Reference"
+              "title": "アクション一覧"
             }
           ]
         }
@@ -151,34 +151,34 @@
         {
           "type": "link",
           "path": "/",
-          "title": "Overview"
+          "title": "概要"
         },
         {
           "type": "link",
           "path": "/systemd",
-          "title": "Systemd and D-Bus"
+          "title": "systemd と D-Bus の統合"
         }
       ]
     },
     {
       "type": "folder",
       "path": "/features",
-      "title": "Features",
+      "title": "機能",
       "children": [
         {
           "type": "link",
           "path": "/",
-          "title": "Overview"
+          "title": "概要"
         },
         {
           "type": "link",
           "path": "/theme",
-          "title": "Color Theme"
+          "title": "カラーテーマ"
         },
         {
           "type": "link",
           "path": "/shell-integration",
-          "title": "Shell Integration"
+          "title": "シェル統合"
         },
         {
           "type": "link",
@@ -195,79 +195,79 @@
     {
       "type": "folder",
       "path": "/vt",
-      "title": "Terminal API (VT)",
+      "title": "ターミナル API (VT)",
       "children": [
         {
           "type": "link",
           "path": "/",
-          "title": "Overview"
+          "title": "概要"
         },
         {
           "type": "link",
           "path": "/reference",
-          "title": "Reference"
+          "title": "リファレンス"
         },
         {
           "type": "link",
           "path": "/external",
-          "title": "External Protocols"
+          "title": "外部プロトコル"
         },
         {
           "type": "folder",
           "path": "/concepts",
-          "title": "Concepts",
+          "title": "概念",
           "children": [
             {
               "type": "link",
               "path": "/sequences",
-              "title": "Control Sequences"
+              "title": "制御シーケンス"
             },
             {
               "type": "link",
               "path": "/cursor",
-              "title": "Cursor"
+              "title": "カーソル"
             },
             {
               "type": "link",
               "path": "/screen",
-              "title": "Screen"
+              "title": "画面"
             },
             {
               "type": "link",
               "path": "/colors",
-              "title": "Colors"
+              "title": "色"
             }
           ]
         },
         {
           "type": "folder",
           "path": "/control",
-          "title": "Control",
+          "title": "制御文字",
           "children": [
             {
               "type": "link",
               "path": "/bs",
-              "title": "Backspace (BS)"
+              "title": "後退 (BS)"
             },
             {
               "type": "link",
               "path": "/bel",
-              "title": "Bell (BEL)"
+              "title": "ベル (BEL)"
             },
             {
               "type": "link",
               "path": "/cr",
-              "title": "Carriage Return (CR)"
+              "title": "復帰 (CR)"
             },
             {
               "type": "link",
               "path": "/lf",
-              "title": "Linefeed (LF)"
+              "title": "改行 (LF)"
             },
             {
               "type": "link",
               "path": "/tab",
-              "title": "Tab (TAB)"
+              "title": "タブ (TAB)"
             }
           ]
         },
@@ -279,42 +279,42 @@
             {
               "type": "link",
               "path": "/decaln",
-              "title": "Screen Alignment Test (DECALN)"
+              "title": "画面整列テスト (DECALN)"
             },
             {
               "type": "link",
               "path": "/deckpam",
-              "title": "Keypad Application Mode (DECKPAM)"
+              "title": "テンキーのアプリケーションモード (DECKPAM)"
             },
             {
               "type": "link",
               "path": "/deckpnm",
-              "title": "Keypad Numeric Mode (DECKPNM)"
+              "title": "テンキーの数値モード (DECKPNM)"
             },
             {
               "type": "link",
               "path": "/decrc",
-              "title": "Restore Cursor (DECRC)"
+              "title": "カーソルの復元 (DECRC)"
             },
             {
               "type": "link",
               "path": "/decsc",
-              "title": "Save Cursor (DECSC)"
+              "title": "カーソルの保存 (DECSC)"
             },
             {
               "type": "link",
               "path": "/ind",
-              "title": "Index (IND)"
+              "title": "順方向インデックス (IND)"
             },
             {
               "type": "link",
               "path": "/ri",
-              "title": "Reverse Index (RI)"
+              "title": "逆方向インデックス (RI)"
             },
             {
               "type": "link",
               "path": "/ris",
-              "title": "Reset to Initial State (RIS)"
+              "title": "初期状態へのリセット (RIS)"
             }
           ]
         },
@@ -326,147 +326,147 @@
             {
               "type": "link",
               "path": "/cbt",
-              "title": "Cursor Backward Tabulation (CBT)"
+              "title": "カーソルの後方タブ移動 (CBT)"
             },
             {
               "type": "link",
               "path": "/cht",
-              "title": "Cursor Horizontal Tabulation (CHT)"
+              "title": "カーソルの水平タブ移動 (CHT)"
             },
             {
               "type": "link",
               "path": "/cnl",
-              "title": "Cursor Next Line (CNL)"
+              "title": "カーソルを次の行へ移動 (CNL)"
             },
             {
               "type": "link",
               "path": "/cpl",
-              "title": "Cursor Preceding Line (CPL)"
+              "title": "カーソルを前の行へ移動 (CPL)"
             },
             {
               "type": "link",
               "path": "/cub",
-              "title": "Cursor Backward (CUB)"
+              "title": "カーソルを後方へ移動 (CUB)"
             },
             {
               "type": "link",
               "path": "/cud",
-              "title": "Cursor Down (CUD)"
+              "title": "カーソルを下へ移動 (CUD)"
             },
             {
               "type": "link",
               "path": "/cuf",
-              "title": "Cursor Forward (CUF)"
+              "title": "カーソルを前方へ移動 (CUF)"
             },
             {
               "type": "link",
               "path": "/cup",
-              "title": "Cursor Position (CUP)"
+              "title": "カーソル位置 (CUP)"
             },
             {
               "type": "link",
               "path": "/cuu",
-              "title": "Cursor Up (CUU)"
+              "title": "カーソルを上へ移動 (CUU)"
             },
             {
               "type": "link",
               "path": "/dch",
-              "title": "Delete Character (DCH)"
+              "title": "文字の削除 (DCH)"
             },
             {
               "type": "link",
               "path": "/decscusr",
-              "title": "Set Cursor Style (DECSCUSR)"
+              "title": "カーソルスタイルの設定 (DECSCUSR)"
             },
             {
               "type": "link",
               "path": "/decslrm",
-              "title": "Set Left and Right Margins (DECSLRM)"
+              "title": "左右マージンの設定 (DECSLRM)"
             },
             {
               "type": "link",
               "path": "/decstbm",
-              "title": "Set Top and Bottom Margins (DECSTBM)"
+              "title": "上下マージンの設定 (DECSTBM)"
             },
             {
               "type": "link",
               "path": "/dl",
-              "title": "Delete Line (DL)"
+              "title": "行の削除 (DL)"
             },
             {
               "type": "link",
               "path": "/dsr",
-              "title": "Device Status Report (DSR)"
+              "title": "デバイス状態の報告 (DSR)"
             },
             {
               "type": "link",
               "path": "/ech",
-              "title": "Erase Character (ECH)"
+              "title": "文字の消去 (ECH)"
             },
             {
               "type": "link",
               "path": "/ed",
-              "title": "Erase in Display (ED)"
+              "title": "画面内の消去 (ED)"
             },
             {
               "type": "link",
               "path": "/el",
-              "title": "Erase in Line (EL)"
+              "title": "行内消去 (EL)"
             },
             {
               "type": "link",
               "path": "/hpa",
-              "title": "Horizontal Position Absolute (HPA)"
+              "title": "水平絶対位置 (HPA)"
             },
             {
               "type": "link",
               "path": "/hpr",
-              "title": "Horizontal Position Relative (HPR)"
+              "title": "水平相対位置 (HPR)"
             },
             {
               "type": "link",
               "path": "/ich",
-              "title": "Insert Character (ICH)"
+              "title": "文字の挿入 (ICH)"
             },
             {
               "type": "link",
               "path": "/il",
-              "title": "Insert Line (IL)"
+              "title": "行の挿入 (IL)"
             },
             {
               "type": "link",
               "path": "/rep",
-              "title": "Repeat (REP)"
+              "title": "繰り返し (REP)"
             },
             {
               "type": "link",
               "path": "/sd",
-              "title": "Scroll Down (SD)"
+              "title": "下へスクロール (SD)"
             },
             {
               "type": "link",
               "path": "/su",
-              "title": "Scroll Up (SU)"
+              "title": "上へスクロール (SU)"
             },
             {
               "type": "link",
               "path": "/tbc",
-              "title": "Tab Clear (TBC)"
+              "title": "タブ位置の消去 (TBC)"
             },
             {
               "type": "link",
               "path": "/vpa",
-              "title": "Vertical Position Absolute (VPA)"
+              "title": "垂直絶対位置 (VPA)"
             },
             {
               "type": "link",
               "path": "/vpr",
-              "title": "Vertical Position Relative (VPR)"
+              "title": "垂直相対位置 (VPR)"
             },
             {
               "type": "link",
               "path": "/xtshiftescape",
-              "title": "Shift-Escape Behavior (XTSHIFTESCAPE)"
+              "title": "Shift-Escape の動作 (XTSHIFTESCAPE)"
             }
           ]
         },
@@ -478,72 +478,72 @@
             {
               "type": "link",
               "path": "/0",
-              "title": "Change Window Icon and Title (OSC 0)"
+              "title": "ウィンドウのアイコンとタイトルの変更 (OSC 0)"
             },
             {
               "type": "link",
               "path": "/1",
-              "title": "Change Window Icon (OSC 1)"
+              "title": "ウィンドウアイコンの変更 (OSC 1)"
             },
             {
               "type": "link",
               "path": "/2",
-              "title": "Change Window Title (OSC 2)"
+              "title": "ウィンドウタイトルの変更 (OSC 2)"
             },
             {
               "type": "link",
               "path": "/4",
-              "title": "Query or Change Palette Colors (OSC 4)"
+              "title": "パレット色の照会・変更 (OSC 4)"
             },
             {
               "type": "link",
               "path": "/5",
-              "title": "Query or Change Special Colors (OSC 5)"
+              "title": "特殊色の照会・変更 (OSC 5)"
             },
             {
               "type": "link",
               "path": "/7",
-              "title": "Change Working Directory (OSC 7)"
+              "title": "作業ディレクトリの変更 (OSC 7)"
             },
             {
               "type": "link",
               "path": "/9",
-              "title": "Show Desktop Notification (OSC 9)"
+              "title": "デスクトップ通知の表示 (OSC 9)"
             },
             {
               "type": "link",
               "path": "/conemu",
-              "title": "ConEmu Extensions (OSC 9;n)"
+              "title": "ConEmu 拡張 (OSC 9;n)"
             },
             {
               "type": "link",
               "path": "/1x",
-              "title": "Query or Change Dynamic Colors (OSC 10–19)"
+              "title": "動的な色の照会・変更 (OSC 10–19)"
             },
             {
               "type": "link",
               "path": "/22",
-              "title": "Change Pointer Shape (OSC 22)"
+              "title": "ポインター形状の変更 (OSC 22)"
             },
             {
               "type": "link",
               "path": "/52",
-              "title": "Query or Change Clipboard Data (OSC 52)"
+              "title": "クリップボードデータの照会・変更 (OSC 52)"
             },
             {
               "type": "link",
               "path": "/104",
-              "title": "Reset Palette Colors (OSC 104)"
+              "title": "パレット色のリセット (OSC 104)"
             },
             {
               "type": "link",
               "path": "/105",
-              "title": "Reset Special Colors (OSC 105)"
+              "title": "特殊色のリセット (OSC 105)"
             },
             {
               "type": "link",
               "path": "/11x",
-              "title": "Reset Dynamic Colors (OSC 110–119)"
+              "title": "動的な色のリセット (OSC 110–119)"
             }
           ]
         }
@@ -552,12 +552,12 @@
     {
       "type": "folder",
       "path": "/help",
-      "title": "Help",
+      "title": "ヘルプ",
       "children": [
         {
           "type": "link",
           "path": "/",
-          "title": "Overview"
+          "title": "概要"
         },
         {
           "type": "link",
@@ -567,34 +567,34 @@
         {
           "type": "link",
           "path": "/gtk-single-instance",
-          "title": "GTK Single Instance"
+          "title": "GTK シングルインスタンスモード"
         },
         {
           "type": "link",
           "path": "/gtk-opengl-context",
-          "title": "GTK OpenGL Context"
+          "title": "GTK の OpenGL コンテキストエラー"
         },
         {
           "type": "link",
           "path": "/macos-tiling-wms",
-          "title": "macOS Tiling Window Managers"
+          "title": "macOS のタイル型ウィンドウマネージャー"
         },
         {
           "type": "link",
           "path": "/macos-login-shells",
-          "title": "macOS Login Shells"
+          "title": "macOS のログインシェル"
         },
         {
           "type": "link",
           "path": "/synchronized-output",
-          "title": "Synchronized Output"
+          "title": "同期出力"
         }
       ]
     },
     {
       "type": "link",
       "path": "/sponsor",
-      "title": "Financial Support"
+      "title": "Ghostty の開発を支援する"
     }
   ]
 }
