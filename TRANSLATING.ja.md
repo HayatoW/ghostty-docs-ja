@@ -61,6 +61,22 @@ node bin/annotate-heading-ids.mjs docs/path/to/page.mdx
 | prerelease / tip | プレリリース / tip |
 | escape sequence | エスケープシーケンス |
 
+## 本家の更新の取り込み
+
+本家 `ghostty-org/website` の更新は、`upstream` リモートからマージして取り込みます。
+英語版で上書きされた箇所は、本家で変わった差分だけを訳し直します。
+
+1. `git fetch upstream` のあと、`git merge-base HEAD upstream/main`（前回取り込んだコミット、以下 `OLD`）と `upstream/main` が同じなら、取り込むものはありません。
+2. `main` から新しいブランチを作り、`git merge upstream/main` を実行します。
+3. 本家で変わったファイルを `git diff --name-status OLD upstream/main` で確認し、次のように扱います。
+   - `docs/**/*.mdx` と `docs/nav.json`: `git diff OLD upstream/main -- <file>` で英語の差分を確認し、同じ変更を日本語版に反映します。変わっていない段落の訳は変えません。
+   - 本家で新しく追加されたページ: 英語の原文に `node bin/annotate-heading-ids.mjs <file>` で見出し ID を付けてから、全文を訳します。既存のページに追加された見出しも、同じ方法で ID を付けます。
+   - `docs/config/reference.mdx` と `docs/config/keybind/reference.mdx`（Ghostty 本体の `Config.zig` などから自動生成）: マージすると英語版に置き換わることがあります。その場合は取り込む前の日本語版を元にして、変わった項目だけを訳し直します。
+   - 本家で削除・移動されたページ: 本家に合わせて削除・移動し、`docs/nav.json` も合わせます。
+   - `docs/` 以外（`src/` など）: 本家の変更を取り込みます。このリポジトリで変えた箇所（日本語の UI 文字列、非公式訳の表示、`next.config.mjs` のリダイレクト、`src/lib/search/engine.ts` の日本語分かち書き、見出し ID の仕組み、`.github/workflows` のランナー）は残します。
+4. 本文中の英語が残っていないこと、見出しの `{/* #id */}` が消えていないことを確認します。
+5. 下の「確認」を実行します。
+
 ## 確認
 
 ```sh
