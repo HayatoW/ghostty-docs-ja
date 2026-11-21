@@ -1,580 +1,503 @@
 ---
-title: Keybinding Action Reference
-description: Reference of all Ghostty keybinding actions.
+title: キーバインドアクションリファレンス
+description: Ghostty のすべてのキーバインドアクションのリファレンスです。
 editOnGithubLink: https://github.com/ghostty-org/ghostty/edit/main/src/input/Binding.zig
 ---
 
-This is a reference of all Ghostty keybinding actions.
+Ghostty のすべてのキーバインドアクションのリファレンスです。
 
 
 ## `ignore`
-Ignore this key combination.
+このキーの組み合わせを無視します。
 
-Ghostty will not process this combination nor forward it to the child
-process within the terminal, but it may still be processed by the OS or
-other applications.
+Ghostty はこの組み合わせを処理せず、ターミナル内の子プロセスにも転送しませんが、
+OS やほかのアプリケーションが処理する可能性はあります。
 
 ## `unbind`
-Unbind a previously bound key binding.
+以前に割り当てたキーバインドを解除します。
 
-This cannot unbind bindings that were not bound by Ghostty or the user
-(e.g. bindings set by the OS or some other application).
+Ghostty やユーザーが設定したものではない割り当て
+（OS やほかのアプリケーションが設定したものなど）は解除できません。
 
 ## `csi`
-Send a CSI sequence.
+CSI シーケンスを送信します。
 
-The value should be the CSI sequence without the CSI header (`ESC [` or
-`\x1b[`).
+値には、CSI ヘッダー（`ESC [` または `\x1b[`）を除いた CSI シーケンスを指定します。
 
-For example, `csi:0m` can be sent to reset all styles of the current text.
+たとえば、`csi:0m` を送信すると、現在のテキストのすべてのスタイルをリセットできます。
 
 ## `esc`
-Send an `ESC` sequence.
+`ESC` シーケンスを送信します。
 
 ## `text`
-Send the specified text.
+指定したテキストを送信します。
 
-Uses Zig string literal syntax. This is currently not validated.
-If the text is invalid (i.e. contains an invalid escape sequence),
-the error will currently only show up in logs.
+Zig の文字列リテラル構文を使います。現在、検証は行われません。
+テキストが無効な場合（無効なエスケープシーケンスを含む場合など）、現在はログにのみエラーが表示されます。
 
 ## `cursor_key`
-Send data to the pty depending on whether cursor key mode is enabled
-(`application`) or disabled (`normal`).
+カーソルキーモードが有効（`application`）か無効（`normal`）かに応じて、pty にデータを送信します。
 
 ## `reset`
-Reset the terminal.
+ターミナルをリセットします。
 
-This can fix a lot of issues when a running program puts the terminal
-into a broken state, equivalent to running the `reset` command.
+実行中のプログラムがターミナルを壊れた状態にしたとき、多くの問題を修正できます。
+`reset` コマンドの実行と同等です。
 
-If you do this while in a TUI program such as vim, this may break
-the program. If you do this while in a shell, you may have to press
-enter after to get a new prompt.
+vim などの TUI プログラム内で実行すると、プログラムの動作が崩れる可能性があります。
+シェル内で実行した場合、新しいプロンプトを表示するために、その後 Enter を押す必要があるかもしれません。
 
 ## `copy_to_clipboard`
-Copy the selected text to the clipboard.
+選択したテキストをクリップボードにコピーします。
 
 ## `paste_from_clipboard`
-Paste the contents of the default clipboard.
+デフォルトのクリップボードの内容を貼り付けます。
 
 ## `paste_from_selection`
-Paste the contents of the selection clipboard.
+選択クリップボードの内容を貼り付けます。
 
 ## `copy_url_to_clipboard`
-If there is a URL under the cursor, copy it to the default clipboard.
+カーソルの下に URL があれば、デフォルトのクリップボードにコピーします。
 
 ## `copy_title_to_clipboard`
-Copy the terminal title to the clipboard. If the terminal title is not
-set or is empty this has no effect.
+ターミナルのタイトルをクリップボードにコピーします。
+タイトルが未設定または空の場合は何もしません。
 
 ## `increase_font_size`
-Increase the font size by the specified amount in points (pt).
+フォントサイズを、指定したポイント数（pt）だけ大きくします。
 
-For example, `increase_font_size:1.5` will increase the font size
-by 1.5 points.
+たとえば、`increase_font_size:1.5` はフォントサイズを 1.5 ポイント大きくします。
 
 ## `decrease_font_size`
-Decrease the font size by the specified amount in points (pt).
+フォントサイズを、指定したポイント数（pt）だけ小さくします。
 
-For example, `decrease_font_size:1.5` will decrease the font size
-by 1.5 points.
+たとえば、`decrease_font_size:1.5` はフォントサイズを 1.5 ポイント小さくします。
 
 ## `reset_font_size`
-Reset the font size to the original configured size.
+フォントサイズを、もともと設定されていたサイズに戻します。
 
 ## `set_font_size`
-Set the font size to the specified size in points (pt).
+フォントサイズを、ポイント（pt）で指定したサイズに設定します。
 
-For example, `set_font_size:14.5` will set the font size
-to 14.5 points.
+たとえば、`set_font_size:14.5` はフォントサイズを 14.5 ポイントに設定します。
 
 ## `search`
-Start a search for the given text. If the text is empty, then
-the search is canceled. A canceled search will not disable any GUI
-elements showing search. For that, the explicit end_search binding
-should be used.
+指定したテキストの検索を開始します。テキストが空なら検索をキャンセルします。
+検索をキャンセルしても、検索を表示する GUI 要素は無効になりません。
+そのためには、明示的に end_search の割り当てを使う必要があります。
 
-If a previous search is active, it is replaced.
+以前の検索が有効な場合は、それを置き換えます。
 
 ## `search_selection`
-Start a search for the current text selection. If there is no
-selection, this does nothing. If a search is already active, this
-changes the search terms.
+現在選択しているテキストの検索を開始します。選択範囲がなければ何もしません。
+すでに検索中の場合は、検索語を変更します。
 
 ## `navigate_search`
-Navigate the search results. If there is no active search, this
-is not performed.
+検索結果間を移動します。有効な検索がなければ実行しません。
 
 ## `start_search`
-Start a search if it isn't started already. This doesn't set any
-search terms, but opens the UI for searching.
+まだ検索を開始していなければ、検索を開始します。
+検索語は設定せず、検索用 UI を開きます。
 
 ## `end_search`
-End the current search if any and hide any GUI elements.
+現在の検索があれば終了し、GUI 要素を非表示にします。
 
 ## `clear_screen`
-Clear the screen and all scrollback.
+画面とすべてのスクロールバックを消去します。
 
 ## `select_all`
-Select all text on the screen.
+画面上のすべてのテキストを選択します。
 
 ## `scroll_to_top`
-Scroll to the top of the screen.
+画面の先頭までスクロールします。
 
 ## `scroll_to_bottom`
-Scroll to the bottom of the screen.
+画面の末尾までスクロールします。
 
 ## `scroll_to_selection`
-Scroll to the selected text.
+選択したテキストまでスクロールします。
 
 ## `scroll_to_row`
-Scroll to the given absolute row in the screen with 0 being
-the first row.
+指定した画面内の絶対行までスクロールします。最初の行は 0 です。
 
 ## `scroll_page_up`
-Scroll the screen up by one page.
+画面を 1 ページ上にスクロールします。
 
 ## `scroll_page_down`
-Scroll the screen down by one page.
+画面を 1 ページ下にスクロールします。
 
 ## `scroll_page_fractional`
-Scroll the screen by the specified fraction of a page.
+画面を、指定したページの割合だけスクロールします。
 
-Positive values scroll downwards, and negative values scroll upwards.
+正の値では下に、負の値では上にスクロールします。
 
-For example, `scroll_page_fractional:0.5` would scroll the screen
-downwards by half a page, while `scroll_page_fractional:-1.5` would
-scroll it upwards by one and a half pages.
+たとえば、`scroll_page_fractional:0.5` は画面を半ページ下に、
+`scroll_page_fractional:-1.5` は 1.5 ページ上にスクロールします。
 
 ## `scroll_page_lines`
-Scroll the screen by the specified amount of lines.
+画面を指定した行数だけスクロールします。
 
-Positive values scroll downwards, and negative values scroll upwards.
+正の値では下に、負の値では上にスクロールします。
 
-For example, `scroll_page_lines:3` would scroll the screen downwards
-by 3 lines, while `scroll_page_lines:-10` would scroll it upwards by 10
-lines.
+たとえば、`scroll_page_lines:3` は画面を 3 行下に、
+`scroll_page_lines:-10` は 10 行上にスクロールします。
 
 ## `adjust_selection`
-Adjust the current selection in the given direction or position,
-relative to the cursor.
+カーソルを基準に、指定した方向や位置へ現在の選択範囲を調整します。
 
-WARNING: This does not create a new selection, and does nothing when
-there currently isn't one.
+警告: 新しい選択範囲は作成しません。現在選択範囲がなければ何もしません。
 
-Valid arguments are:
+有効な引数は次のとおりです。
 
   - `left`, `right`
 
-    Adjust the selection one cell to the left or right respectively.
+    選択範囲をそれぞれ左または右に 1 セル調整します。
 
   - `up`, `down`
 
-    Adjust the selection one line upwards or downwards respectively.
+    選択範囲をそれぞれ上または下に 1 行調整します。
 
   - `page_up`, `page_down`
 
-    Adjust the selection one page upwards or downwards respectively.
+    選択範囲をそれぞれ上または下に 1 ページ調整します。
 
   - `home`, `end`
 
-    Adjust the selection to the top-left or the bottom-right corner
-    of the screen respectively.
+    選択範囲をそれぞれ画面の左上隅または右下隅まで調整します。
 
   - `beginning_of_line`, `end_of_line`
 
-    Adjust the selection to the beginning or the end of the line
-    respectively.
+    選択範囲をそれぞれ行の先頭または末尾まで調整します。
 
 ## `jump_to_prompt`
-Jump the viewport forward or back by the given number of prompts.
+表示領域を、指定した数のプロンプト分だけ前後に移動します。
 
-Requires shell integration.
+シェル統合が必要です。
 
-Positive values scroll downwards, and negative values scroll upwards.
+正の値では下に、負の値では上にスクロールします。
 
 ## `write_scrollback_file`
-Write the entire scrollback into a temporary file with the specified
-action. The action determines what to do with the filepath.
+スクロールバック全体を一時ファイルに書き出し、指定したアクションを実行します。
+アクションは、ファイルパスに対して行う処理を決定します。
 
-Valid actions are:
+有効なアクションは次のとおりです。
 
   - `copy`
 
-    Copy the file path into the clipboard.
+    ファイルパスをクリップボードにコピーします。
 
   - `paste`
 
-    Paste the file path into the terminal.
+    ファイルパスをターミナルに貼り付けます。
 
   - `open`
 
-    Open the file in the default OS editor for text files.
+    テキストファイル用の OS のデフォルトエディターでファイルを開きます。
 
-    The default OS editor is determined by using `open` on macOS
-    and `xdg-open` on Linux.
+    OS のデフォルトエディターは、macOS では `open`、Linux では `xdg-open` によって決まります。
 
 ## `write_screen_file`
-Write the contents of the screen into a temporary file with the
-specified action.
+画面の内容を一時ファイルに書き出し、指定したアクションを実行します。
 
-See `write_scrollback_file` for possible actions.
+使用可能なアクションは `write_scrollback_file` を参照してください。
 
 ## `write_selection_file`
-Write the currently selected text into a temporary file with the
-specified action.
+現在選択しているテキストを一時ファイルに書き出し、指定したアクションを実行します。
 
-See `write_scrollback_file` for possible actions.
+使用可能なアクションは `write_scrollback_file` を参照してください。
 
-Does nothing when no text is selected.
+テキストが選択されていなければ何もしません。
 
 ## `new_window`
-Open a new window.
+新しいウィンドウを開きます。
 
-If the application isn't currently focused,
-this will bring it to the front.
+アプリケーションにフォーカスがない場合は、最前面に移動します。
 
 ## `new_tab`
-Open a new tab.
+新しいタブを開きます。
 
 ## `previous_tab`
-Go to the previous tab.
+前のタブに移動します。
 
 ## `next_tab`
-Go to the next tab.
+次のタブに移動します。
 
 ## `last_tab`
-Go to the last tab.
+最後のタブに移動します。
 
 ## `goto_tab`
-Go to the tab with the specific index, starting from 1.
+1 から始まる指定のインデックスのタブに移動します。
 
-If the tab number is higher than the number of tabs,
-this will go to the last tab.
+タブ番号がタブの数を超えている場合は、最後のタブに移動します。
 
 ## `move_tab`
-Moves a tab by a relative offset.
+相対オフセットでタブを移動します。
 
-Positive values move the tab forwards, and negative values move it
-backwards. If the new position is out of bounds, it is wrapped around
-cyclically within the tab list.
+正の値ではタブを後方へ、負の値では前方へ移動します。
+新しい位置が範囲外の場合は、タブ一覧の中で循環します。
 
-For example, `move_tab:1` moves the tab one position forwards, and if
-it was already the last tab in the list, it wraps around and becomes
-the first tab in the list. Likewise, `move_tab:-1` moves the tab one
-position backwards, and if it was the first tab, then it will become
-the last tab.
+たとえば、`move_tab:1` はタブを 1 つ後ろに移動し、すでに一覧の最後にあれば先頭に戻ります。
+同様に、`move_tab:-1` はタブを 1 つ前に移動し、先頭にあれば最後に移動します。
 
 ## `toggle_tab_overview`
-Toggle the tab overview.
+タブの一覧表示を切り替えます。
 
-This is only supported on Linux and when the system's libadwaita
-version is 1.4 or newer. The current libadwaita version can be
-found by running `ghostty +version`.
+Linux で、システムの libadwaita が 1.4 以降の場合にのみサポートされます。
+現在の libadwaita バージョンは `ghostty +version` で確認できます。
 
 ## `prompt_surface_title`
-Change the title of the current focused surface via a pop-up prompt.
+ポップアッププロンプトで、現在フォーカス中のサーフェスのタイトルを変更します。
 
 ## `prompt_tab_title`
-Change the title of the current tab via a pop-up prompt. The
-title set via this prompt overrides any title set by the terminal
-and persists across focus changes within the tab.
+ポップアッププロンプトで現在のタブのタイトルを変更します。
+ここで設定したタイトルはターミナルが設定したタイトルを上書きし、タブ内でフォーカスを変更しても維持されます。
 
 ## `set_surface_title`
-Set the title for the current focused surface.
+現在フォーカス中のサーフェスのタイトルを設定します。
 
-If the title is empty, the surface title is reset to an empty title.
+タイトルが空の場合、サーフェスのタイトルを空にリセットします。
 
 ## `set_tab_title`
-Set the title for the current focused tab.
+現在フォーカス中のタブのタイトルを設定します。
 
-If the title is empty, the tab title override is cleared.
+タイトルが空の場合、タブのタイトルの上書きを解除します。
 
 ## `new_split`
-Create a new split in the specified direction.
+指定した方向に新しい分割を作成します。
 
-Valid arguments:
+有効な引数:
 
   - `right`, `down`, `left`, `up`
 
-    Creates a new split in the corresponding direction.
+    対応する方向に新しい分割を作成します。
 
   - `auto`
 
-    Creates a new split along the larger direction.
-    For example, if the parent split is currently wider than it is tall,
-    then a left-right split would be created, and vice versa.
+    長い辺の方向に新しい分割を作成します。
+    たとえば、親の分割が現在横長であれば左右に分割し、縦長であれば上下に分割します。
 
 ## `goto_split`
-Focus on a split either in the specified direction (`right`, `down`,
-`left` and `up`), or in the adjacent split in the order of creation
-(`previous` and `next`).
+指定した方向（`right`、`down`、`left`、`up`）の分割、
+または作成順で隣接する分割（`previous`、`next`）にフォーカスします。
 
 ## `goto_window`
-Focus on either the previous window or the next one ('previous', 'next')
+前または次のウィンドウ（'previous'、'next'）にフォーカスします。
 
 ## `toggle_split_zoom`
-Zoom in or out of the current split.
+現在の分割のズームを切り替えます。
 
-When a split is zoomed into, it will take up the entire space in
-the current tab, hiding other splits. The tab or tab bar would also
-reflect this by displaying an icon indicating the zoomed state.
+分割をズームすると、現在のタブ全体を占め、ほかの分割は非表示になります。
+タブやタブバーにも、ズーム状態を示すアイコンが表示されます。
 
 ## `toggle_readonly`
-Toggle read-only mode for the current surface.
+現在のサーフェスの読み取り専用モードを切り替えます。
 
-When a surface is in read-only mode:
-  - No input is sent to the PTY (mouse events, key encoding)
-  - Input can still be used at the terminal level to make selections,
-    copy/paste (keybinds), scroll, etc.
-  - Warn before quit is always enabled in this state even if an active
-    process is not running
+サーフェスが読み取り専用モードの場合:
+  - PTY に入力（マウスイベント、キーのエンコード結果）を送信しません。
+  - ターミナル側の選択、コピー / 貼り付け（キーバインド）、スクロールなどの入力は引き続き使えます。
+  - アクティブなプロセスが実行されていなくても、終了前の警告が常に有効になります。
 
 ## `resize_split`
-Resize the current split in the specified direction and amount in
-pixels. The two arguments should be joined with a comma (`,`),
-like in `resize_split:up,10`.
+現在の分割を、指定した方向とピクセル数でリサイズします。
+2 つの引数は `resize_split:up,10` のようにカンマ（`,`）でつなぎます。
 
 ## `equalize_splits`
-Equalize the size of all splits in the current window.
+現在のウィンドウのすべての分割を同じ大きさにします。
 
 ## `reset_window_size`
-Reset the window to the default size. The "default size" is the
-size that a new window would be created with. This has no effect
-if the window is fullscreen.
+ウィンドウをデフォルトのサイズに戻します。「デフォルトのサイズ」とは、新しいウィンドウを作成するときのサイズです。
+フルスクリーンの場合は何もしません。
 
-Only implemented on macOS.
+macOS でのみ実装されています。
 
 ## `inspector`
-Control the visibility of the terminal inspector.
+ターミナルインスペクターの表示を制御します。
 
-Valid arguments: `toggle`, `show`, `hide`.
+有効な引数: `toggle`、`show`、`hide`。
 
 ## `show_gtk_inspector`
-Show the GTK inspector.
+GTK インスペクターを表示します。
 
-Has no effect on macOS.
+macOS では何もしません。
 
 ## `show_on_screen_keyboard`
-Show the on-screen keyboard if one is present.
+スクリーンキーボードがある場合は表示します。
 
-Only implemented on Linux (GTK). On GNOME, the "Screen Keyboard"
-accessibility feature must be turned on, which can be found under
-Settings > Accessibility > Typing. Other platforms are as of now
-untested.
+Linux（GTK）でのみ実装されています。GNOME では、設定 > アクセシビリティ > タイピングにある
+「スクリーンキーボード」機能を有効にする必要があります。ほかのプラットフォームは現時点では未テストです。
 
 ## `open_config`
-Open the configuration file in the default OS editor.
+OS のデフォルトエディターで設定ファイルを開きます。
 
-If your default OS editor isn't configured then this will fail.
-Currently, any failures to open the configuration will show up only in
-the logs.
+OS のデフォルトエディターが設定されていない場合は失敗します。
+現在、設定ファイルを開けなかった場合のエラーはログにのみ表示されます。
 
 ## `reload_config`
-Reload the configuration.
+設定を再読み込みします。
 
-The exact meaning depends on the app runtime in use, but this usually
-involves re-reading the configuration file and applying any changes
-Note that not all changes can be applied at runtime.
+正確な動作は使用中のアプリランタイムによって異なりますが、通常は設定ファイルを再読込し、変更を適用します。
+すべての変更を実行中に適用できるわけではないことに注意してください。
 
 ## `close_surface`
-Close the current "surface", whether that is a window, tab, split, etc.
+ウィンドウ、タブ、分割など、現在の「サーフェス」を閉じます。
 
-This might trigger a close confirmation popup, depending on the value
-of the `confirm-close-surface` configuration setting.
+`confirm-close-surface` 設定の値によっては、閉じる前の確認ポップアップが表示されます。
 
 ## `close_tab`
-Close the current tab and all splits therein, close all other tabs, or
-close every tab to the right of the current one depending on the mode.
+モードに応じて、現在のタブとその中のすべての分割、ほかのすべてのタブ、
+または現在のタブより右にあるすべてのタブを閉じます。
 
-If the mode is not specified, defaults to closing the current tab.
+モードを指定しない場合、デフォルトでは現在のタブを閉じます。
 
-This might trigger a close confirmation popup, depending on the value
-of the `confirm-close-surface` configuration setting.
+`confirm-close-surface` 設定の値によっては、閉じる前の確認ポップアップが表示されます。
 
 ## `close_window`
-Close the current window and all tabs and splits therein.
+現在のウィンドウと、その中のすべてのタブと分割を閉じます。
 
-This might trigger a close confirmation popup, depending on the value
-of the `confirm-close-surface` configuration setting.
+`confirm-close-surface` 設定の値によっては、閉じる前の確認ポップアップが表示されます。
 
 ## `close_all_windows`
-Close all windows.
+すべてのウィンドウを閉じます。
 
-WARNING: This action has been deprecated and has no effect on either
-Linux or macOS. Users are instead encouraged to use `all:close_window`
-instead.
+警告: このアクションは非推奨で、Linux でも macOS でも効果がありません。
+代わりに `all:close_window` を使うことをお勧めします。
 
 ## `toggle_maximize`
-Maximize or unmaximize the current window.
+現在のウィンドウの最大化を切り替えます。
 
-This has no effect on macOS as it does not have the concept of
-maximized windows.
+macOS にはウィンドウの最大化という概念がないため、効果はありません。
 
 ## `toggle_fullscreen`
-Fullscreen or unfullscreen the current window.
+現在のウィンドウのフルスクリーンを切り替えます。
 
 ## `toggle_window_decorations`
-Toggle window decorations (titlebar, buttons, etc.) for the current window.
+現在のウィンドウの装飾（タイトルバー、ボタンなど）を切り替えます。
 
-Only implemented on Linux.
+Linux でのみ実装されています。
 
 ## `toggle_window_float_on_top`
-Toggle whether the terminal window should always float on top of other
-windows even when unfocused.
+フォーカスがない場合も、ターミナルウィンドウをほかのウィンドウより常に手前に表示するかどうかを切り替えます。
 
-Terminal windows always start as normal (not float-on-top) windows.
+ターミナルウィンドウは、常に通常の（最前面固定ではない）ウィンドウとして開始します。
 
-Only implemented on macOS.
+macOS でのみ実装されています。
 
 ## `toggle_secure_input`
-Toggle secure input mode.
+セキュア入力モードを切り替えます。
 
-This is used to prevent apps from monitoring your keyboard input
-when entering passwords or other sensitive information.
+パスワードなどの機密情報を入力する際に、アプリによるキーボード入力の監視を防ぐために使います。
 
-This applies to the entire application, not just the focused terminal.
-You must manually untoggle it or quit Ghostty entirely to disable it.
+フォーカス中のターミナルだけでなく、アプリケーション全体に適用されます。
+無効にするには、手動で切り替えるか、Ghostty を完全に終了する必要があります。
 
-Only implemented on macOS, as this uses a built-in system API.
+システム組み込みの API を使うため、macOS でのみ実装されています。
 
 ## `toggle_mouse_reporting`
-Toggle mouse reporting on or off.
+マウスレポートの有効・無効を切り替えます。
 
-When mouse reporting is disabled, mouse events will not be reported to
-terminal applications even if they request it. This allows you to always
-use the mouse for selection and other terminal UI interactions without
-applications capturing mouse input.
+マウスレポートを無効にすると、ターミナルアプリケーションが要求してもマウスイベントを通知しません。
+これにより、アプリケーションにマウス入力を捕捉されることなく、選択などのターミナル UI 操作に常にマウスを使えます。
 
-This can also be controlled via the `mouse-reporting` configuration
-option.
+`mouse-reporting` 設定オプションでも制御できます。
 
 ## `toggle_command_palette`
-Toggle the command palette.
+コマンドパレットの表示を切り替えます。
 
-The command palette is a popup that lets you see what actions
-you can perform, their associated keybindings (if any), a search bar
-to filter the actions, and the ability to then execute the action.
+コマンドパレットは、実行可能なアクション、対応するキーバインド（あれば）、アクションを絞り込む検索バーを表示し、
+アクションを実行できるポップアップです。
 
-This requires libadwaita 1.5 or newer on Linux. The current libadwaita
-version can be found by running `ghostty +version`.
+Linux では libadwaita 1.5 以降が必要です。
+現在の libadwaita バージョンは `ghostty +version` で確認できます。
 
 ## `toggle_quick_terminal`
-Toggle the quick terminal.
+クイックターミナルの表示を切り替えます。
 
-The quick terminal, also known as the "Quake-style" or drop-down
-terminal, is a terminal window that appears on demand from a keybinding,
-often sliding in from a screen edge such as the top. This is useful for
-quick access to a terminal without having to open a new window or tab.
+クイックターミナルは「Quake 風」やドロップダウンターミナルとも呼ばれ、キーバインドで必要なときに表示できるターミナルウィンドウです。
+多くの場合、画面の上端などからスライドして現れます。
+新しいウィンドウやタブを開かずに、すぐターミナルにアクセスしたいときに便利です。
 
-The terminal state is preserved between appearances, so showing the
-quick terminal after it was already hidden would display the same
-window instead of creating a new one.
+非表示の間もターミナルの状態は保持されるため、再び表示するときは新規作成せず、同じウィンドウを表示します。
 
-As quick terminals are often useful when other windows are currently
-focused, they are best used with *global* keybinds. For example, one
-can define the following key bind to toggle the quick terminal from
-anywhere within the system by pressing `` Cmd+` ``:
+クイックターミナルは、ほかのウィンドウにフォーカスしているときに便利なことが多いため、*グローバル*キーバインドとの併用が最適です。
+たとえば、次のキーバインドを定義すると、システム内のどこからでも `` Cmd+` `` で表示を切り替えられます。
 
 ```ini
 keybind = global:cmd+backquote=toggle_quick_terminal
 ```
 
-The quick terminal has some limitations:
+クイックターミナルには、いくつかの制限があります。
 
-  - Only one quick terminal instance can exist at a time.
+  - 同時に存在できるクイックターミナルのインスタンスは 1 つだけです。
 
-  - Unlike normal terminal windows, the quick terminal will not be
-    restored when the application is restarted on systems that support
-    window restoration like macOS.
+  - 通常のターミナルウィンドウと異なり、macOS などウィンドウ復元に対応するシステムでも、アプリの再起動時に復元されません。
 
-  - On Linux, the quick terminal is only supported on Wayland and not
-    X11, and only on Wayland compositors that support the `wlr-layer-shell-v1`
-    protocol. In practice, this means that only GNOME users would not be
-    able to use this feature.
+  - Linux では X11 には対応せず、Wayland のみでサポートされます。
+    また、`wlr-layer-shell-v1` プロトコルに対応する Wayland コンポジターが必要です。
+    実際には、この機能を使えないのは GNOME ユーザーのみということになります。
 
-  - On Linux, slide-in animations are only supported on KDE, and when
-    the "Sliding Popups" KWin plugin is enabled.
+  - Linux でスライドインアニメーションが使えるのは、KDE で「Sliding Popups」KWin プラグインを有効にした場合のみです。
 
-    If you do not have this plugin enabled, open System Settings > Apps
-    & Windows > Window Management > Desktop Effects, and enable the
-    plugin in the plugin list. Ghostty would then need to be restarted
-    fully for this to take effect.
+    このプラグインが無効の場合は、システム設定 > アプリとウィンドウ > ウィンドウ管理 > デスクトップ効果を開き、一覧で有効にしてください。
+    反映するには、Ghostty を完全に再起動する必要があります。
 
-  - Quick terminal tabs are only supported on Linux and not on macOS.
-    This is because tabs on macOS require a title bar.
+  - クイックターミナルのタブは Linux でのみサポートされ、macOS では使えません。
+    macOS のタブにはタイトルバーが必要なためです。
 
-  - On macOS, a fullscreened quick terminal will always be in non-native
-    fullscreen mode. This is a requirement due to how the quick terminal
-    is rendered.
+  - macOS では、クイックターミナルのフルスクリーンは常に非ネイティブモードになります。
+    これはクイックターミナルの描画方法による制約です。
 
-See the various configurations for the quick terminal in the
-configuration file to customize its behavior.
+動作のカスタマイズについては、設定ファイルのクイックターミナルに関する各設定を参照してください。
 
 ## `toggle_visibility`
-Show or hide all windows. If all windows become shown, we also ensure
-Ghostty becomes focused. When hiding all windows, focus is yielded
-to the next application as determined by the OS.
+すべてのウィンドウの表示・非表示を切り替えます。すべてのウィンドウを表示したときは、Ghostty にもフォーカスします。
+すべて非表示にするときは、OS が決定する次のアプリケーションにフォーカスを渡します。
 
-Note: When the focused surface is fullscreen, this method does nothing.
+注意: フォーカス中のサーフェスがフルスクリーンの場合は何もしません。
 
-Only implemented on macOS.
+macOS でのみ実装されています。
 
 ## `toggle_background_opacity`
-Toggle the window background opacity between transparent and opaque.
+ウィンドウの背景を透明と不透明の間で切り替えます。
 
-This does nothing when `background-opacity` is set to 1 or above.
+`background-opacity` が 1 以上の場合は何もしません。
 
-When `background-opacity` is less than 1, this action will either make
-the window transparent or not depending on its current transparency state.
+`background-opacity` が 1 未満の場合、現在の透明状態に応じて、ウィンドウを透明または不透明にします。
 
-Only implemented on macOS.
+macOS でのみ実装されています。
 
 ## `check_for_updates`
-Check for updates.
+更新を確認します。
 
-Only implemented on macOS.
+macOS でのみ実装されています。
 
 ## `undo`
-Undo the last undoable action for the focused surface or terminal,
-if possible. This can undo actions such as closing tabs or
-windows.
+可能であれば、フォーカス中のサーフェスやターミナルで最後に行った、取り消し可能なアクションを取り消します。
+タブやウィンドウを閉じる操作などを取り消せます。
 
-Not every action in Ghostty can be undone or redone. The list
-of actions support undo/redo is currently limited to:
+Ghostty のすべてのアクションを取り消し・やり直しできるわけではありません。
+現在対応しているのは、次の操作のみです。
 
-  - New window, close window
-  - New tab, close tab
-  - New split, close split
+  - ウィンドウの新規作成、ウィンドウを閉じる
+  - タブの新規作成、タブを閉じる
+  - 分割の新規作成、分割を閉じる
 
-All actions are only undoable/redoable for a limited time.
-For example, restoring a closed split can only be done for
-some number of seconds since the split was closed. The exact
-amount is configured with the `undo-timeout` configuration settings.
+すべてのアクションには、取り消し・やり直しができる時間の制限があります。
+たとえば、閉じた分割を復元できるのは、閉じてから一定の秒数以内だけです。
+具体的な時間は `undo-timeout` 設定で指定します。
 
-The undo/redo actions being limited ensures that there is
-bounded memory usage over time, closed surfaces don't continue running
-in the background indefinitely, and the keybinds become available
-for terminal applications to use.
+取り消し・やり直しに制限を設けることで、時間が経過してもメモリ使用量が際限なく増えず、
+閉じたサーフェスがバックグラウンドで無期限に動作し続けず、キーバインドをターミナルアプリケーションで使えるようになります。
 
-Only implemented on macOS.
+macOS でのみ実装されています。
 
 ## `redo`
-Redo the last undoable action for the focused surface or terminal,
-if possible. See "undo" for more details on what can and cannot
-be undone or redone.
+可能であれば、フォーカス中のサーフェスやターミナルで最後に行った、取り消し可能なアクションをやり直します。
+取り消し・やり直しができる操作とできない操作の詳細は、「undo」を参照してください。
 
 ## `end_key_sequence`
-End the currently active key sequence, if any, and flush the
-keys up to this point to the terminal, excluding the key that
-triggered this action.
+現在有効なキーシーケンスがあれば終了し、このアクションを発動したキーを除き、それまでのキーをターミナルに送信します。
 
-For example: `ctrl+w>escape=end_key_sequence` would encode
-`ctrl+w` to the terminal and exit the key sequence.
+たとえば、`ctrl+w>escape=end_key_sequence` は `ctrl+w` をターミナル向けにエンコードし、キーシーケンスを終了します。
 
-Normally, an invalid sequence will reset the key sequence and
-flush all data including the invalid key. This action allows
-you to flush only the prior keys, which is useful when you want
-to bind something like a control key (`ctrl+w`) but not send
-additional inputs.
+通常、無効なシーケンスはキーシーケンスをリセットし、無効なキーを含むすべてのデータを送信します。
+このアクションでは先行するキーだけを送信できるため、制御キー（`ctrl+w`）などを割り当てつつ、追加の入力は送りたくない場合に便利です。

@@ -1,41 +1,37 @@
 ---
-title: Build Ghostty from Source
+title: Ghostty をソースからビルドする
 description: |-
-  Build Ghostty yourself from source code. This is only recommended for
-  people who don't have access to binaries or packages, or for developers
-  who want to contribute to Ghostty.
+  ソースコードから自分で Ghostty をビルドします。バイナリやパッケージを利用できない方、
+  または Ghostty に貢献したい開発者にのみ推奨します。
 ---
 
 <Tip>
 
-**Building Ghostty from source is not recommended for most users.**
-If you have access to a prebuilt binary or package, you should use that
-instead. See [the binaries and packages page](/docs/install/binary) to
-see if a prebuilt binary or package is available for your platform.
+**ほとんどのユーザーには、Ghostty をソースからビルドすることをお勧めしません。**
+ビルド済みバイナリやパッケージを利用できる場合は、そちらを使ってください。
+お使いのプラットフォーム向けのビルド済みバイナリやパッケージがあるかは、[バイナリとパッケージのページ](/docs/install/binary)で確認できます。
 
-If you intend to develop or package Ghostty, please also check out our
-["Developing Ghostty"](https://github.com/ghostty-org/ghostty/blob/main/HACKING.md)
-and ["Packaging Ghostty"](https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md)
-documents respectively. This page is more oriented towards end users who
-want or need to build Ghostty from source for personal use.
+Ghostty の開発やパッケージ化を行う場合は、それぞれ
+[「Ghostty の開発」](https://github.com/ghostty-org/ghostty/blob/main/HACKING.md)と
+[「Ghostty のパッケージ化」](https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md)のドキュメントも確認してください。
+このページは、個人利用のために Ghostty をソースからビルドしたい、またはその必要があるエンドユーザーを主な対象としています。
 
 </Tip>
 
-To build Ghostty, you need to first install [Zig](https://ziglang.org/).
+Ghostty をビルドするには、まず [Zig](https://ziglang.org/) をインストールする必要があります。
 
 <Important>
 
-Each version of Ghostty is only guaranteed to build for one **specific** version
-of Zig as it is still a rapidly-evolving language. **Either older or newer
-Zig compilers may not be able to build Ghostty.** If your package manager
-maintains a different version of Zig than what Ghostty requires, you can use
-static binary releases of the Zig compiler on the [Zig downloads page](https://ziglang.org/download/).
+Zig は今も急速に進化している言語のため、Ghostty の各バージョンは、Zig の**特定の** 1 バージョンでのみビルドを保証しています。
+**古い Zig コンパイラーでも新しい Zig コンパイラーでも、Ghostty をビルドできない場合があります。**
+パッケージマネージャーが提供する Zig のバージョンが Ghostty の要求と異なる場合は、
+[Zig のダウンロードページ](https://ziglang.org/download/)にある Zig コンパイラーの静的バイナリリリースを使えます。
 
 </Important>
 
-The Zig version that each Ghostty version requires is as follows:
+Ghostty の各バージョンが必要とする Zig のバージョンは次のとおりです。
 
-| Ghostty version | Zig version |
+| Ghostty のバージョン | Zig のバージョン |
 | --------------- | ----------- |
 | 1.0.x           | 0.13.0      |
 | 1.1.x           | 0.13.0      |
@@ -43,65 +39,55 @@ The Zig version that each Ghostty version requires is as follows:
 | 1.3.x           | 0.15.2      |
 | tip             | 0.15.2      |
 
-The official build environment is defined by [Nix](https://nixos.org/).
-You do not need to use Nix to build Ghostty, but the Nix environment is the
-environment which runs CI tests and builds release artifacts, so it is the most
-reliable way to build Ghostty. See the [Building with Nix](#building-with-nix)
-section to see how to set up the Nix environment.
+公式のビルド環境は [Nix](https://nixos.org/) で定義されています。
+Ghostty のビルドに Nix は必須ではありませんが、Nix 環境は CI テストやリリース成果物のビルドに使う環境なので、最も確実なビルド方法です。
+Nix 環境の設定方法は、[Nix でのビルド](#building-with-nix)を参照してください。
 
-Depending on your platform, you may also need to install additional
-dependencies to build Ghostty. For Linux, see [Linux](#linux). For macOS,
-see [macOS](#macos).
+プラットフォームによっては、Ghostty のビルドに追加の依存関係が必要です。
+Linux は [Linux](#linux)、macOS は [macOS](#macos) を参照してください。
 
-## Getting the source code {/* #getting-the-source-code */}
+## ソースコードの入手 {/* #getting-the-source-code */}
 
-Begin by **downloading Ghostty's source tarball**.
+まず、**Ghostty のソース tarball をダウンロード**します。
 
 <Warning>
 
-While you can compile Ghostty from source by checking out its Git repository,
-this is **not recommended** for anyone but Ghostty developers and contributors.
-This is because source tarballs contain various preprocessed files that make
-Ghostty require far fewer dependencies to compile.
+Git リポジトリをチェックアウトして Ghostty をソースからコンパイルすることもできますが、
+Ghostty の開発者や貢献者以外には**お勧めしません**。
+ソース tarball にはさまざまな前処理済みファイルが含まれており、コンパイルに必要な依存関係が大幅に少なくなるためです。
 
-If you intend to contribute to Ghostty, please consult the
-["Developing Ghostty"](https://github.com/ghostty-org/ghostty/blob/main/HACKING.md)
-documents on how to build Ghostty in a development environment.
-While most of the steps are exactly the same, we will be assuming a source
-tarball-based build from now on for the sake of simplicity.
+Ghostty に貢献する場合、開発環境でのビルド方法は
+[「Ghostty の開発」](https://github.com/ghostty-org/ghostty/blob/main/HACKING.md)を参照してください。
+ほとんどの手順はまったく同じですが、以降は簡単にするため、ソース tarball からのビルドを前提とします。
 
 </Warning>
 
-For stable releases, source tarballs and their accompanying checksums can be
-found at `release.files.ghostty.org` at the following paths, where `VERSION`
-is an unprefixed version number such as `1.0.0`:
+安定版のソース tarball と付属のチェックサムは、`release.files.ghostty.org` の以下のパスにあります。
+`VERSION` は `1.0.0` のようなプレフィックスなしのバージョン番号です。
 
 ```
 https://release.files.ghostty.org/VERSION/ghostty-VERSION.tar.gz
 https://release.files.ghostty.org/VERSION/ghostty-VERSION.tar.gz.minisig
 ```
 
-Signature files are signed with
-[minisign](https://jedisct1.github.io/minisign/)
-using the following public key:
+署名ファイルは、次の公開鍵を使い、
+[minisign](https://jedisct1.github.io/minisign/) で署名されています。
 
 ```
 RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV
 ```
 
-For development ("tip") versions, the source tarball can be found via the
-[`tip` release on GitHub](https://github.com/ghostty-org/ghostty/releases/tag/tip),
-under the name `ghostty-source.tar.gz`.
+開発版（「tip」）のソース tarball は、[GitHub の `tip` リリース](https://github.com/ghostty-org/ghostty/releases/tag/tip)から、
+`ghostty-source.tar.gz` という名前で入手できます。
 
 <Important>
 
-The source tarball is **different** from GitHub's autogenerated tarball
-labelled "Source code (zip)" or "Source code (tar.gz)": the latter of which does
-not contain any preprocessed files, making it identical to a Git checkout.
+このソース tarball は、GitHub が自動生成する「Source code (zip)」や「Source code (tar.gz)」とは**異なります**。
+自動生成版には前処理済みファイルが含まれず、Git のチェックアウトと同じ内容です。
 
 </Important>
 
-Decompress the release tarball, and then navigate into the unpacked source folder:
+リリース tarball を展開し、展開されたソースフォルダーに移動します。
 
 ```sh
 tar -xf ghostty-VERSION.tar.gz
@@ -114,59 +100,55 @@ tar -xf ghostty-source.tar.gz
 cd ghostty-VERSION-main+REVISION/
 ```
 
-With Zig and necessary dependencies installed, a binary can then be built
-using `zig build`:
+Zig と必要な依存関係をインストールしたら、`zig build` でバイナリをビルドできます。
 
 ```sh
 zig build -Doptimize=ReleaseFast
 ```
 
-On Linux, this will build a ready-to-use binary at `zig-out/bin/ghostty`.
-On macOS, this will build the app bundle at `zig-out/Ghostty.app`.
+Linux では、すぐ使えるバイナリが `zig-out/bin/ghostty` に作成されます。
+macOS では、アプリバンドルが `zig-out/Ghostty.app` に作成されます。
 
 <Tip>
 
-For Linux users: To install system-wide or on your user account, see
-[Installation Directory](#installation-directory).
+Linux ユーザーの方へ: システム全体またはユーザーアカウントにインストールするには、
+[インストール先ディレクトリ](#installation-directory)を参照してください。
 
 </Tip>
 
 <Tip>
 
-For a debug build, omit the `-Doptimize=ReleaseFast` flag. Debug builds
-are **extremely slow** (over 100x slower) than release builds, so only
-use them for development.
+デバッグビルドには、`-Doptimize=ReleaseFast` フラグを省略します。
+デバッグビルドはリリースビルドより**極めて低速**（100 倍以上遅い）なので、開発時にのみ使ってください。
 
 </Tip>
 
 ## Linux {/* #linux */}
 
-### Dependencies {/* #dependencies */}
+### 依存関係 {/* #dependencies */}
 
-On Linux, you'll need to install header packages for Ghostty's dependencies
-before building it. Only a few dependencies are needed for source builds
-because Ghostty will build everything else statically by default.
+Linux では、ビルド前に Ghostty の依存関係のヘッダーパッケージをインストールする必要があります。
+それ以外はデフォルトで Ghostty が静的にビルドするため、ソースからのビルドで必要な依存関係はわずかです。
 
-Required dependencies:
+必要な依存関係:
 
 - `gtk4`
 - `libadwaita`
 - `gtk4-layer-shell`
-- `pkg-config` or `pkgconf`
+- `pkg-config` または `pkgconf`
 - `gettext`
 
 <Important>
 
-If you're using a Git checkout, you also need to install these dependencies:
+Git のチェックアウトを使う場合は、これらの依存関係もインストールする必要があります。
 
 </Important>
 
 <Tip>
 
-If your distro has yet to package `gtk4-layer-shell` (e.g. Ubuntu 24.04, Debian
-12, Linux Mint 22.1, OpenSUSE, etc.), you need to allow Ghostty to compile
-`gtk4-layer-shell` from source by adding the flag `-fno-sys=gtk4-layer-shell`
-to `zig build`.
+お使いのディストリビューションに `gtk4-layer-shell` のパッケージがまだない場合
+（Ubuntu 24.04、Debian 12、Linux Mint 22.1、OpenSUSE など）、
+`zig build` に `-fno-sys=gtk4-layer-shell` フラグを追加し、Ghostty が `gtk4-layer-shell` をソースからコンパイルできるようにする必要があります。
 
 </Tip>
 
@@ -192,7 +174,7 @@ sudo pacman -S \
   gettext
 ```
 
-#### Debian and Ubuntu {/* #debian-and-ubuntu */}
+#### Debian と Ubuntu {/* #debian-and-ubuntu */}
 
 ```sh
 sudo apt install \
@@ -203,12 +185,11 @@ sudo apt install \
   libxml2-utils
 ```
 
-On Debian unstable/testing, the `gcc-multilib` package is also required
-for building.
+Debian unstable/testing では、ビルドに `gcc-multilib` パッケージも必要です。
 
 #### Fedora {/* #fedora */}
 
-On Fedora variants, use
+Fedora の各バリエーションでは、次を使います。
 
 ```sh
 sudo dnf install \
@@ -219,7 +200,7 @@ sudo dnf install \
   gettext
 ```
 
-On Fedora Atomic variants, use
+Fedora Atomic の各バリエーションでは、次を使います。
 
 ```sh
 rpm-ostree install \
@@ -288,83 +269,69 @@ sudo xbps-install \
   gettext
 ```
 
-### Installation Directory {/* #installation-directory */}
+### インストール先ディレクトリ {/* #installation-directory */}
 
-Use `zig build` with the `-p` (prefix) flag to install Ghostty into
-a target directory. This will setup the proper FHS directory structure
-that ensures features such as shell integration, icons, GTK shortcuts, etc.
-all work.
+`zig build` に `-p`（prefix）フラグを指定して、対象ディレクトリに Ghostty をインストールします。
+これにより、シェル統合、アイコン、GTK ショートカットなどの機能がすべて動作する、適切な FHS ディレクトリ構造が作成されます。
 
-For local, unprivileged installs, we recommend `$HOME/.local`:
+管理者権限を使わないローカルインストールには、`$HOME/.local` をお勧めします。
 
 ```sh
 zig build -p $HOME/.local -Doptimize=ReleaseFast
 ```
 
-With a typical Freedesktop-compatible desktop environment (i.e. GNOME,
-KDE), this will make Ghostty available as an app in your app launcher.
-If you don't see it immediately you may have to log out and log back
-in or maybe even restart.
+一般的な Freedesktop 対応のデスクトップ環境（GNOME、KDE など）では、これによりアプリランチャーから Ghostty を起動できるようになります。
+すぐに表示されなければ、ログアウトして再ログインするか、場合によっては再起動が必要です。
 
-If Ghostty fails to launch using an app icon in your app launcher,
-ensure that `~/.local/bin` is on your _system_ `PATH`. The desktop environment
-itself must have that path in the `PATH`. Google for your specific desktop
-environment and distribution to learn how to do that.
+アプリランチャーのアイコンから Ghostty を起動できない場合は、`~/.local/bin` が*システムの* `PATH` に含まれていることを確認してください。
+デスクトップ環境自体の `PATH` にそのパスが必要です。
+設定方法は、お使いのデスクトップ環境とディストリビューションについて Google で検索してください。
 
-If you built Ghostty with the `-fno-sys=gtk4-layer-shell` flag, you may
-additionally require the `LD_LIBRARY_PATH` environment variable to be set to
-`$HOME/.local/lib`. To avoid globally polluting `LD_LIBRARY_PATH` when launching
-from a desktop environment, you can simply patch the installed Ghostty elf with
-`patchelf`:
+`-fno-sys=gtk4-layer-shell` フラグで Ghostty をビルドした場合は、追加で `LD_LIBRARY_PATH` 環境変数を `$HOME/.local/lib` に設定する必要があるかもしれません。
+デスクトップ環境から起動するときに `LD_LIBRARY_PATH` をグローバルに汚染しないようにするには、
+`patchelf` でインストール済みの Ghostty ELF を修正するだけで済みます。
 
 ```shell-session
 patchelf --set-rpath '$ORIGIN/../lib' $HOME/.local/bin/ghostty
 ```
 
-For system-wide installs, we recommend `/usr` (likely requires `sudo`):
+システム全体へのインストールには、`/usr` をお勧めします（通常は `sudo` が必要です）。
 
 ```shell-session
 zig build -p /usr -Doptimize=ReleaseFast
 ```
 
-### Building with Nix {/* #building-with-nix */}
+### Nix でのビルド {/* #building-with-nix */}
 
-The Nix build environment can be accessed like any other
-[Nix dev shell](https://nix.dev/tutorials/first-steps/declarative-shell.html),
-via the `nix develop` command (or `nix-shell` if you don't have the
-[`nix-command` experimental feature](https://nix.dev/manual/nix/2.24/development/experimental-features#xp-feature-nix-command)
-enabled).
+Nix ビルド環境には、ほかの [Nix 開発シェル](https://nix.dev/tutorials/first-steps/declarative-shell.html)と同じように、
+`nix develop` コマンドで入れます
+（[`nix-command` 実験的機能](https://nix.dev/manual/nix/2.24/development/experimental-features#xp-feature-nix-command)を有効にしていなければ `nix-shell` を使います）。
 
-If you use [`nix-direnv`](https://github.com/nix-community/nix-direnv),
-Ghostty provides an `.envrc` file you can source by running `direnv allow`.
-This will allow you to seamlessly enter and exit the Ghostty development
-environment as you enter and exit the Ghostty repository. Direnv is not
-required.
+[`nix-direnv`](https://github.com/nix-community/nix-direnv) を使っている場合、Ghostty が提供する `.envrc` ファイルを `direnv allow` で読み込めます。
+これにより、Ghostty リポジトリへの出入りに合わせて、開発環境にもシームレスに出入りできます。
+Direnv は必須ではありません。
 
-After setting up the Nix environment, you can run the same `zig build`
-as on other distributions or you can also build the package with Nix
-by running:
+Nix 環境を設定したら、ほかのディストリビューションと同じ `zig build` を実行するか、
+次のコマンドで Nix を使ってパッケージをビルドできます。
 
 ```sh
 nix build .#ghostty
 ```
 
-The binary would then be located under `./result/bin/ghostty`.
+バイナリは `./result/bin/ghostty` に作成されます。
 
-Building with Nix should yield the same result as building it with Zig,
-but with higher reproducibility guarantees that ensure every part of
-Ghostty can be built reliably.
+Nix でのビルド結果は Zig でのビルドと同じになるはずですが、再現性の保証が高まり、
+Ghostty のすべての部分を確実にビルドできるようになります。
 
 ## macOS {/* #macos */}
 
-### Dependencies {/* #dependencies */}
+### 依存関係 {/* #dependencies */}
 
 #### Xcode {/* #xcode */}
 
-To build the macOS application, you must build on a macOS machine with
-Xcode installed and the active developer directory pointing to it. If
-you're not sure that's the case, check the output of `xcode-select
---print-path`:
+macOS アプリケーションのビルドには、Xcode がインストールされ、アクティブな開発者ディレクトリが Xcode を指す macOS マシンが必要です。
+不明な場合は、`xcode-select
+--print-path` の出力を確認してください。
 
 ```sh
 xcode-select --print-path
@@ -375,25 +342,22 @@ xcode-select --print-path
 /Applications/Xcode.app/Contents/Developer # <-- GOOD
 ```
 
-The above can happen if you install the Xcode Command Line Tools _after_ Xcode
-is installed.
+上記の状態は、Xcode をインストールした*後に* Xcode Command Line Tools をインストールすると発生することがあります。
 
-Next, make sure you have the macOS SDK, iOS SDK, and Metal Toolchain
-installed (from inside Xcode → Settings → Components).
+次に、macOS SDK、iOS SDK、Metal Toolchain がインストールされていることを確認します
+（Xcode → Settings → Components から確認できます）。
 
-#### Other Dependencies {/* #other-dependencies */}
+#### その他の依存関係 {/* #other-dependencies */}
 
-Ghostty also requires some additional library dependencies to be
-installed. You can choose to install them however you'd like, but
-the easiest way is via Homebrew:
+Ghostty には、追加のライブラリ依存関係のインストールも必要です。
+インストール方法は自由ですが、Homebrew を使うのが最も簡単です。
 
 ```sh
 brew install gettext
 ```
 
 <Note>
-  If you're using the **Nix development environment**, these dependencies are
-  handled for you and you do not need to install them manually.
+  **Nix 開発環境**を使っている場合、これらの依存関係は自動で処理されるため、手動でインストールする必要はありません。
 </Note>
 
 ### Mac `.app` {/* #mac-.app */}
@@ -402,12 +366,10 @@ brew install gettext
 zig build -Doptimize=ReleaseFast
 ```
 
-This will output the app to `zig-out/Ghostty.app`.
+アプリは `zig-out/Ghostty.app` に出力されます。
 
-The app created will use the "ReleaseLocal" Xcode build configuration.
-The "ReleaseLocal" build configuration is specifically for local release
-builds and disables some security features (such as "Library Validation")
-to make it easier to run without having to have a code signing identity
-and so on. These builds aren't meant for distribution. If you want a release
-build with all security features,
-[use the official binary build](/download).
+作成されるアプリは、Xcode の「ReleaseLocal」ビルド設定を使います。
+「ReleaseLocal」はローカルのリリースビルド専用の設定で、コード署名 ID などがなくても実行しやすいように、
+「Library Validation」など一部のセキュリティ機能を無効にします。
+このビルドは配布用ではありません。すべてのセキュリティ機能を備えたリリースビルドが必要な場合は、
+[公式バイナリビルドを使ってください](/download)。
