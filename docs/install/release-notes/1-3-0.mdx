@@ -459,7 +459,7 @@ macOS 13 Ventura のままです。
 - 新しい `selection-word-chars` 設定で、ダブルクリックによる選択時に単語の境界を決める文字を設定できます。GH-9335
 - 新しい設定 `mouse-reporting = false` により、TUI へのマウスイベント報告機能をすべて無効にできます。GH-8430
 - 新しい設定値 `scroll-to-bottom = output` により、出力があるたびにウィンドウを自動的に最下部へスクロールできます（デフォルトでは無効）。GH-9938
-- 新しい `split-preserve-zoom` 設定を追加しました。現在指定できる値は `navigation` のみです（デフォルトでは無効）。これを指定すると、goto_split で分割間を移動してもズーム状態が維持されます。GH-8458 GH-9089
+- 新しい `split-preserve-zoom` 設定を追加しました。最初に用意されたオプションは `navigation` の 1 つです（デフォルトでは無効）。`navigation` を有効にすると、goto_split で分割間を移動してもズーム状態が維持されます。GH-8458 GH-9089
 - ウィンドウ間を一定の順序で移動する、新しいキーバインドアクション `goto_window:next` と `goto_window:previous` を追加しました。GH-8387
 - TUI へのマウスイベント報告を切り替える、新しいキーバインドアクション `toggle_mouse_reporting` を追加しました。GH-9282
 - 実行中のキーシーケンスを明示的に終了する、新しいキーバインドアクション `end_key_sequence` を追加しました。起動に使ったキーはエンコードせず、それまでのキーをターミナルに送信します（例: `ctrl+w>escape=end_key_sequence`）。GH-10098
