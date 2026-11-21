@@ -123,7 +123,7 @@ export default function Mermaid({ chart, id, className = "" }: MermaidProps) {
       } catch (err) {
         console.error("Mermaid rendering error:", err);
         setError(
-          err instanceof Error ? err.message : "Failed to render diagram",
+          err instanceof Error ? err.message : "図を描画できませんでした",
         );
       } finally {
         setIsLoading(false);
@@ -151,9 +151,9 @@ export default function Mermaid({ chart, id, className = "" }: MermaidProps) {
           color: "#dc2626",
         }}
       >
-        <strong>Mermaid Error:</strong> {error}
+        <strong>Mermaid のエラー:</strong> {error}
         <details style={{ marginTop: "0.5rem" }}>
-          <summary>Chart source</summary>
+          <summary>図のソース</summary>
           <pre style={{ fontSize: "0.875rem", marginTop: "0.5rem" }}>
             {chart}
           </pre>

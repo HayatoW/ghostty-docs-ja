@@ -10,8 +10,8 @@ interface SponsorBannerProps {
 
 /** A compact sponsorship call-to-action banner for use in release notes and other content pages. */
 export default function SponsorBanner({
-  title = "Ghostty is non-profit! Please support development.",
-  description = "Almost all donations go directly to paying contributors. Learn more about how you can help.",
+  title = "Ghostty は非営利です。開発へのご支援をお願いします。",
+  description = "寄付のほぼすべては貢献者への報酬に直接充てられます。支援の方法を詳しく見る。",
   href = "/docs/sponsor",
 }: SponsorBannerProps) {
   return (
@@ -24,7 +24,7 @@ export default function SponsorBanner({
         <span className={s.description}>{description}</span>
       </div>
       <ArrowRight className={s.arrow} />
-      <span className={s.mobileAction}>Learn more →</span>
+      <span className={s.mobileAction}>詳しく見る →</span>
     </Link>
   );
 }

@@ -18,11 +18,11 @@ interface DonateCardProps {
 
 export default function DonateCard({
   href = "https://donate.ghostty.org",
-  title = "Support Ghostty",
-  description = "Your contribution helps sustain development and keeps Ghostty free and open source.",
-  buttonText = "Donate Now",
+  title = "Ghostty を支援する",
+  description = "皆さんのご支援は開発の継続を助け、Ghostty を無料のオープンソースとして維持します。",
+  buttonText = "今すぐ寄付する",
   ein = "81-2908499",
-  contactName = "Paul at Hack Club",
+  contactName = "Hack Club の Paul",
   contactEmail = "paul@hackclub.com",
 }: DonateCardProps) {
   const [copied, setCopied] = useState(false);
@@ -51,7 +51,7 @@ export default function DonateCard({
               type="button"
               onClick={copyEin}
               className={s.einButton}
-              title="Copy EIN"
+              title="EIN をコピー"
             >
               <span className={s.einText}>
                 <span className={s.einLabel}>EIN:</span>
@@ -72,10 +72,9 @@ export default function DonateCard({
             <Building2 />
           </div>
           <div className={s.methodContent}>
-            <span className={s.methodTitle}>DAF or Foundation</span>
+            <span className={s.methodTitle}>DAF または財団</span>
             <span className={s.methodDesc}>
-              Use the EIN above and specify &quot;Ghostty&quot; as the recipient
-              in the notes
+              上記の EIN を使い、備考欄で受取先に「Ghostty」を指定してください
             </span>
           </div>
         </div>
@@ -84,15 +83,12 @@ export default function DonateCard({
             <Coins />
           </div>
           <div className={s.methodContent}>
-            <span className={s.methodTitle}>
-              Stock, Cryptocurrency, or Other Assets
-            </span>
+            <span className={s.methodTitle}>株式、暗号資産、その他の資産</span>
             <span className={s.methodDesc}>
-              Contact{" "}
               <a href={`mailto:${contactEmail}`} className={s.methodLink}>
                 {contactName}
-              </a>
-              .
+              </a>{" "}
+              にお問い合わせください。
             </span>
           </div>
         </div>
@@ -101,13 +97,13 @@ export default function DonateCard({
             <HelpCircle />
           </div>
           <div className={s.methodContent}>
-            <span className={s.methodTitle}>Other Questions</span>
+            <span className={s.methodTitle}>その他のご質問</span>
             <span className={s.methodDesc}>
-              Reach out to{" "}
+              その他のお問い合わせは{" "}
               <a href={`mailto:${contactEmail}`} className={s.methodLink}>
                 {contactName}
               </a>{" "}
-              for any other inquiries
+              までご連絡ください。
             </span>
           </div>
         </div>
