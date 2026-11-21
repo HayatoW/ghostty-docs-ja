@@ -46,6 +46,7 @@ function annotateFile(file) {
   const bodyOffset = raw.length - content.length;
   const insertions = [];
 
+  // visit records an insertion point after each heading that needs an ID.
   const visit = (node) => {
     if (node.type === "heading" && node.children?.length > 0) {
       if (needsExplicitId(node)) {
@@ -73,6 +74,8 @@ function annotateFile(file) {
   return insertions.length;
 }
 
+// files lists the MDX files to annotate: CLI arguments, or all of docs/.
 const files = process.argv.length > 2 ? process.argv.slice(2) : collectMdxFiles("docs");
+// total counts headings annotated across all files.
 const total = files.reduce((sum, file) => sum + annotateFile(file), 0);
 console.log(`annotated ${total} headings in ${files.length} files`);
