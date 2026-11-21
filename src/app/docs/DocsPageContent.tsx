@@ -26,7 +26,6 @@ export default function DocsPageContent({
     slug,
     title,
     description,
-    editOnGithubLink,
     content,
     relativeFilePath,
     pageHeaders,
@@ -34,11 +33,9 @@ export default function DocsPageContent({
   },
   breadcrumbs,
 }: DocsPageContentProps) {
-  // Calculate the "Edit in Github" link. If it's not provided
-  // in the frontmatter, point to the website repo mdx file.
-  const resolvedEditOnGithubLink = editOnGithubLink
-    ? editOnGithubLink
-    : `${GITHUB_REPO_URL}/edit/main/${relativeFilePath}`;
+  // Translations live in this repo, so always edit its MDX file even when the
+  // frontmatter points at the upstream source (e.g. Ghostty's Config.zig).
+  const resolvedEditOnGithubLink = `${GITHUB_REPO_URL}/edit/main/${relativeFilePath}`;
   // slug is relative to the repo root, e.g. "docs/install/build".
   const originalPageUrl = `${ORIGINAL_SITE_URL}/${slug}`;
 
