@@ -28,7 +28,7 @@ export default function SponsorCard({
       <div className={s.logoContainer}>
         <Image
           src={logo}
-          alt={`${name} logo`}
+          alt={`${name} のロゴ`}
           width={180}
           height={48}
           className={s.logo}
@@ -36,7 +36,7 @@ export default function SponsorCard({
       </div>
       <div className={s.content}>
         <P className={s.description}>{description}</P>
-        {since && <span className={s.since}>Supporter since {since}</span>}
+        {since && <span className={s.since}>{since} 年からのスポンサー</span>}
       </div>
     </Link>
   );
