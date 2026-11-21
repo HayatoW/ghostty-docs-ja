@@ -47,6 +47,19 @@ const nextConfig = {
     GIT_COMMIT_REF: process.env.VERCEL_GIT_COMMIT_REF || "",
   },
 
+  // redirects send the non-docs pages copied from ghostty.org to the docs or
+  // the official site, so this unofficial translation does not pose as ghostty.org.
+  async redirects() {
+    return [
+      { source: "/", destination: "/docs", permanent: false },
+      {
+        source: "/download",
+        destination: "https://ghostty.org/download",
+        permanent: false,
+      },
+    ];
+  },
+
   async headers() {
     const headers = [];
     if (process.env.VERCEL_ENV !== "production") {

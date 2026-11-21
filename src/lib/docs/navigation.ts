@@ -50,7 +50,7 @@ ${err.message}}`,
 // docsMetadataTitle creates a compact metadata title from breadcrumbs.
 export function docsMetadataTitle(breadcrumbs: Breadcrumb[]): string {
   if (breadcrumbs.length === 0) {
-    return "Ghostty Docs";
+    return "Ghostty ドキュメント（非公式日本語訳）";
   }
 
   return breadcrumbs.length > 1
