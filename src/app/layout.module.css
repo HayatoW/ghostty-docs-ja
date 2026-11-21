@@ -19,6 +19,7 @@
 
     & th,
     td {
+      line-height: 1.5;
       color: var(--color-fg);
       text-align: start;
       padding: 10px 16px 10px 2px;
