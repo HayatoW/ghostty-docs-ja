@@ -28,18 +28,29 @@ const navLinks: Array<SimpleLink> = [
   },
 ];
 
+// SITE_TITLE names this site as an unofficial translation of the Ghostty docs.
+const SITE_TITLE = "Ghostty ドキュメント 日本語訳（非公式）";
+
+// SITE_URL is this deployment's public URL, taken from Vercel's build env.
+const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
+
+// OFFICIAL_DOWNLOAD_URL points downloads at the official Ghostty site.
+const OFFICIAL_DOWNLOAD_URL = "https://ghostty.org/download";
+
 // The paths that don't have the navbar/footer "chrome".
 const NO_CHROME_PATHS = ["/"];
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ghostty.org"),
-  title: "Ghostty",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
   description:
     "Ghostty は、プラットフォームネイティブの UI と GPU アクセラレーションを使う、高速で多機能なクロスプラットフォームのターミナルエミュレーターです。",
   openGraph: {
     type: "website",
-    siteName: "Ghostty",
-    url: "https://ghostty.org",
+    siteName: SITE_TITLE,
+    url: SITE_URL,
     images: [
       {
         url: "/social-share-card.jpg",
@@ -49,7 +60,7 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    images: ["https://ghostty.org/social-share-card.jpg"],
+    images: ["/social-share-card.jpg"],
   },
   icons: {
     icon: [
@@ -88,8 +99,8 @@ export default async function AppLayout({
             links={navLinks}
             docsNavTree={docsNavTree}
             cta={{
-              href: "/download",
-              text: "ダウンロード",
+              href: OFFICIAL_DOWNLOAD_URL,
+              text: "ダウンロード（公式）",
             }}
           />
         </PathnameFilter>
@@ -99,11 +110,11 @@ export default async function AppLayout({
             links={[
               ...navLinks,
               {
-                text: "ダウンロード",
-                href: "/download",
+                text: "ダウンロード（公式）",
+                href: OFFICIAL_DOWNLOAD_URL,
               },
             ]}
-            copyright={`© ${currentYear} Ghostty`}
+            copyright={`原文 © ${currentYear} Ghostty（MIT License）。このサイトは非公式の日本語訳です。`}
           />
         </PathnameFilter>
       </body>
