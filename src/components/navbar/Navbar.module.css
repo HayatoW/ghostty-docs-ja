@@ -32,6 +32,10 @@
         display: none;
       }
 
+      & a {
+        line-height: 1.5;
+      }
+
       & .linkList {
         list-style: none;
         display: flex;
