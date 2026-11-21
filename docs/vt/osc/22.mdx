@@ -1,39 +1,29 @@
 ---
-title: Change Pointer Shape (OSC 22)
-description: Change the pointer shape.
+title: ポインター形状の変更 (OSC 22)
+description: ポインターの形状を変更します。
 ---
 
 <VTSequence sequence={["OSC", "22", ";", "Pt", "ST"]} />
 
-Change the pointer shape to `t`.
+ポインターの形状を `t` に変更します。
 
-Unfortunately, there is no consensus on what values `t` is allowed to have.
-Even xterm, the origin of this OSC, remarks that when one uses a custom
-cursor theme, "expect it to provide about a third of those names, while adding
-others."[^xterm]
+残念ながら、`t` に指定できる値についての合意はありません。この OSC の発祥である xterm でさえ、カスタムカーソルテーマを使用する場合は「これらの名前の約 3 分の 1 が提供される一方で、別の名前も追加されると考えてください」と述べています。[^xterm]
 
 [^xterm]: https://invisible-island.net/xterm/manpage/xterm.html#VT100-Widget-Resources:pointerShape
 
-Ghostty, like some other terminals like [Kitty] and Foot, uses CSS's list of
-standardized cursor shapes, used in the [`cursor`] property. This is by no
-means perfect, but it at least is an international standard that is unambiguous
-and platform-independent.
+Ghostty は、[Kitty] や Foot などの他のターミナルと同様に、[`cursor`] プロパティで使用される、CSS の標準化されたカーソル形状の一覧を使用します。決して完璧ではありませんが、少なくとも曖昧さがなく、プラットフォームに依存しない国際標準です。
 
 [Kitty]: https://sw.kovidgoyal.net/kitty/pointer-shapes/
 [`cursor`]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/cursor#keyword
 
-**Avoid** using this sequence unless your program only targets certain terminal
-emulators, or you can switch between cursor names by detecting the current
-terminal.
+特定のターミナルエミュレーターだけを対象とするプログラムであるか、現在のターミナルを検出してカーソル名を切り替えられる場合を除き、このシーケンスの使用は**避けてください**。
 
-## Terminal Compatibility {/* #terminal-compatibility */}
+## ターミナルの互換性 {/* #terminal-compatibility */}
 
 |               | Ghostty | Kitty  | VTE     | Alacritty | Foot       | iTerm2 | xterm |
 |---------------|---------|--------|---------|-----------|------------|--------|-------|
-| OSC 22        | 1.0.0   | 0.31.0 | No      | No        | 1.12.0     | 3.5.0  | 367   |
-| Cursor styles | CSS     | CSS    | -       | -         | CSS + X11 subset[^foot] | [Custom X11 subset] | X11 |
+| OSC 22        | 1.0.0   | 0.31.0 | 非対応      | 非対応        | 1.12.0     | 3.5.0  | 367   |
+| カーソルスタイル | CSS     | CSS    | -       | -         | CSS + X11 のサブセット[^foot] | [独自の X11 サブセット] | X11 |
 
-[Custom X11 subset]: https://github.com/gnachman/iTerm2/blob/v3.6.6/sources/PTYSession.m#L15324-L15342
-[^foot]: Foot maps [both CSS and X11 names](https://codeberg.org/dnkl/foot/src/tag/1.25.0/cursor-shape.c#L62-L102)
-to [`wp_cursor_shape_device_v1::shape`](https://wayland.app/protocols/cursor-shape-v1#wp_cursor_shape_device_v1:enum:shape)
-enums, which are also based on the CSS standard.
+[独自の X11 サブセット]: https://github.com/gnachman/iTerm2/blob/v3.6.6/sources/PTYSession.m#L15324-L15342
+[^foot]: Foot は [CSS と X11 の両方の名前](https://codeberg.org/dnkl/foot/src/tag/1.25.0/cursor-shape.c#L62-L102)を、同じく CSS 標準に基づく [`wp_cursor_shape_device_v1::shape`](https://wayland.app/protocols/cursor-shape-v1#wp_cursor_shape_device_v1:enum:shape) 列挙値に対応付けます。

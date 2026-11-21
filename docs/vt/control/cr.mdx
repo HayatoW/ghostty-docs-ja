@@ -1,22 +1,19 @@
 ---
-title: Carriage Return (CR)
-description: Move the cursor to the leftmost column.
+title: 復帰 (CR)
+description: カーソルを左端の列に移動します。
 ---
 
 <VTSequence sequence="CR" />
 
-This sequence always unsets the pending wrap state.
+このシーケンスは常に保留中の折り返し状態を解除します。
 
-If [origin mode (mode 6)](#TODO) is enabled, the cursor is set to the
-[left margin](#TODO) of the scroll region and the operation is complete.
+[原点モード（モード 6）](#TODO) が有効な場合、カーソルをスクロール領域の[左マージン](#TODO)に設定して操作を終了します。
 
-If origin mode is _not_ set and the cursor is on or to the right of the
-left margin, the cursor is set to the left margin. If the cursor is to the left
-of the left margin, the cursor is moved to the leftmost column in the terminal.
+原点モードが設定されて*おらず*、カーソルが左マージン上またはその右にある場合、カーソルを左マージンに設定します。カーソルが左マージンより左にある場合は、ターミナルの左端の列に移動します。
 
-## Validation {/* #validation */}
+## 検証 {/* #validation */}
 
-### CR V-1: Pending Wrap is Unset {/* #cr-v-1:-pending-wrap-is-unset */}
+### CR V-1: 保留中の折り返し状態の解除 {/* #cr-v-1:-pending-wrap-is-unset */}
 
 ```bash
 cols=$(tput cols)
@@ -32,7 +29,7 @@ echo
 |c_________|
 ```
 
-### CR V-2: Left Margin {/* #cr-v-2:-left-margin */}
+### CR V-2: 左マージン {/* #cr-v-2:-left-margin */}
 
 ```bash
 cols=$(tput cols)
@@ -50,7 +47,7 @@ printf "X"
 |_XcA______|
 ```
 
-### CR V-3: Left of Left Margin {/* #cr-v-3:-left-of-left-margin */}
+### CR V-3: 左マージンより左側 {/* #cr-v-3:-left-of-left-margin */}
 
 ```bash
 cols=$(tput cols)
@@ -69,7 +66,7 @@ printf "X"
 |Xc_A______|
 ```
 
-### CR V-3: Left Margin with Origin Mode {/* #cr-v-3:-left-margin-with-origin-mode */}
+### CR V-3: 原点モードでの左マージン {/* #cr-v-3:-left-margin-with-origin-mode */}
 
 ```bash
 cols=$(tput cols)

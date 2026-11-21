@@ -1,20 +1,16 @@
 ---
-title: Change Window Icon (OSC 1)
-description: Change the name of the window icon.
+title: ウィンドウアイコンの変更 (OSC 1)
+description: ウィンドウアイコンの名前を変更します。
 ---
 
 <VTSequence unimplemented sequence={["OSC", "1", ";", "Pt", "ST"]} />
 
-Change the window icon name to `t`. The exact method of locating the icon
-data through the icon name is platform-dependent.
+ウィンドウアイコン名を `t` に変更します。アイコン名からアイコンデータを特定する具体的な方法は、プラットフォームによって異なります。
 
-Ghostty and most modern terminal emulators do not implement this sequence
-as its behavior is not well-defined or even possible on all platforms,
-which is also the conclusion reached by
-[Foot](https://codeberg.org/dnkl/foot/pulls/1832#issuecomment-2304415).
+このシーケンスの動作は十分に定義されておらず、すべてのプラットフォームで実現できるわけでもないため、Ghostty と現代のターミナルエミュレーターのほとんどは、このシーケンスを実装していません。[Foot](https://codeberg.org/dnkl/foot/pulls/1832#issuecomment-2304415) も同じ結論に達しています。
 
 |       | Ghostty | Kitty  | VTE     | Alacritty | Foot | iTerm2 | xterm |
 |-------|---------|--------|---------|-----------|------|--------|-------|
-| OSC 1 | No      | No     | No      | No[^alacritty] | No   | No     | Yes   |
+| OSC 1 | 非対応      | 非対応     | 非対応      | 非対応[^alacritty] | 非対応   | 非対応     | 対応   |
 
-[^alacritty]: Listed as "rejected".
+[^alacritty]: 「却下」と記載されています。

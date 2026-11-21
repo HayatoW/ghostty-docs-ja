@@ -1,20 +1,19 @@
 ---
-title: Tab Clear (TBC)
-description: Clear one or all tab stops.
+title: タブ消去 (TBC)
+description: 1 つまたはすべてのタブストップを消去します。
 ---
 
 <VTSequence sequence={["CSI", "Pn", "g"]} />
 
-The parameter `n` must be `0` or `3`. If `n` is omitted, `n` defaults to `0`.
+パラメーター `n` は `0` または `3` である必要があります。`n` を省略した場合、`n` のデフォルトは `0` です。
 
-If the parameter `n` is `0`, the cursor column position is marked as
-not a tab stop. If the column was already not a tab stop, this does nothing.
+パラメーター `n` が `0` の場合、カーソルの列位置はタブストップではないと指定されます。その列がすでにタブストップではなかった場合、何もしません。
 
-If the parameter `n` is `3`, all tab stops are cleared.
+パラメーター `n` が `3` の場合、すべてのタブストップを消去します。
 
-## Validation {/* #validation */}
+## 検証 {/* #validation */}
 
-### TBC V-1: Tab Clear Single {/* #tbc-v-1:-tab-clear-single */}
+### TBC V-1: 単一のタブ消去 {/* #tbc-v-1:-tab-clear-single */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -30,7 +29,7 @@ printf "\t"
 |_______________c_______|
 ```
 
-### TBC V-3: Clear All Tabstops {/* #tbc-v-3:-clear-all-tabstops */}
+### TBC V-3: すべてのタブストップの消去 {/* #tbc-v-3:-clear-all-tabstops */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

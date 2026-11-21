@@ -1,24 +1,19 @@
 ---
-title: Screen Alignment Test (DECALN)
-description: |-
-  Reset margins, move cursor to the top left, and fill the screen with `E`.
+title: 画面位置合わせテスト (DECALN)
+description: マージンをリセットし、カーソルを左上に移動し、画面を `E` で埋めます。
 ---
 
 <VTSequence sequence={["ESC", "#", "8"]} />
 
-Reset the top, bottom, left, and right margins and unset [origin mode](#TODO).
-The cursor is moved to the top-left corner of the screen.
+上下左右のマージンをリセットし、[原点モード](#TODO)を解除します。カーソルは画面の左上隅に移動します。
 
-All stylistic SGR attributes are unset, such as bold, blink, etc.
-SGR foreground and background colors are preserved.
-The [protected attribute](#TODO) is not unset.
+太字、点滅など、スタイルに関するすべての SGR 属性を解除します。SGR の前景色と背景色は保持します。[保護属性](#TODO)は解除しません。
 
-The entire screen is filled with the character `E`. The letter `E` ignores
-the current SGR settings and is written with no styling.
+画面全体を文字 `E` で埋めます。文字 `E` は現在の SGR 設定を無視し、スタイルなしで書き込まれます。
 
-## Validation {/* #validation */}
+## 検証 {/* #validation */}
 
-### DECALN V-1: Simple Usage {/* #decaln-v-1:-simple-usage */}
+### DECALN V-1: 単純な使用 {/* #decaln-v-1:-simple-usage */}
 
 ```bash
 printf "\033#8"
@@ -30,7 +25,7 @@ printf "\033#8"
 |EEEEEEEE|
 ```
 
-### DECALN V-2: Reset Margins {/* #decaln-v-2:-reset-margins */}
+### DECALN V-2: マージンのリセット {/* #decaln-v-2:-reset-margins */}
 
 ```bash
 printf "\033[2;3r" # scroll region top/bottom

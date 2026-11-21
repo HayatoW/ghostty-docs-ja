@@ -1,19 +1,12 @@
 ---
-title: Vertical Position Relative (VPR)
-description: |-
-  Move the cursor to a specific row relative to the current position.
+title: 垂直相対位置 (VPR)
+description: 現在の位置を基準として、カーソルを指定した行に移動します。
 ---
 
 <VTSequence sequence={["CSI", "Py", "e"]} />
 
-This sequence performs [cursor position (CUP)](/docs/vt/csi/cup) with `y` set
-to the current cursor row plus `y` and `x` set to the current cursor column.
-There is no additional or different behavior for using `VPR`.
+このシーケンスは、`y` を現在のカーソル行に `y` を加えた値に、`x` を現在のカーソル列に設定して、[カーソル位置 (CUP)](/docs/vt/csi/cup) を実行します。`VPR` を使用することによる追加の動作や動作の違いはありません。
 
-The parameter `y` must be an integer greater than or equal to 1. If `y` is less than
-or equal to 0, adjust `y` to be 1. If `y` is omitted, `y` defaults to 1.
+パラメーター `y` は 1 以上の整数である必要があります。`y` が 0 以下の場合は、`y` を 1 に調整します。`y` を省略した場合、`y` のデフォルトは 1 です。
 
-Because this invokes `CUP`, the cursor column (`x`) can change if it is
-outside the bounds of the `CUP` operation. For example, if
-[origin mode](#TODO) is set and the current cursor position is outside
-of the scroll region, the column will be adjusted.
+`CUP` を呼び出すため、カーソルの列（`x`）が `CUP` 操作の境界外にある場合、その列が変わることがあります。たとえば、[原点モード](#TODO)が設定されていて、現在のカーソル位置がスクロール領域の外にある場合、列が調整されます。
