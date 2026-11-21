@@ -49,8 +49,8 @@ ${err.message}}`,
 
 // docsMetadataTitle creates a compact metadata title from breadcrumbs.
 export function docsMetadataTitle(breadcrumbs: Breadcrumb[]): string {
-  if (breadcrumbs.length === 0) {
-    return "Ghostty ドキュメント（非公式日本語訳）";
+  if (breadcrumbs.length <= 1) {
+    return "Ghostty ドキュメント 日本語訳（非公式）";
   }
 
   return breadcrumbs.length > 1
@@ -153,7 +153,7 @@ function contextualizeNavFile(
     {
       type: "link",
       path: "",
-      title: "Ghostty Docs",
+      title: "Ghostty ドキュメント",
       active: activePageSlug === "index",
     },
     ...navFile.items.map(contextualizeNavTreeNode(activePageSlug, "")),

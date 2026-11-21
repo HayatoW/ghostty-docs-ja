@@ -30,6 +30,10 @@ const withMDX = createMDX({
       headingIdsPlugin,
     ],
     rehypePlugins: [syntaxHighlightingPlugin],
+    remarkRehypeOptions: {
+      footnoteLabel: "脚注",
+      footnoteBackLabel: "本文に戻る",
+    },
   },
 });
 
