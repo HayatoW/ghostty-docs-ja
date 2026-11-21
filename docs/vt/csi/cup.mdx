@@ -1,35 +1,25 @@
 ---
-title: Cursor Position (CUP)
-description: Move the cursor to row `y` and column `x`.
+title: カーソル位置 (CUP)
+description: カーソルを `y` 行 `x` 列に移動します。
 ---
 
 <VTSequence sequence={["CSI", "Py", ";", "Px", "H"]} />
 
-The parameters `y` and `x` must be integers greater than or equal to 1.
-If either is less than or equal to 0, adjust that parameter to be 1.
+パラメーター `y` と `x` は 1 以上の整数である必要があります。どちらかが 0 以下の場合は、そのパラメーターを 1 に調整します。
 
-The values `y` and `x` are both one-based. For example, the top row is row 1
-and the leftmost column on the screen is column 1.
+`y` と `x` の値は、どちらも 1 から数えます。たとえば、一番上の行は 1 行目、画面の左端の列は 1 列目です。
 
-This sequence always unsets the pending wrap state.
+このシーケンスは常に保留中の折り返し状態を解除します。
 
-If [origin mode](#TODO) is **NOT** set, the cursor is moved exactly to the
-row and column specified by `y` and `x`. The maximum value for `y` is the
-bottom row of the screen and the maximum value for `x` is the rightmost
-column of the screen.
+[原点モード](#TODO)が設定されて**いない**場合、カーソルは `y` と `x` で指定された行と列に正確に移動します。`y` の最大値は画面の最下行、`x` の最大値は画面の右端の列です。
 
-If [origin mode](#TODO) is set, the cursor position is set relative
-to the top-left corner of the scroll region. `y = 1` corresponds to
-the [top margin](#TODO) and `x = 1` corresponds to the [left margin](#TODO).
-The maximum value for `y` is the [bottom margin](#TODO) and the maximum
-value for `x` is the [right margin](#TODO).
+[原点モード](#TODO)が設定されている場合、カーソル位置はスクロール領域の左上隅を基準に設定されます。`y = 1` は[上マージン](#TODO)に、`x = 1` は[左マージン](#TODO)に対応します。`y` の最大値は[下マージン](#TODO)、`x` の最大値は[右マージン](#TODO)です。
 
-When origin mode is set, it is impossible set a cursor position using
-this sequence outside the boundaries of the scroll region.
+原点モードが設定されている場合、このシーケンスを使用してスクロール領域の境界外にカーソル位置を設定することはできません。
 
-## Validation
+## 検証 {/* #validation */}
 
-### CUP V-1: Normal Usage
+### CUP V-1: 通常の使用 {/* #cup-v-1:-normal-usage */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -43,7 +33,7 @@ printf "A"
 |__Ac______|
 ```
 
-### CUP V-2: Off the Screen
+### CUP V-2: 画面外 {/* #cup-v-2:-off-the-screen */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -58,7 +48,7 @@ printf "A"
 |_________Ac
 ```
 
-### CUP V-3: Relative to Origin
+### CUP V-3: 原点を基準とした位置 {/* #cup-v-3:-relative-to-origin */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -74,7 +64,7 @@ printf "X"
 |X_________|
 ```
 
-### CUP V-4: Relative to Origin with Left/Right Margins
+### CUP V-4: 左右マージンがある場合の原点を基準とした位置 {/* #cup-v-4:-relative-to-origin-with-leftright-margins */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -92,7 +82,7 @@ printf "X"
 |__X_______|
 ```
 
-### CUP V-5: Limits with Scroll Region and Origin Mode
+### CUP V-5: スクロール領域と原点モードでの制限 {/* #cup-v-5:-limits-with-scroll-region-and-origin-mode */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -111,7 +101,7 @@ printf "X"
 |____X_____|
 ```
 
-### CUP V-6: Pending Wrap is Unset
+### CUP V-6: 保留中の折り返し状態の解除 {/* #cup-v-6:-pending-wrap-is-unset */}
 
 ```bash
 cols=$(tput cols)

@@ -1,72 +1,49 @@
 ---
-title: Colors
-description: All sorts of information regarding colors in terminal emulation.
+title: 色
+description: ターミナルエミュレーションの色に関するさまざまな情報です。
 ---
 
-Ghostty emulates a full 256-color palette, as well as 5 **special colors**
-and 3 **dynamic colors**.
+Ghostty は、完全な 256 色のパレットに加え、5 つの**特殊色**と 3 つの**動的色**をエミュレートします。
 
-## Special Colors
+## 特殊色 {/* #special-colors */}
 
-The special colors, when specified, are used to color cells with particular
-styles — bold, underline, blink, reversed and italic. They can be queried
-or changed either with [OSC 4] using indices from 256 to 260 inclusive,
-or [OSC 5] with indices from 0 to 4 inclusive respectively. The ordinary
-palette colors are used instead of special colors when not specified.
+特殊色を指定すると、特定のスタイル、つまり太字、下線、点滅、反転、斜体のセルの色として使用されます。問い合わせや変更には、[OSC 4] では 256 から 260 まで、[OSC 5] ではそれぞれ 0 から 4 までのインデックスを使用できます。指定しない場合は、特殊色の代わりに通常のパレットの色が使用されます。
 
 [OSC 4]: /docs/vt/osc/4
 [OSC 5]: /docs/vt/osc/5
 
-## Dynamic Colors
+## 動的色 {/* #dynamic-colors */}
 
-The dynamic colors are used by the terminal to color cells independent of
-their own styles, when they are selected, highlighted, etc. They are also
-supposed to be *dynamically updated* by programs after the terminal has been
-initialized, hence their name. Ghostty currently supports three of these
-colors: the foreground color, the background color and the cursor color,
-which are queried or modified with [OSCs 10 to 12] respectively.
+動的色は、セルが選択されたり強調表示されたりしたときに、セル自体のスタイルとは独立してターミナルがセルに色を付けるために使用します。また、ターミナルの初期化後にプログラムによって*動的に更新される*ことを想定しているため、この名前が付いています。Ghostty は現在、前景色、背景色、カーソル色の 3 つをサポートしており、それぞれ [OSC 10 から 12] で問い合わせや変更を行います。
 
-[OSCs 10 to 12]: /docs/vt/osc/1x
+[OSC 10 から 12]: /docs/vt/osc/1x
 
-## Color Specifications
+## 色の指定 {/* #color-specifications */}
 
-Each color in the terminal is specified with a **color specification**.
-These originated from xterm, which allows any string that can be parsed by
-X11's standard [`XParseColor`] function to serve as a color. However, since
-Ghostty supports platforms other than X11, we have our own color parser that
-is compatible but not guaranteed to be the same as xterm, which is
-documented below.
+ターミナルの各色は、**色指定**で指定します。これは xterm に由来し、xterm では X11 の標準関数 [`XParseColor`] で解析できる任意の文字列を色として使用できます。ただし、Ghostty は X11 以外のプラットフォームもサポートしているため、独自の色パーサーを備えています。互換性はありますが、xterm と同一であることは保証していません。以下にその仕様を説明します。
 
 [`XParseColor`]: https://linux.die.net/man/3/xparsecolor
 
-### Hexadecimal RGB
+### 16 進数 RGB {/* #hexadecimal-rgb */}
 
 <VTSequence sequence={["rgb:", "Pr", "/", "Pg", "/", "Pb"]} /><br/>
 <VTSequence sequence={["#", "Pr", "Pg", "Pb"]} />
 
-Where each of `r`, `g` and `b` can be one to four hexadecimal digits,
-corresponding to 4, 8, 12 or 16 bit color channels respectively.
+ここで、`r`、`g`、`b` はそれぞれ 1 桁から 4 桁の 16 進数で、各色チャネルの 4、8、12、16 ビットにそれぞれ対応します。
 
 > [!NOTE]
-> When using the `#` syntax, each channel **must have the same number of
-> digits**.
+> `#` 構文を使用する場合、各チャネルの**桁数を同じにする必要があります**。
 >
-> Additionally, Ghostty does not yet recognize 16-bit color channels when
-> using the `#` syntax. This is a limitation that may be resolved in the
-> future.
+> また、Ghostty は `#` 構文を使用した 16 ビットの色チャネルをまだ認識しません。この制限は将来解消される可能性があります。
 
-### Intensity RGB
+### 強度による RGB {/* #intensity-rgb */}
 
-Another format uses the numerical *intensity* of each channel, as follows:
+別の形式では、次のように各チャネルの*強度*を数値で指定します。
 
 <VTSequence sequence={["rgbi:", "Pr", "/", "Pg", "/", "Pb"]} />
 
-Where each of `r`, `g` and `b` is a decimal number between `0` and `1`.
+ここで、`r`、`g`、`b` はそれぞれ `0` から `1` までの 10 進数です。
 
-### Named
+### 名前による指定 {/* #named */}
 
-Certain colors can also be specified with their names. The exact list of
-accepted color names are implementation-defined, but Ghostty uses the
-[X color name database](https://gitlab.freedesktop.org/xorg/app/rgb) as used
-by X11 itself. The colors are ASCII case-insensitive, meaning `red` and `RED`
-correspond to the same color.
+一部の色は名前でも指定できます。使用できる色名の正確な一覧は実装によって異なりますが、Ghostty は X11 自体が使用している [X 色名データベース](https://gitlab.freedesktop.org/xorg/app/rgb)を使用します。色名は ASCII の大文字と小文字を区別しないため、`red` と `RED` は同じ色に対応します。

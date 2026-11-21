@@ -1,30 +1,21 @@
 ---
-title: Index (IND)
-description: Move the cursor down one cell, scrolling if necessary.
+title: インデックス (IND)
+description: カーソルを 1 セル下に移動し、必要に応じてスクロールします。
 ---
 
 <VTSequence sequence={["ESC", "D"]} />
 
-This sequence always unsets the pending wrap state.
+このシーケンスは常に保留中の折り返し状態を解除します。
 
-If the cursor is exactly on the bottom margin and is at or within the
-[left](#TODO) and [right margin](#TODO), [scroll up](#TODO) one line.
-If the scroll region is the full terminal screen and the terminal is on
-the [primary screen](#TODO), this may create scrollback. See the
-[scroll](#TODO) documentation for more details.
+カーソルがちょうど下マージン上にあり、[左マージン](#TODO)と[右マージン](#TODO)の上またはその内側にある場合、1 行[上にスクロール](#TODO)します。スクロール領域がターミナル画面全体で、ターミナルが[プライマリ画面](#TODO)を使用している場合、スクロールバックが作成されることがあります。詳細は[スクロール](#TODO)のドキュメントを参照してください。
 
-If the cursor is outside of the scroll region or not on the bottom
-margin of the scroll region, perform the [cursor down](/docs/vt/csi/cud) operation with
-`n = 1`.
+カーソルがスクロール領域の外にあるか、スクロール領域の下マージン上にない場合、`n = 1` で[カーソル下移動](/docs/vt/csi/cud)操作を実行します。
 
-This sequence will only scroll when the cursor is exactly on the bottom
-margin and within the remaining scroll region. If the cursor is outside
-the scroll region and on the bottom line of the terminal, the cursor
-does not move.
+このシーケンスがスクロールするのは、カーソルがちょうど下マージン上にあり、スクロール領域のその他の境界の内側にある場合だけです。カーソルがスクロール領域の外にあり、ターミナルの最下行上にある場合、カーソルは移動しません。
 
-## Validation
+## 検証 {/* #validation */}
 
-### IND V-1: No Scroll Region, Top of Screen
+### IND V-1: スクロール領域がなく画面の上端にある場合 {/* #ind-v-1:-no-scroll-region-top-of-screen */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -39,7 +30,7 @@ printf "X"
 |_Xc_______|
 ```
 
-### IND V-2: Bottom of Primary Screen
+### IND V-2: プライマリ画面の下端 {/* #ind-v-2:-bottom-of-primary-screen */}
 
 ```bash
 lines=$(tput lines)
@@ -56,7 +47,7 @@ printf "X"
 |_Xc_______|
 ```
 
-### IND V-3: Inside Scroll Region
+### IND V-3: スクロール領域の内側 {/* #ind-v-3:-inside-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -72,7 +63,7 @@ printf "X"
 |_Xc_______|
 ```
 
-### IND V-4: Bottom of Scroll Region
+### IND V-4: スクロール領域の下端 {/* #ind-v-4:-bottom-of-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -93,7 +84,7 @@ printf "X"
 |B_________|
 ```
 
-### IND V-5: Bottom of Primary Screen with Scroll Region
+### IND V-5: スクロール領域がある場合のプライマリ画面の下端 {/* #ind-v-5:-bottom-of-primary-screen-with-scroll-region */}
 
 ```bash
 lines=$(tput lines)
@@ -115,7 +106,7 @@ printf "X"
 |Xc________|
 ```
 
-### IND V-6: Outside of Left/Right Scroll Region
+### IND V-6: 左右スクロール領域の外側 {/* #ind-v-6:-outside-of-leftright-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -136,7 +127,7 @@ printf "X"
 |XcA_______|
 ```
 
-### IND V-7: Inside of Left/Right Scroll Region
+### IND V-7: 左右スクロール領域の内側 {/* #ind-v-7:-inside-of-leftright-scroll-region */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

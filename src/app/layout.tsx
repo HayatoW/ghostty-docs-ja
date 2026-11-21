@@ -15,7 +15,7 @@ import s from "./layout.module.css";
 // the sidebar and footer links equally.
 const navLinks: Array<SimpleLink> = [
   {
-    text: "Docs",
+    text: "ドキュメント",
     href: "/docs",
   },
   {
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ghostty.org"),
   title: "Ghostty",
   description:
-    "Ghostty is a fast, feature-rich, and cross-platform terminal emulator that uses platform-native UI and GPU acceleration.",
+    "Ghostty は、プラットフォームネイティブの UI と GPU アクセラレーションを使う、高速で多機能なクロスプラットフォームのターミナルエミュレーターです。",
   openGraph: {
     type: "website",
     siteName: "Ghostty",
@@ -74,7 +74,7 @@ export default async function AppLayout({
   const currentYear = new Date().getFullYear();
 
   return (
-    <html lang="en">
+    <html lang="ja">
       <body
         className={classNames(
           s.rootLayout,
@@ -89,7 +89,7 @@ export default async function AppLayout({
             docsNavTree={docsNavTree}
             cta={{
               href: "/download",
-              text: "Download",
+              text: "ダウンロード",
             }}
           />
         </PathnameFilter>
@@ -99,7 +99,7 @@ export default async function AppLayout({
             links={[
               ...navLinks,
               {
-                text: "Download",
+                text: "ダウンロード",
                 href: "/download",
               },
             ]}

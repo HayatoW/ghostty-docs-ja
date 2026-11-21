@@ -1,15 +1,10 @@
 ---
-title: Horizontal Position Absolute (HPA)
-description: Move the cursor to a specific column.
+title: 水平絶対位置 (HPA)
+description: カーソルを指定した列に移動します。
 ---
 
 <VTSequence sequence={["CSI", "Px", "`"]} />
 
-This sequence performs [cursor position (CUP)](/docs/vt/csi/cup) with `x` set
-to the parameterized value and `y` set to the current cursor position.
-There is no additional or different behavior for using `HPA`.
+このシーケンスは、`x` をパラメーターで指定した値に、`y` を現在のカーソル位置に設定して、[カーソル位置 (CUP)](/docs/vt/csi/cup) を実行します。`HPA` を使用することによる追加の動作や動作の違いはありません。
 
-Because this invokes `CUP`, the cursor row (`x`) can change if it is
-outside the bounds of the `CUP` operation. For example, if
-[origin mode](#TODO) is set and the current cursor position is outside
-of the scroll region, the row will be adjusted.
+`CUP` を呼び出すため、カーソルの行（`x`）が `CUP` 操作の境界外にある場合、その行が変わることがあります。たとえば、[原点モード](#TODO)が設定されていて、現在のカーソル位置がスクロール領域の外にある場合、行が調整されます。

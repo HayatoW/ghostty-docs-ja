@@ -55,7 +55,7 @@ async function loadDocsRouteData(path: string[]): Promise<{
   ]);
 
   const breadcrumbs = navTreeToBreadcrumbs(
-    "Ghostty Docs",
+    "Ghostty ドキュメント",
     DOCS_PAGES_ROOT_PATH,
     navTreeData,
     activePageSlug,

@@ -1,99 +1,84 @@
 ---
 title: SSH
 description: |-
-  Ghostty's `+ssh` CLI action is a drop-in `ssh` wrapper that prepares
-  the remote session for Ghostty before exec'ing the real `ssh`
-  binary.
+  Ghostty の `+ssh` CLI アクションは、`ssh` の代わりに使えるラッパーです。
+  実際の `ssh` バイナリを実行する前に、Ghostty 向けにリモートセッションを準備します。
 ---
 
-`ghostty +ssh` is a drop-in `ssh` wrapper. It prepares the remote
-session for Ghostty, then exec's the real `ssh` binary with your
-arguments forwarded verbatim. This command fixes the common chicken
-and egg issue where the remote machine requires the Ghostty terminfo
-files.
+`ghostty +ssh` は、`ssh` の代わりに使えるラッパーです。Ghostty 向けにリモートセッションを準備してから、
+引数をそのまま転送して実際の `ssh` バイナリを実行します。
+このコマンドは、リモートマシンに Ghostty の terminfo ファイルが必要になる、よくある鶏と卵の問題を解決します。
 
 ```sh
 ghostty +ssh -- user@example.com
 ```
 
-You can use it as an alias so that every `ssh` invocation in your
-shell goes through `+ssh`:
+エイリアスとして使うと、シェル内でのすべての `ssh` 呼び出しを `+ssh` 経由にできます。
 
 ```bash
 alias ssh='ghostty +ssh --'
 ```
 
-Or you can let Ghostty's [shell integration](#shell-integration) wrap
-`ssh` for you automatically.
+または、Ghostty の[シェル統合](#shell-integration)で `ssh` を自動的にラップできます。
 
-Run `ghostty +ssh --help` for the full flag reference.
+すべてのフラグのリファレンスは、`ghostty +ssh --help` で確認してください。
 
 <Note>
-  `+ssh` requires Ghostty tip, which will become Ghostty 1.4.0. It
-  is not present in Ghostty 1.3.x. The SSH shell integration features
-  documented on this page are present in 1.3.x.
+  `+ssh` には、Ghostty 1.4.0 となる予定の Ghostty tip が必要です。
+  Ghostty 1.3.x にはありません。このページで説明する SSH シェル統合機能は 1.3.x にもあります。
 </Note>
 
-## Features
+## 機能 {/* #features */}
 
-### Environment Forwarding
+### 環境変数の転送 {/* #environment-forwarding */}
 
-The `--forward-env` flag (default `true`) requests `SendEnv`
-forwarding of `COLORTERM`, `TERM_PROGRAM`, and `TERM_PROGRAM_VERSION`
-so the remote shell can detect that it's running inside Ghostty.
+`--forward-env` フラグ（デフォルトは `true`）は、`COLORTERM`、`TERM_PROGRAM`、`TERM_PROGRAM_VERSION` の
+`SendEnv` による転送を要求し、リモートシェルが Ghostty 内で動作していることを検出できるようにします。
 
-For the forwarded variables to reach the remote session, the remote
-`sshd` must list them in its `AcceptEnv` directive. See
-[Remote `sshd` Configuration](#remote-sshd-configuration) below.
+転送した変数をリモートセッションに届けるには、リモートの `sshd` の `AcceptEnv` ディレクティブにそれらを列挙する必要があります。
+以下の[リモートの `sshd` の設定](#remote-sshd-configuration)を参照してください。
 
-Disable with `--forward-env=false`.
+`--forward-env=false` で無効にできます。
 
-### Terminfo Install
+### terminfo のインストール {/* #terminfo-install */}
 
-Ghostty uses `xterm-ghostty` as its `TERM` value, but most remote
-hosts don't yet ship Ghostty's terminfo entry. See
-[Terminfo](/docs/help/terminfo#ssh) for more information.
+Ghostty は `TERM` の値に `xterm-ghostty` を使いますが、ほとんどのリモートホストにはまだ Ghostty の terminfo エントリーが付属していません。
+詳しくは [Terminfo](/docs/help/terminfo#ssh) を参照してください。
 
-The `--terminfo` flag (default `true`) installs Ghostty's terminfo
-entry on the remote host the first time you connect, using `tic` on
-the remote. When the install succeeds (or the host is already cached),
-`TERM` is set to `xterm-ghostty` for the remote session.
+`--terminfo` フラグ（デフォルトは `true`）は、初回接続時にリモートの `tic` を使って、
+リモートホストに Ghostty の terminfo エントリーをインストールします。
+インストールが成功した場合（またはホストがすでにキャッシュされている場合）、リモートセッションの `TERM` は `xterm-ghostty` に設定されます。
 
-If the install fails (for example, `tic` isn't available on the
-remote), `+ssh` logs a warning and falls back to `TERM=xterm-256color`,
-which is a widely-supported entry that preserves color and most
-terminal capabilities on the remote.
+インストールに失敗した場合（リモートで `tic` が利用できない場合など）、`+ssh` は警告を記録し、
+広くサポートされている `TERM=xterm-256color` にフォールバックします。
+これにより、リモートでも色とほとんどのターミナル機能を維持できます。
 
-Disable with `--terminfo=false`.
+`--terminfo=false` で無効にできます。
 
-### Install Cache
+### インストールキャッシュ {/* #install-cache */}
 
-Successful terminfo installs are recorded in a local cache, keyed by
-`user@hostname`, so subsequent connections to the same host skip the
-install step. The cache is managed by the
-[`+ssh-cache`](#the-+ssh-cache-cli-action) action.
+成功した terminfo のインストールは、`user@hostname` をキーとしてローカルキャッシュに記録され、
+同じホストへの以降の接続ではインストール手順を省略します。
+キャッシュは [`+ssh-cache`](#the-+ssh-cache-cli-action) アクションで管理します。
 
-Passing `--cache=false` to `+ssh` bypasses both the read and the
-write for a single invocation, without touching the cache. This is
-useful for scripting ("always reinstall") and for debugging issues.
+`+ssh` に `--cache=false` を渡すと、キャッシュには手を加えず、その呼び出しに限り読み書きの両方を回避します。
+「常に再インストールする」スクリプトや、問題のデバッグに便利です。
 
-### Alternate `ssh` Executable
+### 別の `ssh` 実行ファイル {/* #alternate-ssh-executable */}
 
-By default `+ssh` exec's the first `ssh` on your `PATH`. The
-`--ssh=PATH` flag points it at a specific client instead:
+デフォルトでは、`+ssh` は `PATH` 内で最初に見つかった `ssh` を実行します。
+`--ssh=PATH` フラグで、代わりに特定のクライアントを指定できます。
 
 ```sh
 ghostty +ssh --ssh=/opt/homebrew/bin/ssh -- user@example.com
 ```
 
-This is useful when you have an alternate OpenSSH build or wrapper
-client that you want `+ssh` to use. The path must resolve to an
-executable; if it doesn't, `+ssh` fails rather than silently falling
-back to the `PATH` `ssh`.
+別の OpenSSH ビルドやラッパークライアントを `+ssh` で使いたい場合に便利です。
+パスは実行ファイルを指す必要があります。そうでない場合、`+ssh` は `PATH` の `ssh` に黙ってフォールバックせず、失敗します。
 
-## The `+ssh-cache` CLI Action
+## `+ssh-cache` CLI アクション {/* #the-+ssh-cache-cli-action */}
 
-`ghostty +ssh-cache` manages the terminfo cache used by `+ssh`:
+`ghostty +ssh-cache` は、`+ssh` が使う terminfo キャッシュを管理します。
 
 ```sh
 # List every cached destination.
@@ -117,70 +102,52 @@ ghostty +ssh-cache --prune=30d
 ghostty +ssh-cache --clear
 ```
 
-A destination is looked up positionally: `user@hostname` shows that
-exact entry, while a bare `hostname` shows every cached user on that
-host. A lookup that matches nothing exits with a non-zero status.
+接続先は位置引数で検索します。`user@hostname` は完全に一致するエントリーを、
+`hostname` のみならそのホストのキャッシュ済みユーザーすべてを表示します。
+一致するものがなければ、ゼロ以外のステータスで終了します。
 
-`--remove` is the recommended way to force a reinstall on a single
-destination: drop the cache entry, and the next successful connection
-re-populates it. Use `+ssh --cache=false` when you want to bypass the
-cache entirely.
+特定の接続先で再インストールを強制するには、`--remove` をお勧めします。
+キャッシュエントリーを削除すると、次の接続成功時に再登録されます。
+キャッシュを完全に回避するには、`+ssh --cache=false` を使ってください。
 
-Cache entries are always keyed as `user@hostname`, where `user` is the
-ssh user (defaulting to your local `$USER`) and `hostname` is the
-resolved remote host (post-`HostName`, post-`ProxyJump`) rather than
-an alias from `~/.ssh/config`.
+キャッシュエントリーのキーは常に `user@hostname` です。`user` は ssh ユーザー（デフォルトはローカルの `$USER`）、
+`hostname` は `~/.ssh/config` のエイリアスではなく、解決後のリモートホスト（`HostName` と `ProxyJump` の適用後）です。
 
-Run `ghostty +ssh-cache --help` for the full flag reference.
+すべてのフラグのリファレンスは、`ghostty +ssh-cache --help` で確認してください。
 
-## Shell Integration
+## シェル統合 {/* #shell-integration */}
 
-Ghostty's [shell integration](/docs/features/shell-integration) can
-wrap `ssh` in your interactive shell so that `ghostty +ssh` is invoked
-transparently. This is disabled by default and can be enabled via
-[`shell-integration-features`](/docs/config/reference#shell-integration-features):
+Ghostty の[シェル統合](/docs/features/shell-integration)は、対話シェル内の `ssh` をラップし、
+`ghostty +ssh` を透過的に呼び出せます。デフォルトでは無効ですが、
+[`shell-integration-features`](/docs/config/reference#shell-integration-features) で有効にできます。
 
 ```ini
 shell-integration-features = ssh-env,ssh-terminfo
 ```
 
-- **`ssh-env`** enables environment forwarding (passes
-  `--forward-env=true` to `+ssh`).
-- **`ssh-terminfo`** enables the remote terminfo install (passes
-  `--terminfo=true` to `+ssh`).
+- **`ssh-env`** は環境変数の転送を有効にします（`+ssh` に `--forward-env=true` を渡します）。
+- **`ssh-terminfo`** はリモートへの terminfo のインストールを有効にします（`+ssh` に `--terminfo=true` を渡します）。
 
-The wrapper is a small shell function named `ssh` that translates
-these feature flags into the right `+ssh` command-line options and
-then forwards your args.
+ラッパーは `ssh` という名前の小さなシェル関数で、これらの機能フラグを適切な `+ssh` コマンドラインオプションに変換し、引数を転送します。
 
-### Limitations
+### 制限事項 {/* #limitations */}
 
-Because the wrapper is a shell function, it **is not inherited by
-child processes**. The wrapper will _not_ be used in the following
-cases:
+ラッパーはシェル関数なので、**子プロセスには継承されません**。
+次の場合は、ラッパーが*使われません*。
 
-- **Scripts run as `./script.sh` or `sh script.sh`.** Each script runs
-  in a new non-interactive shell that does not inherit the function.
-  Source the script into your current shell instead (e.g.
-  `source script.sh` or `. script.sh`) so it runs in the same shell
-  process where the function is defined.
-- **Wrapper tools that spawn `ssh` themselves**, such as
-  `aws ec2-instance-connect ssh`, `gcloud compute ssh`, `mosh`,
-  `rsync -e ssh`, `git` over `ssh`, `scp`, and `sftp`. These invoke
-  `ssh` (or an `ssh`-like binary) directly and never consult your
-  shell's function table.
-- **Non-interactive shells and subshells** more generally, including
-  `Makefile` recipes, `cron` jobs, and command substitutions in other
-  programs.
+- **`./script.sh` または `sh script.sh` で実行するスクリプト。** 各スクリプトは、関数を継承しない新しい非対話シェルで実行されます。
+  代わりに、現在のシェルでスクリプトを読み込み（`source script.sh` や `. script.sh` など）、関数が定義されている同じシェルプロセスで実行してください。
+- **自ら `ssh` を起動するラッパーツール。** `aws ec2-instance-connect ssh`、`gcloud compute ssh`、`mosh`、
+  `rsync -e ssh`、`ssh` 経由の `git`、`scp`、`sftp` などです。
+  これらは `ssh`（または同等のバイナリ）を直接呼び出し、シェルの関数テーブルは参照しません。
+- **より一般的な非対話シェルやサブシェル。** `Makefile` のレシピ、`cron` ジョブ、ほかのプログラム内のコマンド置換などを含みます。
 
-For these cases, invoke `ghostty +ssh` directly, or configure
-`~/.ssh/config` as described below.
+これらの場合は、`ghostty +ssh` を直接呼び出すか、以下のように `~/.ssh/config` を設定してください。
 
-## Manual `~/.ssh/config` Configuration
+## `~/.ssh/config` の手動設定 {/* #manual-~.sshconfig-configuration */}
 
-For cases the shell wrapper can't cover, you can configure `SetEnv`
-and `SendEnv` directly in `~/.ssh/config`, which applies to every
-`ssh` invocation regardless of how it was launched:
+シェルラッパーで対応できない場合は、`~/.ssh/config` で `SetEnv` と `SendEnv` を直接設定できます。
+これは起動方法にかかわらず、すべての `ssh` 呼び出しに適用されます。
 
 ```ssh-config
 # ~/.ssh/config
@@ -190,30 +157,27 @@ Host example.com
 ```
 
 <Note>
-  `SetEnv` requires OpenSSH 8.7 or newer. See
-  [Terminfo](/docs/help/terminfo#ssh) for how to copy Ghostty's terminfo entry
-  to a remote host manually.
+  `SetEnv` には OpenSSH 8.7 以降が必要です。
+  Ghostty の terminfo エントリーをリモートホストに手動でコピーする方法は、[Terminfo](/docs/help/terminfo#ssh) を参照してください。
 </Note>
 
 <Note>
-  If the remote host already has the `xterm-ghostty` terminfo entry installed, a
-  `SetEnv TERM=xterm-256color` stanza will unnecessarily downgrade `TERM`. Only
-  use this for hosts that lack the terminfo entry.
+  リモートホストに `xterm-ghostty` の terminfo エントリーがすでにある場合、
+  `SetEnv TERM=xterm-256color` の記述は不要な `TERM` のダウングレードになります。
+  terminfo エントリーのないホストでのみ使ってください。
 </Note>
 
-## Remote `sshd` Configuration
+## リモートの `sshd` の設定 {/* #remote-sshd-configuration */}
 
-Environment forwarding uses `SendEnv`, which is only a _request_. The
-remote `sshd` will silently drop any variable that isn't listed in its
-`AcceptEnv` directive. If you want `COLORTERM`, `TERM_PROGRAM`, and
-`TERM_PROGRAM_VERSION` to reach the remote session, the remote
-`sshd_config` needs something like:
+環境変数の転送は `SendEnv` を使いますが、これは*要求*にすぎません。
+リモートの `sshd` は、`AcceptEnv` ディレクティブにない変数を通知せずに破棄します。
+`COLORTERM`、`TERM_PROGRAM`、`TERM_PROGRAM_VERSION` をリモートセッションに届けるには、
+リモートの `sshd_config` に次のような設定が必要です。
 
 ```sshd-config
 # /etc/ssh/sshd_config on the remote host
 AcceptEnv COLORTERM TERM_PROGRAM TERM_PROGRAM_VERSION
 ```
 
-This is a property of the remote host, not Ghostty, and many managed
-or hardened servers will not have it configured. `TERM` itself is
-always forwarded by `ssh` and is not affected by `AcceptEnv`.
+これは Ghostty ではなくリモートホスト側の設定であり、管理対象やセキュリティを強化したサーバーの多くでは設定されていません。
+`TERM` 自体は `ssh` によって常に転送され、`AcceptEnv` の影響を受けません。

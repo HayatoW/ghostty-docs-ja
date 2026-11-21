@@ -49,6 +49,7 @@ export class DocsSearchEngine {
     ]);
     const index = new MiniSearchEngine<SearchSection>({
       fields: INDEXED_FIELDS,
+      tokenize,
       extractField: (section, field) =>
         field === "breadcrumbPath"
           ? section.breadcrumb.join(" ")
@@ -83,6 +84,7 @@ export class DocsSearchEngine {
     const identifier = normalizeIdentifier(query);
     const sequence = normalizeSequence(query);
     return {
+      tokenize,
       prefix: true,
       // Short terms like "csi" would fuzzy-match too many unrelated words.
       fuzzy: (term) => (term.length > 4 ? 0.2 : false),
@@ -98,6 +100,20 @@ export class DocsSearchEngine {
       },
     };
   }
+}
+
+// WORD_SEGMENTER splits Japanese text, which has no spaces, into words.
+const WORD_SEGMENTER = new Intl.Segmenter("ja", { granularity: "word" });
+
+// PUNCTUATION matches the separators MiniSearch's default tokenizer splits on,
+// which the segmenter would otherwise keep inside words like "font_family".
+const PUNCTUATION = /\p{P}+/gu;
+
+// tokenize splits text into word-like segments for indexing and querying.
+function tokenize(text: string): string[] {
+  return Array.from(WORD_SEGMENTER.segment(text.replace(PUNCTUATION, " ")))
+    .filter((segment) => segment.isWordLike)
+    .map((segment) => segment.segment);
 }
 
 // fetchSections downloads the static search index.

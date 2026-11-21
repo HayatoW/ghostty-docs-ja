@@ -1,96 +1,83 @@
 ---
 title: Linux
 description: |-
-  Ghostty works great on Linux, with support for both Wayland 
-  and X11 and packages across a variety of distributions and
-  formats.
+  Ghostty は Linux で快適に動作し、Wayland と X11 の両方をサポートしています。
+  さまざまなディストリビューションと形式に対応した
+  パッケージも提供されています。
 ---
 
-Ghostty works really hard to "just work" on Linux, with detection
-and code covering a wide variety of scenarios, but due to the diversity
-of Linux distributions, desktop environments, launchers, etc. we
-can't be perfect and some environments require additional notes.
+Ghostty は、幅広い状況に対応する検出処理とコードによって、Linux で「そのまま動く」よう大いに努力しています。
+しかし、Linux ディストリビューション、デスクトップ環境、ランチャーなどは多様なため、完璧には対応できず、
+環境によっては追加の注意事項が必要です。
 
-This section covers Linux-specific information, including Linux-only
-features of Ghostty, documentation on integrating Ghostty with specific
-Linux distributions and environments, etc.
+このセクションでは、Ghostty の Linux 専用機能や、特定の Linux ディストリビューションおよび環境との
+連携に関するドキュメントなど、Linux 固有の情報を扱います。
 
 <Note>
-  This section is dedicated to Linux for Linux users but Ghostty is just as
-  first-class on macOS, as well, with a native application written in Swift and
-  built with Xcode.
+  このセクションは Linux ユーザー向けに Linux に特化していますが、Ghostty は macOS でも同じように
+  第一級のサポートを提供しており、Swift で書かれ、Xcode でビルドされたネイティブアプリケーションがあります。
 </Note>
 
-## Installing on Linux
+## Linux へのインストール {/* #installing-on-linux */}
 
-Options for installing Ghostty on Linux include pre-built packages
-on most popular distributions or building from source. Both of these
-options are well documented at the links below.
+Linux に Ghostty をインストールするには、主要なディストリビューションの多くで提供されるビルド済みパッケージを使うか、
+ソースからビルドできます。どちらの方法についても、以下のリンク先で詳しく説明しています。
 
 <CardLinks
   cards={[
     {
-      title: "Binaries and Packages",
+      title: "バイナリとパッケージ",
       href: "/docs/install/binary",
       description:
-        "Pre-built packages for quick setup on most popular Linux distributions.",
+        "主要な Linux ディストリビューションの多くで手早くセットアップできるビルド済みパッケージです。",
     },
     {
-      title: "Build from Source",
+      title: "ソースからビルド",
       href: "/docs/install/build",
-      description: "Download a source tarball and build Ghostty from source.",
+      description: "ソースの tarball をダウンロードし、Ghostty をソースからビルドします。",
     },
   ]}
 />
 
-## Supported GTK/Adwaita Versions
+## サポートする GTK/Adwaita のバージョン {/* #supported-gtkadwaita-versions */}
 
-The table below shows the minimum required GTK and Adwaita versions
-for specific Ghostty versions.
+以下の表は、Ghostty の各バージョンで必要となる GTK と Adwaita の最小バージョンを示しています。
 
-| Ghostty Version | GTK Version | Adwaita Version |
+| Ghostty のバージョン | GTK のバージョン | Adwaita のバージョン |
 | --------------- | ----------- | --------------- |
 | 1.4.x           | 4.18        | 1.7             |
 | 1.3.x           | 4.14        | 1.5             |
 | 1.2.x           | 4.14        | 1.5             |
 | 1.1.x           | 4.8         | 1.2             |
 
-### Policy
+### 方針 {/* #policy */}
 
-The minimum required GTK and Adwaita versions for Ghostty is the
-minimum version that is available in the most recent LTS releases of
-Debian, Fedora, and Ubuntu at the time of a Ghostty minor release.
-In a Ghostty version number `X.Y.Z`, the `Y` is a minor release.
+Ghostty で必要となる GTK と Adwaita の最小バージョンは、Ghostty のマイナーリリース時点で、
+Debian、Fedora、Ubuntu の最新の LTS リリースで利用できる最小バージョンです。
+Ghostty のバージョン番号 `X.Y.Z` では、`Y` がマイナーリリースを表します。
 
-Patch releases will never bump dependency requirements, so users can always
-safely and confidently update to the latest patch release within the same
-minor release. In a Ghostty version number `X.Y.Z`, the `Z` is a patch release.
+パッチリリースで依存関係の要件が引き上げられることはないため、ユーザーは同じマイナーリリース内で、
+常に安心して最新のパッチリリースに更新できます。
+Ghostty のバージョン番号 `X.Y.Z` では、`Z` がパッチリリースを表します。
 
-Ghostty supports many more distributions, but we explicitly specify Debian,
-Fedora, and Ubuntu since they tend to have the most conservative package
-repository practices that typically contain the oldest versions of any
-other popular distributions.
+Ghostty はさらに多くのディストリビューションをサポートしていますが、
+Debian、Fedora、Ubuntu は、パッケージリポジトリの運用が特に保守的で、
+ほかの主要なディストリビューションと比べて最も古いバージョンを含む傾向があるため、明示的に挙げています。
 
 <Note>
-  **Why not continue to support older GTK/Adwaita versions?** Backporting
-  feature support to older GTK/Adwaita versions is impractical from a
-  maintenance perspective. Beyond a certain point, it overcomplicates the widget
-  tree and the version sprawl becomes harder and harder to test against. We
-  don't currently have a robust system for testing GUI interactions on older
-  GTK/Adwaita versions beyond manual testing.
+  **なぜ古い GTK/Adwaita バージョンのサポートを続けないのでしょうか？**
+  古い GTK/Adwaita バージョンに機能のサポートをバックポートすることは、保守の観点から現実的ではありません。
+  ある程度を超えるとウィジェットツリーが過度に複雑になり、対応バージョンの拡散によってテストがますます難しくなります。
+  現在、古い GTK/Adwaita バージョンで GUI の操作をテストするための堅牢な仕組みは、手動テスト以外にはありません。
 </Note>
 
 <Note>
-  **So if I have an older version of GTK/Adwaita, I can't use Ghostty?** Not
-  necessarily. You can continue to use the specified Ghostty versions in the
-  table above that match your GTK/Adwaita versions. If your GTK/Adwaita versions
-  are older than the minimum required versions in the table, then unfortunately
-  you will not be able to use Ghostty. Sorry.
+  **では、古い GTK/Adwaita バージョンでは Ghostty を使えないのでしょうか？** 必ずしもそうではありません。
+  上の表にある、お使いの GTK/Adwaita バージョンに対応した Ghostty のバージョンを引き続き使用できます。
+  GTK/Adwaita のバージョンが表の最小要件よりも古い場合は、残念ながら Ghostty を使用できません。申し訳ありません。
 </Note>
 
-### Other Dependencies
+### その他の依存関係 {/* #other-dependencies */}
 
-Our other dependencies are typically much more API-stable so we tend to
-support a wider range of versions than GTK and Adwaita. As a matter of policy,
-we follow the same policy as stated above for all dependencies, but we're
-more likely to be flexible with other dependencies.
+ほかの依存関係は通常、API がはるかに安定しているため、GTK や Adwaita よりも幅広いバージョンをサポートする傾向があります。
+原則として、すべての依存関係に上記と同じ方針を適用しますが、ほかの依存関係については、より柔軟に対応することがあります。

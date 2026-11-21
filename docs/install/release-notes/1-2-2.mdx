@@ -1,17 +1,11 @@
 ---
 title: Ghostty 1.2.2
 description: |-
-  Release notes for Ghostty 1.2.2, released on October 8, 2025.
+  Ghostty 1.2.2（2025 年 10 月 8 日リリース）のリリースノートです。
 ---
 
-Ghostty 1.2.2 is a hotfix to fix a critical regression from 1.2.1
-where we accidentally forgot to backport a memory leak fix. As a result,
-Ghostty 1.2.1 has a significant memory leak under certain scenarios that
-can cause runaway memory growth. This issue affects all platforms.
+Ghostty 1.2.2 は、メモリリーク修正のバックポート漏れにより 1.2.1 で生じた重大なリグレッションに対する緊急修正版です。Ghostty 1.2.1 では、特定の条件で大きなメモリリークが発生し、メモリ使用量が際限なく増えることがあります。この問題はすべてのプラットフォームに影響します。
 
-We've also included a very small fix for macOS font rendering that would
-cause very small (one pixel or half pixel) offsets for some glyphs that could
-result in blurriness.
+macOS のフォント描画にも、ごく小さな修正が含まれています。一部のグリフが 1 ピクセルまたは半ピクセルずれて、ぼやけて見えることがあった問題を修正しました。
 
-This was released very shortly after 1.2.1, please see the
-[1.2.1 release notes](/docs/install/release-notes/1-2-1).
+このリリースは 1.2.1 の直後に公開されました。[1.2.1 のリリースノート](/docs/install/release-notes/1-2-1) も参照してください。

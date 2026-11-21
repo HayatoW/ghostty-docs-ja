@@ -1,16 +1,13 @@
 ---
-title: Change Icon and Window Title (OSC 0)
-description: Simultaneously change the window icon name and title.
+title: アイコンとウィンドウタイトルの変更 (OSC 0)
+description: ウィンドウのアイコン名とタイトルを同時に変更します。
 ---
 
 <VTSequence sequence={["OSC", "0", ";", "Pt", "ST"]} />
 
-Equivalent to [Change Window Icon (OSC 1)] followed by
-[Change Window Title (OSC 2)] with the same argument `t`.
+同じ引数 `t` を使用して、[ウィンドウアイコンの変更 (OSC 1)] に続けて[ウィンドウタイトルの変更 (OSC 2)] を実行することと同等です。
 
-Since Ghostty does not support changing the window icon, this is treated
-as an alias of [Change Window Title (OSC 2)].
+Ghostty はウィンドウアイコンの変更をサポートしていないため、これは[ウィンドウタイトルの変更 (OSC 2)] の別名として扱われます。
 
-[Change Window Icon (OSC 1)]: /docs/vt/osc/1
-[Change Window Title (OSC 2)]: /docs/vt/osc/2
-
+[ウィンドウアイコンの変更 (OSC 1)]: /docs/vt/osc/1
+[ウィンドウタイトルの変更 (OSC 2)]: /docs/vt/osc/2

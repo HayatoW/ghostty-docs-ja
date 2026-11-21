@@ -1,27 +1,24 @@
 ---
-title: Synchronized Output
+title: 同期出力
 description: |-
-  Command-line programs that update large swaths of the visible screen might
-  show screen tearing on fast terminals like Ghostty, when synchronized
-  output is not enabled.
+  表示画面の広い範囲を更新するコマンドラインプログラムは、
+  同期出力が有効でない場合、Ghostty のような高速なターミナルで
+  画面のティアリングが発生することがあります。
 ---
 
-On some systems, command-line programs that frequently update large swaths of
-the visible screen might repeatedly flicker or exhibit severe screen tearing
-when using Ghostty, which does not occur with other terminal emulators.
-**This is usually not a bug with Ghostty, but rather a bug with the programs
-themselves.**
+一部のシステムでは、表示画面の広い範囲を頻繁に更新するコマンドラインプログラムを Ghostty で使用すると、
+ほかのターミナルエミュレーターでは発生しない、繰り返すちらつきや激しい画面のティアリングが生じることがあります。
+**これは通常、Ghostty のバグではなく、プログラム自体のバグです。**
 
-Often the reason behind this is that Ghostty is rendering **too quickly**,
-and the programs that are redrawing the screen are not updating the cells
-on the screen fast enough to catch up with the renderer — hence, tearing.
+多くの場合、その理由は Ghostty のレンダリングが**速すぎる**ことであり、
+画面を再描画するプログラムによるセルの更新がレンダラーに追いつかないため、ティアリングが起こります。
 
-There's not much Ghostty can do here without compromising performance, and
-therefore we **highly encourage** users of affected programs to file issues
-to upstream developers with a link to the ["For developers"](#for-developers)
-section of this page, so that they know how to fix the underlying problem.
+パフォーマンスを犠牲にせずに Ghostty 側でできることはほとんどありません。
+そのため、影響を受けるプログラムのユーザーには、その開発者が根本的な問題の修正方法を理解できるよう、
+このページの[「開発者向け」](#for-developers)の節へのリンクを添えて、
+上流の開発者に問題を報告することを**強くお勧めします**。
 
-Programs known to be affected by this include:
+影響が確認されているプログラムには、次のものがあります。
 
 - Claude Code ([#8176], [#8285])
 - Docker CLI ([#5493], [#5657], [#8162])
@@ -36,21 +33,18 @@ Programs known to be affected by this include:
 [#8285]: https://github.com/ghostty-org/ghostty/discussions/8285
 [#9618]: https://github.com/ghostty-org/ghostty/discussions/9618
 
-## For developers
+## 開発者向け {/* #for-developers */}
 
-If you're a developer of a CLI or TUI-based app that has this issue, you
-need to implement the [Synchronized Output] protocol which signals Ghostty
-(and other modern, performant terminal emulators) when the screen has been
-fully updated, and it is safe to render the next frame.
+この問題が発生する CLI または TUI ベースのアプリの開発者は、[同期出力][Synchronized Output]プロトコルを実装する必要があります。
+このプロトコルは、画面が完全に更新され、次のフレームを安全にレンダリングできるタイミングを
+Ghostty（およびほかの最新の高性能ターミナルエミュレーター）に伝えます。
 
-However, as a best practice we also recommend **only updating the cells that
-absolutely need to be updated**, and avoid erasing whole rows or the entirety
-of the active screen before updating new cells. Instead, you can reset the
-cursor to the part to be updated by using [Cursor Position (CUP)], update the
-cells, and erase the rest of the line using [Erase in Line (EL)]. This not
-only ameliorates the screen tearing on terminals that may not support the
-Synchronized Output protocol, but can also greatly increase performance by
-reducing needless updates and the amount of data sent to the terminal.
+ただし、ベストプラクティスとして、**本当に更新が必要なセルだけを更新する**ことも推奨します。
+新しいセルを更新する前に、行全体やアクティブな画面全体を消去することは避けてください。
+代わりに、[カーソル位置 (CUP)][Cursor Position (CUP)]を使ってカーソルを更新する部分に戻し、
+セルを更新した後、[行内消去 (EL)][Erase in Line (EL)]を使って行の残りを消去できます。
+これにより、同期出力プロトコルをサポートしていないターミナルでの画面のティアリングを軽減できるだけでなく、
+不要な更新とターミナルに送信するデータ量を減らすことで、パフォーマンスを大幅に向上させることもできます。
 
 [Synchronized Output]: https://github.com/contour-terminal/vt-extensions/blob/1a9fde53d80c4a60b1be44c5a4492d86ec9f9cce/synchronized-output.md
 [Cursor Position (CUP)]: /docs/vt/csi/cup

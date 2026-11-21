@@ -3,6 +3,7 @@ import type { NavTreeNode } from "@/components/nav-tree";
 import { DOCS_PAGES_ROOT_PATH } from "@/lib/docs/config";
 import {
   createHeadingIdResolver,
+  explicitHeadingId,
   headingText,
 } from "@/lib/docs/heading-ids.mjs";
 import { parseMdx } from "@/lib/docs/mdx";
@@ -71,7 +72,7 @@ async function loadDocsPageSource(
   );
   const title = String(data.title ?? slug);
   const breadcrumb = navTreeToBreadcrumbs(
-    "Ghostty Docs",
+    "Ghostty ドキュメント",
     DOCS_PAGES_ROOT_PATH,
     navTree,
     slug,
@@ -99,7 +100,9 @@ function pageToSections(page: DocsPageSource): SearchSection[] {
   const sections = chunkByHeading(tree).map(({ heading, nodes }) => {
     const title = heading ? headingText(heading) : page.title;
     return {
-      id: heading ? `${page.url}#${resolveHeadingId(title).id}` : page.url,
+      id: heading
+        ? `${page.url}#${resolveHeadingId(title, explicitHeadingId(heading)).id}`
+        : page.url,
       kind: sectionKind(page.slug, heading, tree),
       title,
       breadcrumb: page.breadcrumb,

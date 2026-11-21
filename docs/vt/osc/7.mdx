@@ -1,14 +1,12 @@
 ---
-title: Change Working Directory (OSC 7)
-description: Change the current working directory of the terminal.
+title: 作業ディレクトリの変更 (OSC 7)
+description: ターミナルの現在の作業ディレクトリを変更します。
 ---
 
 <VTSequence sequence={["OSC", "7", ";", "Pu", "ST"]} />
 
-Change the current working directory to the path denoted by the URI `u`.
+現在の作業ディレクトリを、URI `u` が示すパスに変更します。
 
-The URI should always have a scheme of `file://` and point to an existent
-folder.
+URI のスキームは常に `file://` で、実在するフォルダーを指している必要があります。
 
-Primarily used by shell integrations for the shell to inform the terminal
-when the current working directory has changed.
+主にシェル統合で、現在の作業ディレクトリが変わったときに、シェルがターミナルに通知するために使用します。

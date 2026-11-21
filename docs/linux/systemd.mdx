@@ -1,140 +1,121 @@
 ---
-title: Systemd and D-Bus Integration
+title: systemd と D-Bus の統合
 description: |-
-  Ghostty comes with built-in support for D-Bus activation and
-  `systemd` services to launch on demand and create new windows
-  instantly.
+  Ghostty は D-Bus アクティベーションと `systemd` サービスを標準でサポートし、
+  必要に応じた起動と、新しいウィンドウの
+  即時作成を可能にします。
 ---
 
-If properly installed[^1], Ghostty comes with several systemd units.
-Running Ghostty via these systemd units is the recommended way to
-run Ghostty. The two most important benefits provided by Ghostty's
-systemd integrations are: instantaneous launching[^2] and centralized
-logging.
+適切にインストールされている場合[^1]、Ghostty には複数の systemd ユニットが付属します。
+これらの systemd ユニットを通じて Ghostty を実行する方法を推奨します。
+Ghostty の systemd 統合がもたらす特に重要な利点は、即時起動[^2]とログの一元管理の 2 つです。
 
-If you are on a system with `systemd` and you installed Ghostty
-via a system package or [as documented](/docs/install/build),
-then Ghostty should _just work_. You don't have to read this
-documentation unless you want to understand how this all works or
-if you're troubleshooting.
+`systemd` のあるシステムで、システムパッケージから、または[ドキュメントの手順どおりに](/docs/install/build)
+Ghostty をインストールした場合は、*そのまま動く*はずです。
+全体の仕組みを理解したい場合やトラブルシューティングを行う場合を除き、
+このドキュメントを読む必要はありません。
 
 <Important>
-  Ghostty **does not require systemd** to run. You can run the `ghostty` binary
-  directly on any system without systemd and Ghostty will still work. However,
-  you'll lose out on the benefits documented on this page.
+  Ghostty の実行に **systemd は必須ではありません**。systemd のないどのシステムでも、
+  `ghostty` バイナリを直接実行すれば Ghostty は動作します。
+  ただし、このページで説明する利点は得られません。
 </Important>
 
 <Important>
-  Using `class` in your configuration file can interfere with the proper
-  operation of the `systemd` unit files or D-Bus activation. We recommend that
-  you remove them from your configuration file and only use them explicitly via
-  the command-line when needed.
+  設定ファイルで `class` を使用すると、`systemd` ユニットファイルや D-Bus アクティベーションの
+  正常な動作を妨げることがあります。設定ファイルからは削除し、必要なときにだけ
+  コマンドラインから明示的に指定することを推奨します。
 </Important>
 
-## Starting Ghostty at Login
+## ログイン時に Ghostty を起動する {/* #starting-ghostty-at-login */}
 
-Ghostty can be configured to start in the background on login,
-so that future requests to create new windows are extremely fast.
-This is done via `systemd` by enabling the Ghostty user service:
+ログイン時に Ghostty をバックグラウンドで起動するように設定すると、
+その後、新しいウィンドウを作成する要求に極めて高速に応答できます。
+これを行うには、`systemd` で Ghostty のユーザーサービスを有効にします。
 
 ```sh
 systemctl enable --user app-com.mitchellh.ghostty.service
 ```
 
-This will configure your system to start Ghostty when you log in,
-but not create any windows. Any startup delay will be "hidden" by
-the time that your system needs to finish setting up everything
-after logging in.
+これにより、ログイン時に Ghostty が起動し、ウィンドウは作成されないようにシステムが設定されます。
+起動の遅延は、ログイン後にシステムがすべてのセットアップを完了するまでにかかる時間に「隠れる」ことになります。
 
-Adding some configuration entries to your config can improve the
-experience even further:
+設定にいくつかの項目を追加すると、使い勝手をさらに改善できます。
 
 ```
 quit-after-last-window-closed = true
 quit-after-last-window-closed-delay = 5m
 ```
 
-This configuration will quit Ghostty five minutes after the last window was
-closed, thereby saving memory if you haven't been using Ghostty for a while.
+この設定では、最後のウィンドウを閉じてから 5 分後に Ghostty が終了するため、
+しばらく Ghostty を使っていないときにメモリを節約できます。
 
 ```
 quit-after-last-window-closed = false
 ```
 
-This configuration will keep Ghostty running all the time so that new window
-creation will always be fast.
+この設定では、Ghostty を常に実行したままにするため、新しいウィンドウの作成が常に高速になります。
 
-## Reloading the Config
+## 設定を再読み込みする {/* #reloading-the-config */}
 
-You can tell Ghostty to reload its config (from a script or the CLI) by using
-this command:
+次のコマンドを使用すると、（スクリプトや CLI から）Ghostty に設定の再読み込みを指示できます。
 
 ```sh
 systemctl reload --user app-com.mitchellh.ghostty.service
 ```
 
-Behind the scenes this just sends a SIGUSR2 to the main Ghostty process but
-`systemd` handles the work of keeping track of the main Ghostty process. It can
-be unreliable to script that using `ps` or similar utilities.
+内部では、単に Ghostty のメインプロセスに SIGUSR2 を送信していますが、
+Ghostty のメインプロセスを追跡する処理は `systemd` が担当します。
+`ps` などのユーティリティを使ってこの処理をスクリプト化すると、確実に動作しない場合があります。
 
-## Scripting New Windows
+## スクリプトから新しいウィンドウを作成する {/* #scripting-new-windows */}
 
-New windows can be created by using the `ghostty` CLI with no arguments.
-However, if you're using the systemd and D-Bus integration, it is much
-faster to use `ghostty +new-window` instead.
+引数なしで `ghostty` CLI を使うと、新しいウィンドウを作成できます。
+ただし、systemd と D-Bus の統合を利用している場合は、代わりに `ghostty +new-window` を使う方がはるかに高速です。
 
-The `+new-window` command will use D-Bus directly to create a new window.
-If Ghostty isn't running, the D-Bus activation unit will start Ghostty.
-This is much faster than plain `ghostty` because the plain execution has
-to load configuration, examine its environment, initialize GTK, and more
-to reach the same conclusion.
+`+new-window` コマンドは、D-Bus を直接使用して新しいウィンドウを作成します。
+Ghostty が実行されていない場合は、D-Bus アクティベーションユニットが Ghostty を起動します。
+通常の `ghostty` の実行では、同じ結果に到達するまでに、設定の読み込み、環境の調査、GTK の初期化などが必要になるため、
+この方法の方がはるかに高速です。
 
 ```sh
 ghostty +new-window
 ```
 
-This will create a new window even if Ghostty is not already running,
-because D-Bus activation will cause Ghostty to be launched.
+D-Bus アクティベーションによって Ghostty が起動するため、
+Ghostty がまだ実行されていなくても、新しいウィンドウが作成されます。
 
-This command is very useful in particular for window managers such as
-i3, Hyprland, or River.
+このコマンドは、特に i3、Hyprland、River などのウィンドウマネージャーで非常に便利です。
 
-### Hyprland
+### Hyprland {/* #hyprland */}
 
-The following is an example of how to bind `super+return` to open
-a new Ghostty window in Hyprland. The configuration typically goes
-in `~/.config/hypr/hyprland.conf`:
+以下は、Hyprland で `super+return` を押すと新しい Ghostty ウィンドウを開くようにするキーバインドの例です。
+通常、この設定は `~/.config/hypr/hyprland.conf` に記述します。
 
 ```
 bind = SUPER, return, exec, ghostty +new-window
 ```
 
-## How Launching Works
+## 起動の仕組み {/* #how-launching-works */}
 
-On systems with `systemd` and D-Bus, Ghostty will launch via D-Bus
-activation by default.
+`systemd` と D-Bus のあるシステムでは、Ghostty はデフォルトで D-Bus アクティベーションを通じて起動します。
 
-Instead of executing Ghostty directly, the application launcher will
-send a signal to the D-Bus session broker asking it to open a Ghostty
-window. The D-Bus session broker knows if Ghostty is running or not,
-because Ghostty will claim a specific bus name (`com.mitchellh.ghostty`).
-If there is a program that claimed this bus name, it is assumed to be
-Ghostty.
+アプリケーションランチャーは、Ghostty を直接実行する代わりに、
+Ghostty ウィンドウを開くよう要求するシグナルを D-Bus セッションブローカーに送信します。
+Ghostty は特定のバス名（`com.mitchellh.ghostty`）を取得するため、
+D-Bus セッションブローカーは Ghostty が実行中かどうかを把握できます。
+このバス名を取得したプログラムがあれば、それを Ghostty とみなします。
 
-From this point, the behavior depends on whether Ghostty is already running
-or not.
+ここから先の動作は、Ghostty がすでに実行されているかどうかによって異なります。
 
-This process ensures that any startup delay caused by GTK (or any
-other initialization) is only incurred once if there are active
-windows or if Ghostty is configured to remain running (not the
-default).
+この仕組みにより、アクティブなウィンドウがある場合や、Ghostty が実行を継続するよう設定されている場合
+（デフォルトではありません）、GTK（またはその他の初期化）による起動の遅延は 1 度しか発生しません。
 
-### Ghostty is Already Running
+### Ghostty がすでに実行されている場合 {/* #ghostty-is-already-running */}
 
-If Ghostty is already running, the broker will send a D-Bus signal
-directly to Ghostty asking it to create a new window. Ghostty listens
-for this signal and opens a new window. This is very fast, and very
-cheap.
+Ghostty がすでに実行されている場合、ブローカーは、新しいウィンドウの作成を要求する D-Bus シグナルを
+Ghostty に直接送信します。Ghostty はこのシグナルを受信し、新しいウィンドウを開きます。
+これは非常に高速で、負荷も非常に小さい処理です。
 
 ```mermaid
 sequenceDiagram
@@ -146,11 +127,10 @@ sequenceDiagram
   Ghostty->>D-Bus: OK
 ```
 
-### Ghostty is Not Running
+### Ghostty が実行されていない場合 {/* #ghostty-is-not-running */}
 
-If Ghostty is not running, the D-Bus session broker will ask `systemd`
-to start Ghostty in a user service, and then will send Ghostty a D-Bus
-signal to create a new window after it starts.
+Ghostty が実行されていない場合、D-Bus セッションブローカーは `systemd` に対し、
+ユーザーサービスで Ghostty を起動するよう要求し、起動後に新しいウィンドウを作成するための D-Bus シグナルを Ghostty に送信します。
 
 ```mermaid
 sequenceDiagram
@@ -167,31 +147,28 @@ sequenceDiagram
   Ghostty->>D-Bus: OK
 ```
 
-## Other
+## その他 {/* #other */}
 
-This "other" section collects less critical information or less
-commonly used information. This information may still be extremely
-useful (as such it is documented here), but it is not frequently
-used.
+この「その他」の節では、重要度が比較的低い情報や、使用頻度の低い情報をまとめています。
+これらの情報は非常に役立つこともありますが（そのためここに記載しています）、頻繁に使うものではありません。
 
-### Logs
+### ログ {/* #logs */}
 
-Logs emitted by Ghostty when run via systemd can be viewed using
-`journalctl`:
+systemd を通じて実行した Ghostty が出力するログは、`journalctl` を使用して確認できます。
 
 ```sh
 journalctl -a -f --user -u app-com.mitchellh.ghostty.service
 ```
 
-### Status
+### 状態 {/* #status */}
 
-The following command will show you the status of Ghostty:
+次のコマンドで Ghostty の状態を確認できます。
 
 ```sh
 systemctl status --user app-com.mitchellh.ghostty.service
 ```
 
-Which should produce output similar to the following:
+次のような出力が表示されるはずです。
 
 ```
 ● app-com.mitchellh.ghostty.service - Ghostty
@@ -212,27 +189,24 @@ Jul 11 14:05:42 beach ghostty[2525]: info(opengl): loaded OpenGL 4.6
 Jul 11 14:05:42 beach ghostty[2525]: info(io_exec): found Ghostty resources dir: /home/mitchellh/.local/share/ghostty
 ```
 
-### Stopping
+### 停止 {/* #stopping */}
 
-The Ghostty `systemd` user service can be stopped by running:
+次のコマンドで Ghostty の `systemd` ユーザーサービスを停止できます。
 
 ```sh
 systemctl stop --user app-com.mitchellh.ghostty.service
 ```
 
 <Caution>
-  This will gracefully stop Ghostty, but Ghostty will close any windows and kill
-  their running processes _without asking for confirmation_. This may cause data
-  or state loss.
+  これは Ghostty を正常に停止しますが、Ghostty は*確認を求めずに*すべてのウィンドウを閉じ、
+  そこで実行中のプロセスを強制終了します。データや状態が失われる可能性があります。
 </Caution>
 
-### Relevant Files
+### 関連ファイル {/* #relevant-files */}
 
-If properly installed [^1], Ghostty will come with several configuration
-files to launch Ghostty.
+適切にインストールされている場合[^1]、Ghostty には、起動のための複数の設定ファイルが付属します。
 
-If installed as a user (e.g. at `$HOME/.local`), the following files
-will be created:
+ユーザーとして（たとえば `$HOME/.local` に）インストールした場合、次のファイルが作成されます。
 
 ```
 $PREFIX/share/applications/com.mitchellh.ghostty.desktop
@@ -240,7 +214,7 @@ $PREFIX/share/dbus-1/services/com.mitchellh.ghostty.service
 $PREFIX/share/systemd/user/app-com.mitchellh.ghostty.service
 ```
 
-If installed as a system package, the following files will be created:
+システムパッケージとしてインストールした場合、次のファイルが作成されます。
 
 ```
 $PREFIX/share/applications/com.mitchellh.ghostty.desktop
@@ -249,17 +223,15 @@ $PREFIX/lib/systemd/user/app-com.mitchellh.ghostty.service
 ```
 
 <Warning>
-  If these files are not installed in the proper locations and configured
-  correctly **Ghostty may fail to launch**. If they are installed in the proper
-  location and Ghostty is still not launching, log out and log back in. If that
-  doesn't work, try restarting your system. This should rarely be necessary, but
-  it can happen depending on system configuration.
+  これらのファイルが適切な場所にインストールされ、正しく設定されていない場合、**Ghostty が起動しないことがあります**。
+  適切な場所にインストールされているのに Ghostty が起動しない場合は、一度ログアウトしてから再びログインしてください。
+  それでも解決しない場合は、システムの再起動を試してください。これが必要になることはまれですが、システムの設定によっては起こり得ます。
 </Warning>
 
-### Dev Builds
+### 開発ビルド {/* #dev-builds */}
 
-If you have installed a development build of Ghostty (in `Debug` mode),
-paths on this page need to be altered slightly:
+Ghostty の開発ビルド（`Debug` モード）をインストールしている場合は、
+このページに記載したパスを少し変更する必要があります。
 
 ```sh
 systemctl enable --user app-com.mitchellh.ghostty-debug.service
@@ -269,8 +241,7 @@ journalctl -a -f --user -u app-com.mitchellh.ghostty-debug.service
 ghostty +new-window --class=com.mitchellh.ghostty-debug.service
 ```
 
-These are the files that control the launching of debug versions of Ghostty if
-installed as a user:
+ユーザーとしてインストールした場合、Ghostty のデバッグ版の起動を制御するファイルは次のとおりです。
 
 ```
 $PREFIX/share/applications/com.mitchellh.ghostty-debug.desktop
@@ -278,8 +249,7 @@ $PREFIX/share/dbus-1/services/com.mitchellh.ghostty-debug.service
 $PREFIX/share/systemd/user/app-com.mitchellh.ghostty-debug.service
 ```
 
-If installed as a system package, the files will be found in the following
-locations:
+システムパッケージとしてインストールした場合、ファイルは次の場所にあります。
 
 ```
 $PREFIX/share/applications/com.mitchellh.ghostty-debug.desktop
@@ -288,11 +258,10 @@ $PREFIX/lib/systemd/user/app-com.mitchellh.ghostty-debug.service
 ```
 
 [^1]:
-    "Properly installed" means via a package that followed our
-    packaging guidelines or from source in `$HOME/.local`.
+    「適切にインストールされている」とは、私たちのパッケージングガイドラインに従ったパッケージから、
+    またはソースから `$HOME/.local` にインストールされていることを意味します。
 
 [^2]:
-    "Instantaneous" is hyperbolic, of course. Practically speaking,
-    launching a new Ghostty window goes from somewhere around 300ms on
-    a modern system to around 20ms. These numbers will vary based on hardware,
-    but the relative increase should be noticeable on all systems.
+    もちろん、「即時」は誇張表現です。実際には、最新のシステムで Ghostty の新しいウィンドウを起動する時間が、
+    約 300 ms から約 20 ms に短縮されます。この数値はハードウェアによって異なりますが、
+    相対的な速度向上はどのシステムでも実感できるはずです。

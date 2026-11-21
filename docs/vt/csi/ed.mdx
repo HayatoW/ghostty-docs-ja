@@ -1,51 +1,31 @@
 ---
-title: Erase Display (ED)
-description: |-
-  Erase display contents with behavior depending on the command `n`.
+title: 画面消去 (ED)
+description: コマンド `n` に応じた動作で画面の内容を消去します。
 ---
 
 <VTSequence sequence={["CSI", "Pn", "J"]} />
 
-If `n` is unset, the value of `n` is 0. The only valid values for `n` are
-0, 1, 2, or 3. If any other value of `n` is given, do not execute this sequence.
-The remainder of the sequence documentation assumes a valid value of `n`.
+`n` が未設定の場合、`n` の値は 0 です。`n` の有効な値は 0、1、2、3 だけです。それ以外の `n` の値が指定された場合、このシーケンスは実行しません。以降の説明では、`n` が有効な値であると仮定します。
 
-For all valid values of `n` except 3, this sequence unsets the pending wrap state.
-The cursor position will remain unchanged under all circumstances throughout
-this sequence.
+3 を除くすべての有効な `n` の値について、このシーケンスは保留中の折り返し状態を解除します。このシーケンスの実行中、カーソル位置はいかなる状況でも変わりません。
 
-If [Select Character Selection Attribute (DECSCA)](#TODO) is enabled
-or was the most recently enabled protection mode on the currently active screen,
-protected attributes are ignored. Otherwise, protected attributes will be
-respected. For more details on this specific logic for protected attribute
-handling, see [Erase Character (ECH)](/docs/vt/csi/ech).
+[文字選択属性設定 (DECSCA)](#TODO) が有効であるか、現在アクティブな画面で最後に有効にされた保護モードであった場合、保護属性は無視されます。それ以外の場合、保護属性は尊重されます。この保護属性の処理に関する具体的なロジックの詳細は、[文字消去 (ECH)](/docs/vt/csi/ech) を参照してください。
 
-For all operations, if a multi-cell character would be split, erase the full multi-cell
-character. For example, if "橋" is printed and the erase would only erase the
-first or second cell of the two-cell character, both cells should be erased.
+すべての操作で、複数セルにまたがる文字が分割される場合は、その文字全体を消去します。たとえば、「橋」が表示されていて、消去によって 2 セルの文字の最初または 2 番目のセルだけが消去される場合、両方のセルを消去する必要があります。
 
-This sequence does not respect any scroll regions (top, bottom, left, or
-right). The boundaries of the operation are the full visible screen.
+このシーケンスは、どのスクロール領域（上、下、左、右）も考慮しません。操作の境界は、表示されている画面全体です。
 
-If `n` is `0`, perform an **erase display below** operation. Erase all
-cells to the right and below the cursor. The background color of erased cells
-is colored according to the current SGR state.
+`n` が `0` の場合、**画面の下側の消去**を実行します。カーソルの右と下にあるすべてのセルを消去します。消去されたセルの背景色は、現在の SGR 状態に応じた色になります。
 
-If `n` is `1`, perform an **erase display above** operation. Erase all
-cells to the left and above the cursor. The background color of erased cells
-is colored according to the current SGR state.
+`n` が `1` の場合、**画面の上側の消去**を実行します。カーソルの左と上にあるすべてのセルを消去します。消去されたセルの背景色は、現在の SGR 状態に応じた色になります。
 
-If `n` is `2`, **erase the entire display**. This is the equivalent of
-erase above (`n = 1`) and erase below (`n = 0`) both being executed.
+`n` が `2` の場合、**画面全体を消去**します。これは、上側の消去（`n = 1`）と下側の消去（`n = 0`）の両方を実行することに相当します。
 
-If `n` is `3`, **erase only the scrollback region**. This does not affect
-the visible display of the screen and does not move the cursor. The scrollback
-region is the region of the terminal that is currently above the visible
-area of the screen when the screen is scrolled completely to the bottom.
+`n` が `3` の場合、**スクロールバック領域だけを消去**します。これは画面の表示部分に影響せず、カーソルも移動しません。スクロールバック領域とは、画面を一番下までスクロールしたときに、画面の表示領域より上にあるターミナルの領域です。
 
-## Validation
+## 検証 {/* #validation */}
 
-### ED V-1: Simple Erase Below
+### ED V-1: 単純な下側の消去 {/* #ed-v-1:-simple-erase-below */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -63,7 +43,7 @@ printf "\033[0J"
 |________|
 ```
 
-### ED V-2: Erase Below SGR State
+### ED V-2: 下側の消去と SGR 状態 {/* #ed-v-2:-erase-below-sgr-state */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -82,9 +62,9 @@ printf "\033[0J"
 |________|
 ```
 
-All the cells right and below of the cursor should be colored red.
+カーソルの右と下にあるすべてのセルは、赤く塗られるはずです。
 
-### ED V-3: Erase Below Multi-Cell Character
+### ED V-3: 下側の消去と複数セルにまたがる文字 {/* #ed-v-3:-erase-below-multi-cell-character */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -102,7 +82,7 @@ printf "\033[0J"
 |________|
 ```
 
-### ED V-4: Simple Erase Above
+### ED V-4: 単純な上側の消去 {/* #ed-v-4:-simple-erase-above */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -120,7 +100,7 @@ printf "\033[1J"
 |GHI_____|
 ```
 
-### ED V-5: Simple Erase Complete
+### ED V-5: 単純な全体の消去 {/* #ed-v-5:-simple-erase-complete */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

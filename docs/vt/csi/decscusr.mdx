@@ -1,23 +1,20 @@
 ---
-title: Set Cursor Style (DECSCUSR)
-description: Set the cursor style.
+title: カーソルスタイル設定 (DECSCUSR)
+description: カーソルのスタイルを設定します。
 ---
 
 <VTSequence sequence={["CSI", "Pn", " ", "q"]} />
 
-If `n` is omitted, `n` defaults to `0`. `n` must be an integer between
-0 and 6 (inclusive). The mapping of `n` to cursor style is below:
+`n` を省略した場合、`n` のデフォルトは `0` です。`n` は 0 から 6 までの整数である必要があります。`n` とカーソルスタイルの対応は次のとおりです。
 
-| n   | style                 |
+| n   | スタイル                 |
 | --- | --------------------- |
-| 0   | terminal default      |
-| 1   | blinking block        |
-| 2   | steady block          |
-| 3   | blinking underline    |
-| 4   | steady underline      |
-| 5   | blinking vertical bar |
-| 6   | steady vertical bar   |
+| 0   | ターミナルのデフォルト      |
+| 1   | 点滅するブロック        |
+| 2   | 点滅しないブロック          |
+| 3   | 点滅する下線    |
+| 4   | 点滅しない下線      |
+| 5   | 点滅する縦棒 |
+| 6   | 点滅しない縦棒   |
 
-For `n = 0`, the terminal default is up to the terminal and is inconsistent
-across terminal implementations. The default may also be impacted by terminal
-configuration.
+`n = 0` の場合、ターミナルのデフォルトはターミナル次第で、ターミナルの実装によって異なります。デフォルトはターミナルの設定によっても影響を受けることがあります。

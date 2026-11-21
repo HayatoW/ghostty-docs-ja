@@ -1,13 +1,12 @@
 ---
-title: Restore Cursor (DECRC)
-description: Restore the cursor-related state saved via Save Cursor (DECSC).
+title: カーソル復元 (DECRC)
+description: カーソル保存 (DECSC) で保存したカーソル関連の状態を復元します。
 ---
 
 <VTSequence sequence={["ESC", "8"]} />
 
-If a cursor was never previously saved, this sets all the typically saved
-values to their default values.
+カーソルが一度も保存されていない場合、通常保存されるすべての値をデフォルト値に設定します。
 
-## Validation
+## 検証 {/* #validation */}
 
-Validation is shared with [Save Cursor (DECSC)](/docs/vt/esc/decsc).
+検証は[カーソル保存 (DECSC)](/docs/vt/esc/decsc) と共通です。

@@ -1,35 +1,33 @@
 ---
-title: macOS Tiling Window Managers
+title: macOS のタイル型ウィンドウマネージャー
 description: |-
-  Ghostty tabs may render as separate windows in macOS tiling
-  window managers such as Yabai or Aerospace.
+  Yabai や Aerospace などの macOS のタイル型ウィンドウマネージャーでは、
+  Ghostty のタブが別々のウィンドウとして表示されることがあります。
 ---
 
-macOS tiling window managers such as Yabai or Aerospace may
-render Ghostty tabs as separate windows. This is a known issue
-that is well documented in both the Yabai and Aerospace
-issue trackers.
+Yabai や Aerospace などの macOS のタイル型ウィンドウマネージャーでは、
+Ghostty のタブが別々のウィンドウとして表示されることがあります。
+これは既知の問題であり、Yabai と Aerospace の両方の課題トラッカーで詳しく報告されています。
 
-Ghostty uses macOS native tabs. macOS native tabs are represented
-as separate windows in the macOS window manager API. This is
-the API that Yabai, Aerospace, and other tiling window managers
-use to manage windows on macOS.
+Ghostty は macOS のネイティブタブを使用しています。
+macOS のネイティブタブは、macOS のウィンドウマネージャー API では別々のウィンドウとして表現されます。
+Yabai、Aerospace、その他のタイル型ウィンドウマネージャーは、
+この API を使って macOS 上のウィンドウを管理しています。
 
-As such, this is a limitation of macOS APIs and there isn't
-anything Ghostty can do to fix this issue.
+したがって、これは macOS の API の制限であり、
+Ghostty 側でこの問題を解決するためにできることはありません。
 
 <Note>
-Longer term, we'd like to implement a custom tabbing solution
-that doesn't rely on macOS native tabs. This would allow us
-to better integrate with macOS tiling window managers.
+長期的には、macOS のネイティブタブに依存しない独自のタブ機能を実装したいと考えています。
+これにより、macOS のタイル型ウィンドウマネージャーと、よりよく連携できるようになります。
 </Note>
 
-## Workarounds
+## 回避策 {/* #workarounds */}
 
-The Ghostty community has identified potential workarounds
-depending on the tiling window manager you are using.
+Ghostty コミュニティでは、使用しているタイル型ウィンドウマネージャーに応じて、
+回避策となり得る方法を見つけています。
 
-### Aerospace
+### Aerospace {/* #aerospace */}
 
 ```toml
 on-window-detected = [
@@ -40,9 +38,9 @@ on-window-detected = [
 ]
 ```
 
-If Ghostty tabs are still being rendered as separate windows, try replacing `"layout tiling"` with `"layout floating"`. Note that this will cause the Ghostty window to be floating on initial startup. You can manually unfloat the window (`alt+shift+;` followed by `f` by default).
+Ghostty のタブが依然として別々のウィンドウとして表示される場合は、`"layout tiling"` を `"layout floating"` に置き換えてみてください。ただし、これにより初回起動時の Ghostty ウィンドウがフローティング状態になります。手動でフローティングを解除できます（デフォルトでは `alt+shift+;` に続けて `f`）。
 
-### Yabai
+### Yabai {/* #yabai */}
 
 ```
 yabai -m signal --add app='^Ghostty$' event=window_created action='yabai -m space --layout bsp'

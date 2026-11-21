@@ -3,7 +3,11 @@ import NavTree, { type NavTreeNode } from "@/components/nav-tree";
 import ScrollToTopButton from "@/components/scroll-to-top";
 import Sidecar from "@/components/sidecar";
 import { H1, P } from "@/components/text";
-import { DOCS_PAGES_ROOT_PATH, GITHUB_REPO_URL } from "@/lib/docs/config";
+import {
+  DOCS_PAGES_ROOT_PATH,
+  GITHUB_REPO_URL,
+  ORIGINAL_SITE_URL,
+} from "@/lib/docs/config";
 import customMdxStyles from "@/lib/docs/docs-mdx.module.css";
 import type { DocsPageData } from "@/lib/docs/page";
 import { Pencil } from "lucide-react";
@@ -19,9 +23,9 @@ interface DocsPageContentProps {
 export default function DocsPageContent({
   navTreeData,
   docsPageData: {
+    slug,
     title,
     description,
-    editOnGithubLink,
     content,
     relativeFilePath,
     pageHeaders,
@@ -29,11 +33,11 @@ export default function DocsPageContent({
   },
   breadcrumbs,
 }: DocsPageContentProps) {
-  // Calculate the "Edit in Github" link. If it's not provided
-  // in the frontmatter, point to the website repo mdx file.
-  const resolvedEditOnGithubLink = editOnGithubLink
-    ? editOnGithubLink
-    : `${GITHUB_REPO_URL}/edit/main/${relativeFilePath}`;
+  // Translations live in this repo, so always edit its MDX file even when the
+  // frontmatter points at the upstream source (e.g. Ghostty's Config.zig).
+  const resolvedEditOnGithubLink = `${GITHUB_REPO_URL}/edit/main/${relativeFilePath}`;
+  // slug is relative to the repo root, e.g. "docs/install/build".
+  const originalPageUrl = `${ORIGINAL_SITE_URL}/${slug}`;
 
   return (
     <div className={s.docsPage}>
@@ -58,6 +62,11 @@ export default function DocsPageContent({
           <div className={s.breadcrumbsBar}>
             <Breadcrumbs breadcrumbs={breadcrumbs} />
           </div>
+          <P className={s.unofficialNotice} weight="regular">
+            このページは Ghostty 公式ドキュメントの非公式な日本語訳です。
+            最新かつ正確な情報は<a href={originalPageUrl}>英語の原文</a>
+            を参照してください。
+          </P>
           <div className={s.heading}>
             <H1>{title}</H1>
             <P className={s.description} weight="regular">
@@ -68,7 +77,7 @@ export default function DocsPageContent({
           <br />
           <div className={s.editOnGithub}>
             <a href={resolvedEditOnGithubLink}>
-              Edit on GitHub <Pencil size={14} />
+              GitHub で編集 <Pencil size={14} />
             </a>
           </div>
         </div>

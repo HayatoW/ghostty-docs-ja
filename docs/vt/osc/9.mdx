@@ -1,18 +1,14 @@
 ---
-title: Show Desktop Notification (OSC 9)
-description: Show a desktop notification.
+title: デスクトップ通知の表示 (OSC 9)
+description: デスクトップ通知を表示します。
 ---
 
 <VTSequence sequence={["OSC", "9", ";", "Pt", "ST"]} />
 
-Show a desktop notification with title `t`.
+タイトル `t` のデスクトップ通知を表示します。
 
-To avoid conflicting with the [ConEmu extensions], which also use OSC 9 due to
-historical happenstance, the title should not begin with a number and then a
-semicolon (`;`). In practice a collision of this kind should be rare.
-Ghostty's parser will silently convert any invalid ConEmu sequence to a OSC 9
-sequence, though this behavior should not be relied upon.
+歴史的な偶然により同じく OSC 9 を使用する [ConEmu 拡張]との競合を避けるため、タイトルは数字とそれに続くセミコロン（`;`）で始めないでください。実際には、このような衝突はまれなはずです。Ghostty のパーサーは、無効な ConEmu シーケンスを通知なしに OSC 9 シーケンスに変換しますが、この動作に依存してはいけません。
 
-[ConEmu extensions]: /docs/vt/osc/conemu
+[ConEmu 拡張]: /docs/vt/osc/conemu
 
-Originated from iTerm since before 2010.
+2010 年より前から iTerm に由来するものです。

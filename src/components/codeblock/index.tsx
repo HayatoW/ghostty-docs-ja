@@ -38,7 +38,7 @@ function CopyButton() {
     <button
       className={classNames(s.copyButton, isCopied && s.copyButtonSuccess)}
       type="button"
-      aria-label={isCopied ? "Copied!" : "Copy to clipboard"}
+      aria-label={isCopied ? "コピーしました" : "クリップボードにコピー"}
       onClick={copyToClipboard}
     >
       {isCopied ? <CheckIcon size={20} /> : <CopyIcon size={20} />}

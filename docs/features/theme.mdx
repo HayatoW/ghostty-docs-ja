@@ -1,79 +1,65 @@
 ---
-title: Color Theme
+title: カラーテーマ
 description: |-
-  Ghostty supports full customization of the color theme,
-  ships with hundreds of built-in themes, supports custom themes
-  for light and dark mode, and more.
+  Ghostty はカラーテーマの完全なカスタマイズに対応しています。
+  数百種類の組み込みテーマ、ライトモードとダークモードそれぞれのカスタムテーマなどを利用できます。
 ---
 
-## Built-in Themes
+## 組み込みテーマ {/* #built-in-themes */}
 
-Ghostty ships with hundreds of built-in themes that can be selected
-with one line of configuration by using the [`theme` configuration option](/docs/config/reference#theme). For example, to use the popular Catppuccin theme:
+Ghostty には数百種類のテーマが組み込まれており、[`theme` 設定オプション](/docs/config/reference#theme)を使って 1 行の設定で選択できます。たとえば、人気の Catppuccin テーマを使うには、次のようにします。
 
 ```ini
 theme = Catppuccin Frappe
 ```
 
 <Tip>
-  Don't forget to [reload your configuration](/docs/config#reloading-the-configuration)
-  after changing the theme.
+  テーマを変更した後は、忘れずに[設定を再読み込み](/docs/config#reloading-the-configuration)してください。
 </Tip>
 
-The built-in themes are sourced from
-[iterm2-color-schemes](https://iterm2colorschemes.com) and
-updated in the Ghostty repository on the main branch weekly.
-If you want to contribute a new theme, please contribute it to
-iterm2-color-schemes and it will be automatically picked up by
-Ghostty.
+組み込みテーマは
+[iterm2-color-schemes](https://iterm2colorschemes.com) から取得し、
+Ghostty リポジトリの main ブランチで毎週更新しています。
+新しいテーマを提供したい場合は、iterm2-color-schemes に提供してください。
+Ghostty にも自動的に取り込まれます。
 
-### Listing Available Themes
+### 利用可能なテーマの一覧 {/* #listing-available-themes */}
 
-To see a list of available themes, you can use the `+list-themes` CLI:
+利用可能なテーマの一覧を見るには、`+list-themes` CLI を使用します。
 
 ```sh
 ghostty +list-themes
 ```
 
-For built-in themes, you can also view the theme list online
-at [iterm2-color-schemes](https://iterm2colorschemes.com). This
-also includes a preview of each theme.
+組み込みテーマの一覧は、[iterm2-color-schemes](https://iterm2colorschemes.com) でもオンラインで確認できます。
+各テーマのプレビューも掲載されています。
 
-## Separate Light and Dark Themes
+## ライトテーマとダークテーマの個別指定 {/* #separate-light-and-dark-themes */}
 
-Ghostty supports specifying separate light and dark themes.
+Ghostty は、ライトテーマとダークテーマを個別に指定できます。
 
 ```ini
 theme = dark:Catppuccin Frappe,light:Catppuccin Latte
 ```
 
-When separate light and dark themes are specified, Ghostty will
-automatically switch between the light and dark theme based on
-the system appearance.
+ライトテーマとダークテーマを個別に指定すると、Ghostty はシステムの外観に合わせて自動的にテーマを切り替えます。
 
-## Authoring a Custom Theme
+## カスタムテーマの作成 {/* #authoring-a-custom-theme */}
 
-Themes are no different than any other configuration file
-in Ghostty; they just happen to typically only set color options.
-However, a theme file _could_ set any configuration option such
-as cursor styles, fonts, etc.
+テーマは Ghostty のほかの設定ファイルと変わりません。通常は色のオプションだけを設定しているにすぎません。
+ただし、テーマファイルでは、カーソルのスタイルやフォントなど、あらゆる設定オプションを設定*できます*。
 
 <Warning>
-  Themes can modify any configuration option, so be careful
-  when using themes from untrusted sources. Always review the
-  theme file before using it to ensure it doesn't contain
-  malicious configuration.
+  テーマはあらゆる設定オプションを変更できるため、信頼できない提供元のテーマには注意してください。
+  使用する前に必ずテーマファイルを確認し、悪意のある設定が含まれていないことを確かめてください。
 </Warning>
 
-The primary difference between a theme file and a regular
-configuration file is how it is loaded. Themes are loaded
-_first_ and any conflicting options in the user configuration
-will override the theme (versus
-[`config-file`](/docs/config/reference#config-file)
-which is loaded _after_ the user configuration).
+テーマファイルと通常の設定ファイルの主な違いは、読み込み方法です。
+テーマは*先に*読み込まれ、競合するオプションがユーザー設定にあれば、そちらがテーマを上書きします
+（ユーザー設定の*後に*読み込まれる
+[`config-file`](/docs/config/reference#config-file) とは異なります）。
 
-To author a custom theme, create a new file and set the
-following options:
+カスタムテーマを作成するには、新しいファイルを作成し、次のオプションを設定します。
 
   - [`background`](/docs/config/reference#background)
   - [`foreground`](/docs/config/reference#foreground)
@@ -82,21 +68,20 @@ following options:
   - [`selection-background`](/docs/config/reference#selection-background)
   - [`palette`](/docs/config/reference#palette)
 
-### File Location
+### ファイルの場所 {/* #file-location */}
 
-Theme files can be located anywhere on the filesystem. The
-[`theme`](/docs/config/reference#theme) configuration option allows
-for absolute paths. However, if you want to reference a theme by
-name, they have to be located in specific directories.
+テーマファイルはファイルシステム上のどこに置いてもかまいません。
+[`theme`](/docs/config/reference#theme) 設定オプションでは絶対パスを指定できます。
+ただし、名前でテーマを参照する場合は、特定のディレクトリに置く必要があります。
 
-Theme lookup by name searches two directories:
+名前によるテーマの検索では、次の 2 つのディレクトリを調べます。
 
   1. `$XDG_CONFIG_HOME/ghostty/themes`
   2. `$PREFIX/share/ghostty/themes`
 
-### Example
+### 例 {/* #example */}
 
-Below is an example of a complete theme file:
+以下は、完全なテーマファイルの例です。
 
 ```ini
 palette = 0=#51576d

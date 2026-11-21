@@ -1,68 +1,63 @@
 ---
-title: GTK Single Instance Mode
+title: GTK シングルインスタンスモード
 description: |-
-  GTK single instance mode is a feature that ensures only one instance of the
-  application is running at a time.
+  GTK シングルインスタンスモードは、アプリケーションのインスタンスが
+  同時に 1 つだけ実行されることを保証する機能です。
 ---
 
-Ghostty uses GTK single instance mode by default when it detects
-it is not launched from a CLI environment.
+Ghostty は、CLI 環境から起動されていないと検出した場合、
+デフォルトで GTK シングルインスタンスモードを使用します。
 
-GTK single instance mode is recommended by the GTK project and is
-the idiomatic way official Gnome applications are expected to behave.
-When a second instance of Ghostty is launched, the original
-instance will create a new window, gain focus, and terminate the
-second instance.
+GTK シングルインスタンスモードは GTK プロジェクトが推奨しており、
+公式の Gnome アプリケーションに期待される標準的な動作です。
+Ghostty の 2 つ目のインスタンスが起動されると、元のインスタンスが新しいウィンドウを作成し、
+フォーカスを取得して、2 つ目のインスタンスを終了させます。
 
 <Tip>
-  If you're using Ghostty on Linux and are experiencing slow startup times or
-  high memory usage, GTK single instance detection may not be working for your
-  environment and you may need to force it on. Continue reading this page to
-  learn more.
+  Linux で Ghostty を使用していて、起動に時間がかかったりメモリ使用量が多かったりする場合、
+  環境によっては GTK シングルインスタンスの検出が機能しておらず、強制的に有効にする必要があるかもしれません。
+  詳細はこのページを読み進めてください。
 </Tip>
 
-## CLI Environment Detection
+## CLI 環境の検出 {/* #cli-environment-detection */}
 
-The default behavior of Ghostty is to use GTK single instance mode
-**when _not_ launched from a CLI environment.**
+Ghostty のデフォルトの動作は、**CLI 環境から起動されていない場合に**
+GTK シングルインスタンスモードを使用することです。
 
-Ghostty has this behavior because CLI terminal usage is common
-(i.e. `ghostty -e "some command"`) and in those cases the expected
-behavior is to launch a new process and block until it exits.
-Single instance mode doesn't allow us to easily do this so we only
-want to enable single instance mode when launched from a non-CLI
-environment.
+この動作を採用しているのは、CLI からターミナルを使うことが一般的であり
+（たとえば `ghostty -e "some command"`）、その場合は新しいプロセスを起動し、
+終了するまでブロックすることが期待されるためです。
+シングルインスタンスモードではこれを簡単に実現できないため、
+CLI 以外の環境から起動された場合にのみ有効にしたいと考えています。
 
-There isn't a standard API to detect if an application is launched
-from a non-CLI environment, so Ghostty uses the following heuristic:
+アプリケーションが CLI 以外の環境から起動されたかを検出する標準 API はないため、
+Ghostty は次のヒューリスティックを使用します。
 
-1. If the `TERM_PROGRAM` environment variable is set to any non-empty
-   value, we're assume we're in a graphical terminal emulator and disable
-   GTK single instance mode.
+1. 環境変数 `TERM_PROGRAM` に空でない値が設定されている場合は、
+   グラフィカルなターミナルエミュレーター内にいるとみなし、GTK シングルインスタンスモードを無効にします。
 
-2. If any command line arguments are passed to Ghostty, we assume we
-   want instance-specific configuration and disable GTK single instance mode.
+2. Ghostty にコマンドライン引数が渡されている場合は、インスタンス固有の設定が必要だとみなし、
+   GTK シングルインスタンスモードを無効にします。
 
-## Forcing GTK Single Instance Mode On or Off
+## GTK シングルインスタンスモードを強制的に有効または無効にする {/* #forcing-gtk-single-instance-mode-on-or-off */}
 
-You can force GTK single instance mode on or off by setting the
-[`gtk-single-instance`](/docs/config/reference#gtk-single-instance) option:
+[`gtk-single-instance`](/docs/config/reference#gtk-single-instance) オプションを設定すると、
+GTK シングルインスタンスモードを強制的に有効または無効にできます。
 
 ```ini
 gtk-single-instance = true
 ```
 
-A value of `true` forces Ghostty to run in single instance mode.
-In this mode, each new `ghostty` process will result in a new window
-in an existing instance of Ghostty if one is running.
+値を `true` にすると、Ghostty は強制的にシングルインスタンスモードで実行されます。
+このモードでは、すでに Ghostty のインスタンスが実行されている場合、
+新しい `ghostty` プロセスを起動するたびに、既存のインスタンスに新しいウィンドウが作成されます。
 
-## Relationship to Startup Performance and Memory
+## 起動パフォーマンスとメモリとの関係 {/* #relationship-to-startup-performance-and-memory */}
 
-Ghostty is a GTK application. The GTK framework has unavoidable
-overhead when starting up, both in terms of how long it takes and
-how much memory it uses. Ghostty can't do anything about this.
+Ghostty は GTK アプリケーションです。GTK フレームワークには、
+起動にかかる時間とメモリ使用量の両面で、避けられないオーバーヘッドがあります。
+Ghostty 側でこれをどうにかすることはできません。
 
-GTK single instance mode avoids this overhead for subsequent
-instances of Ghostty. Launching a second instance of Ghostty
-will be extremely fast and use very little memory since it is
-just creating a new window in the existing instance.
+GTK シングルインスタンスモードでは、Ghostty の後続のインスタンスでこのオーバーヘッドを回避できます。
+既存のインスタンスに新しいウィンドウを作るだけなので、2 つ目のインスタンスの起動は非常に高速で、
+メモリもほとんど使用しません。

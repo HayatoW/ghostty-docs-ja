@@ -1,82 +1,71 @@
 ---
-title: GTK OpenGL Context Errors
+title: GTK の OpenGL コンテキストエラー
 description: |-
-  In some situations, Ghostty may fail to start with an error about being
-  "unable to acquire an OpenGL context". This page adds more details about
-  this error and how to resolve it.
+  状況によっては、「OpenGL コンテキストを取得できない」というエラーで
+  Ghostty が起動しないことがあります。このページでは、
+  このエラーの詳細と解決方法を説明します。
 ---
 
-The Ghostty GTK application uses OpenGL for rendering. To render with
-OpenGL, Ghostty needs to first acquire an "OpenGL context" from GTK. This
-gives us the namespace to execute OpenGL commands.
+Ghostty の GTK アプリケーションは、レンダリングに OpenGL を使用します。
+OpenGL でレンダリングするには、まず GTK から「OpenGL コンテキスト」を取得する必要があります。
+これにより、OpenGL コマンドを実行するための名前空間を得られます。
 
-In rare situations, GTK may be unable to provide Ghostty with an OpenGL
-context. When this happens, Ghostty is unable to render anything and must
-show this error.
+まれに、GTK が Ghostty に OpenGL コンテキストを提供できないことがあります。
+この場合、Ghostty は何も描画できないため、このエラーを表示する必要があります。
 
-This is **always an environment issue**. GTK provides Ghostty with the OpenGL
-context, and there isn't generally anything Ghostty itself can do to resolve
-this directly. It is usually an issue regarding a library, driver, or OS
-package version. This page will attempt to provide some assistance in
-tracking down the issue.
+これは**必ず環境の問題です**。Ghostty に OpenGL コンテキストを提供するのは GTK であり、
+通常、Ghostty 自体がこの問題を直接解決するためにできることはありません。
+多くの場合、ライブラリ、ドライバー、OS パッケージのバージョンに関する問題です。
+このページでは、問題を突き止めるための手がかりを紹介します。
 
-## Quick Fixes
+## 手早く試せる対処法 {/* #quick-fixes */}
 
-If you want to try to get Ghostty working quickly, try the following.
+Ghostty をすぐに動かしたい場合は、次を試してください。
 
-1. **Install a [binary package](/docs/install/binary).** If you're building
-   from source, try using a binary package instead. Binary packages tend
-   to be built in a more controlled environment that works with a specific
-   distribution and its libraries.
+1. **[バイナリパッケージ](/docs/install/binary)をインストールします。** ソースからビルドしている場合は、
+   代わりにバイナリパッケージを使ってみてください。バイナリパッケージは、特定のディストリビューションと
+   そのライブラリで動作する、より管理された環境でビルドされている傾向があります。
 
-2. **Check your GPU drivers.** GPU drivers are a common cause of OpenGL
-   issues. Try updating or downgrading your GPU drivers, especially if
-   you're using proprietary drivers.
+2. **GPU ドライバーを確認します。** GPU ドライバーは、OpenGL の問題のよくある原因です。
+   特にプロプライエタリドライバーを使用している場合は、GPU ドライバーの更新またはダウングレードを試してください。
 
-3. **Build Ghostty from source using only system packages.** If you're using
-   the Nix development environment to build Ghostty, try building it
-   from source using only system packages. See the
-   [build from source](/docs/install/build) instructions to do this
-   (but ignore the "Building with Nix" section).
+3. **システムパッケージだけを使って Ghostty をソースからビルドします。** Nix 開発環境を使って
+   Ghostty をビルドしている場合は、システムパッケージだけを使ってソースからビルドしてみてください。
+   その手順は、[ソースからのビルド](/docs/install/build)を参照してください
+   （ただし「Nix を使ったビルド」の節は無視してください）。
 
 <Important>
-  This section purposely avoids any detail in understanding the root cause of
-  this issue. If you want to better understand the root cause, please read below
-  this section.
+  この節では、問題の根本原因を理解するための詳細を意図的に省いています。
+  根本原因をより深く理解したい場合は、この節より下をお読みください。
 </Important>
 
-## Mismatched Library Versions
+## ライブラリのバージョンの不一致 {/* #mismatched-library-versions */}
 
-A common cause of this error is mismatched library versions. The balance
-between GTK, [Mesa](https://mesa3d.org/), libX11/libwayland, and the kernel is
-a fragile one.
+このエラーのよくある原因は、ライブラリのバージョンの不一致です。
+GTK、[Mesa](https://mesa3d.org/)、libX11/libwayland、カーネルの間のバランスは繊細です。
 
-**The first most common cause of this error is using the Nix development
-environment to build Ghostty.** We recommend this environment for development,
-but it does pin various versions of these libraries and they may be
-incompatible with your global system. **To fix: try to build Ghostty using
-only system dependency packages, or Ghostty itself from a system package.**
-You can follow the [build from source](/docs/install/build) instructions
-to do this (but ignore the "Building with Nix" section)
+**このエラーの最も一般的な原因は、Nix 開発環境を使って Ghostty をビルドすることです。**
+開発にはこの環境を推奨していますが、これらのライブラリのさまざまなバージョンが固定されるため、
+システム全体の環境と互換性がない場合があります。
+**解決方法：システムの依存パッケージだけを使って Ghostty をビルドするか、システムパッケージから Ghostty 自体を導入してみてください。**
+その手順は、[ソースからのビルド](/docs/install/build)に従ってください
+（ただし「Nix を使ったビルド」の節は無視してください）。
 
-**Another common cause is outdated system packages.**
-Linux distributions tend to handle this fragile balance for you, so the
-try to update your entire system (or, specifically the
-packages above, at least). This often brings your system back into a
-coherent state that allows Ghostty to work.
+**もう 1 つのよくある原因は、システムパッケージが古いことです。**
+Linux ディストリビューションは通常、この繊細なバランスを管理しているため、
+システム全体を（少なくとも、具体的には上記のパッケージを）更新してみてください。
+これにより、Ghostty が動作する整合性のある状態にシステムが戻ることがよくあります。
 
-**Check your GPU drivers.** Try updating or downgrading your GPU drivers.
-We've had many cases where GPU driver changes have broken OpenGL in GTK.
+**GPU ドライバーを確認してください。** GPU ドライバーの更新またはダウングレードを試してください。
+GPU ドライバーの変更で GTK の OpenGL が動作しなくなった事例は数多くあります。
 
-## Known Historical Causes
+## 過去に確認された原因 {/* #known-historical-causes */}
 
-- [Mesa 25.2.0 Regression](https://gitlab.freedesktop.org/mesa/mesa/-/issues/13719).
-  Ghostty doesn't bundle a libwayland client library, but building Ghostty
-  from source with the Nix development environment will use a different
-  libwayland client library than the system one.
+- [Mesa 25.2.0 のリグレッション](https://gitlab.freedesktop.org/mesa/mesa/-/issues/13719)。
+  Ghostty は libwayland クライアントライブラリを同梱していませんが、Nix 開発環境でソースからビルドすると、
+  システムのものとは異なる libwayland クライアントライブラリを使用します。
 
-- [GTK4 + Nvidia + X11](https://gitlab.gnome.org/GNOME/gtk/-/issues/4950).
-  I don't know the exact combination required to trigger this, but it seems
-  in certain scenarios, the mixture of GTK4 (required by Ghostty), Nvidia,
-  and X11 can cause this issue. Changing driver versions or changing to
-  Wayland can resolve this.
+- [GTK4 + Nvidia + X11](https://gitlab.gnome.org/GNOME/gtk/-/issues/4950)。
+  発生に必要な正確な組み合わせは分かりませんが、特定の状況では、GTK4（Ghostty に必須）、
+  Nvidia、X11 の組み合わせがこの問題を引き起こすようです。
+  ドライバーのバージョンを変更するか、Wayland に切り替えることで解決する場合があります。

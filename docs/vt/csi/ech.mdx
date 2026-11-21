@@ -1,46 +1,27 @@
 ---
-title: Erase Character (ECH)
-description: |-
-  Blank `n` cells beginning with and including the cursor through to
-  the right of the cursor.
+title: 文字消去 (ECH)
+description: カーソル位置を含め、そこから右に `n` セルを空白にします。
 ---
 
 <VTSequence sequence={["CSI", "Pn", "X"]} />
 
-The parameter `n` must be an integer greater than or equal to 1. If `n` is less than
-or equal to 0, adjust `n` to be 1. If `n` is omitted, `n` defaults to 1.
+パラメーター `n` は 1 以上の整数である必要があります。`n` が 0 以下の場合は、`n` を 1 に調整します。`n` を省略した場合、`n` のデフォルトは 1 です。
 
-The rightmost column that can be erased is the rightmost column of the screen.
-The [right margin](#) has no effect on this sequence.
+消去できる右端の列は、画面の右端の列です。[右マージン](#)はこのシーケンスに影響しません。
 
-This sequence always unsets the pending wrap state. If the row under the cursor
-is soft-wrapped, then the soft-wrap state is also reset.
+このシーケンスは常に保留中の折り返し状態を解除します。カーソルのある行がソフト折り返しされている場合、ソフト折り返しの状態もリセットします。
 
-For `n` cells up to the rightmost column, blank the cell by replacing it
-with an empty character with the background color colored according to the
-current SGR state. No other SGR attributes are preserved.
+右端の列までの範囲で、`n` セルを、現在の SGR 状態に応じた背景色の空の文字で置き換えて空白にします。それ以外の SGR 属性は保持しません。
 
-If a multi-cell character would be split, erase the full multi-cell
-character. For example, if "橋" is printed and ECH `n = 1` is issued,
-the full character should be erased even though it takes up two cells.
-Both erased cells are colored with the current background color according
-to the current SGR state.
+複数セルにまたがる文字が分割される場合は、その文字全体を消去します。たとえば、「橋」が表示されていて、ECH `n = 1` が発行された場合、その文字は 2 セルを占めていますが、文字全体を消去する必要があります。消去した両方のセルは、現在の SGR 状態に応じた現在の背景色で塗られます。
 
-If [Select Character Selection Attribute (DECSCA)](#TODO) is enabled
-or was the most recently enabled protection mode on the currently active screen,
-protected attributes are ignored as if they were never set and the cells
-with them are erased. It does not matter if DECSCA is currently disabled,
-protected attributes are still ignored so long as DECSCA was the
-_most recently enabled_ protection mode.
+[文字選択属性設定 (DECSCA)](#TODO) が有効であるか、現在アクティブな画面で最後に有効にされた保護モードであった場合、保護属性は設定されていなかったかのように無視され、その属性を持つセルは消去されます。DECSCA が現在無効になっていても、*最後に有効にされた*保護モードが DECSCA である限り、保護属性は無視されます。
 
-If DECSCA is not currently enabled and was not the most recently enabled protection
-mode on the currently active screen, cells with the protected attribute set are
-respected and not erased but still count towards `n`. It does not matter if the
-protection attribute for a cell was originally set from DECSCA.
+DECSCA が現在有効ではなく、現在アクティブな画面で最後に有効にされた保護モードでもなかった場合、保護属性が設定されたセルは尊重され、消去されませんが、`n` の数には含まれます。セルの保護属性がもともと DECSCA によって設定されたかどうかは関係ありません。
 
-## Validation
+## 検証 {/* #validation */}
 
-### ECH V-1: Simple Operation
+### ECH V-1: 単純な操作 {/* #ech-v-1:-simple-operation */}
 
 ```bash
 printf "ABC"
@@ -52,7 +33,7 @@ printf "\033[2X"
 |c_C_____|
 ```
 
-### ECH V-2: Erasing Beyond Edge of Screen
+### ECH V-2: 画面の端を越えた消去 {/* #ech-v-2:-erasing-beyond-edge-of-screen */}
 
 ```bash
 cols=$(tput cols)
@@ -67,7 +48,7 @@ printf "\033[10X"
 |_____Ac_|
 ```
 
-### ECH V-3: Reset Pending Wrap State
+### ECH V-3: 保留中の折り返し状態のリセット {/* #ech-v-3:-reset-pending-wrap-state */}
 
 ```bash
 cols=$(tput cols)
@@ -81,7 +62,7 @@ printf "X"
 |_______Xc
 ```
 
-### ECH V-4: SGR State
+### ECH V-4: SGR 状態 {/* #ech-v-4:-sgr-state */}
 
 ```bash
 printf "ABC"
@@ -94,10 +75,9 @@ printf "\033[2X"
 |c_C_____|
 ```
 
-The `c_` cells should both have a red background. All other cells
-remain unchanged in style.
+`c_` の両方のセルは、背景が赤になるはずです。それ以外のすべてのセルのスタイルは変わりません。
 
-### ECH V-5: Multi-cell Character
+### ECH V-5: 複数セルにまたがる文字 {/* #ech-v-5:-multi-cell-character */}
 
 ```bash
 printf "橋BC"
@@ -110,7 +90,7 @@ printf "X"
 |XcBC____|
 ```
 
-### ECH V-6: Left/Right Scroll Region Ignored
+### ECH V-6: 左右スクロール領域の無視 {/* #ech-v-6:-leftright-scroll-region-ignored */}
 
 ```bash
 printf "\033[1;1H" # move to top-left
@@ -127,7 +107,7 @@ printf "\033[4X"
 |c___BC____|
 ```
 
-### ECH V-7: Protected Attributes Ignored with DECSCA
+### ECH V-7: DECSCA による保護属性の無視 {/* #ech-v-7:-protected-attributes-ignored-with-decsca */}
 
 ```bash
 printf "\033V"
@@ -142,7 +122,7 @@ printf "\033[2X"
 |c_C_______|
 ```
 
-### ECH V-8: Protected Attributes Respected without DECSCA
+### ECH V-8: DECSCA がない場合の保護属性の尊重 {/* #ech-v-8:-protected-attributes-respected-without-decsca */}
 
 ```bash
 printf "\033[1\"q"
@@ -156,4 +136,4 @@ printf "\033[2X"
 |ABC_______|
 ```
 
-The cursor remains at `A`.
+カーソルは `A` の位置にとどまります。

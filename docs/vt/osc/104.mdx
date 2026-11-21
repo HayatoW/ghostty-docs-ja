@@ -1,17 +1,10 @@
 ---
-title: Reset Palette Colors (OSC 104)
-description: Reset colors in the palette.
+title: パレット色のリセット (OSC 104)
+description: パレットの色をリセットします。
 ---
 
 <VTSequence sequence={["OSC", "104", ";", "Pn", "ST"]} />
 
-Reset the color in the palette at index `n`. `n` can be specified **zero or
-more** times, separated with semicolons (`;`)
-When `n` is not specified, the entire palette is reset.
+パレットのインデックス `n` の色をリセットします。`n` はセミコロン（`;`）で区切って **0 回以上**指定できます。`n` を指定しない場合、パレット全体をリセットします。
 
-When `n` is between 0 and 255, the normal 256-color palette is used.
-When `n` is above 255, however, they instead map to
-[special colors](/docs/vt/concepts/colors#special-colors), with 256
-mapping to the first special color (bold), 257 the second (underline), etc.
-This makes it behave equivalently to [OSC 105](/docs/vt/osc/105) with the index
-subtracted by 256.
+`n` が 0 から 255 までの場合、通常の 256 色パレットを使用します。ただし、`n` が 255 を超える場合は、代わりに[特殊色](/docs/vt/concepts/colors#special-colors)に対応します。256 は最初の特殊色（太字）、257 は 2 番目（下線）というように対応します。これにより、インデックスから 256 を引いた値を指定した [OSC 105](/docs/vt/osc/105) と同じ動作になります。

@@ -1,29 +1,29 @@
 ---
-title: Full Reset (RIS)
-description: Reset the terminal to its initial state.
+title: 完全リセット (RIS)
+description: ターミナルを初期状態にリセットします。
 ---
 
 <VTSequence sequence={["ESC", "c"]} />
 
-The full reset operation does the following:
+完全リセット操作では、次の処理を行います。
 
-- Set the cursor shape to the default
-- Reset the scroll region to the full screen
-- Disable [left and right margin mode (mode 69)](#TODO)
-- Disable [origin mode (mode 6)](#TODO)
-- Unset cursor foreground and background colors
-- Reset charsets to the default
-- Reset [cursor key mode (DECCKM)](#TODO)
-- Reset [disable keyboard input (KAM)](#TODO)
-- Reset [application keypad mode](/docs/vt/esc/deckpnm)
-- Reset xterm keyboard modifier state to the default
-- Disable cursor [protected attribute](#TODO)
-- Disable any [protected area](#TODO)
-- Reset all [mouse tracking modes](#TODO)
-- Reset tabstops to default
-- Enable [send-receive mode (mode 12)](#TODO)
-- Reset [backspace sends delete (mode 67)](#TODO)
-- Return to the primary screen and clear it
-- Move the cursor to the top-left corner
-- Reset the pending wrap state
-- Reset saved cursor state
+- カーソルの形状をデフォルトに設定します。
+- スクロール領域を画面全体にリセットします。
+- [左右マージンモード（モード 69）](#TODO) を無効にします。
+- [原点モード（モード 6）](#TODO) を無効にします。
+- カーソルの前景色と背景色を解除します。
+- 文字セットをデフォルトにリセットします。
+- [カーソルキーモード (DECCKM)](#TODO) をリセットします。
+- [キーボード入力の無効化 (KAM)](#TODO) をリセットします。
+- [アプリケーションキーパッドモード](/docs/vt/esc/deckpnm)をリセットします。
+- xterm のキーボード修飾キーの状態をデフォルトにリセットします。
+- カーソルの[保護属性](#TODO)を無効にします。
+- すべての[保護領域](#TODO)を無効にします。
+- すべての[マウス追跡モード](#TODO)をリセットします。
+- タブストップをデフォルトにリセットします。
+- [送受信モード（モード 12）](#TODO) を有効にします。
+- [バックスペースによる delete の送信（モード 67）](#TODO) をリセットします。
+- プライマリ画面に戻り、その画面を消去します。
+- カーソルを左上隅に移動します。
+- 保留中の折り返し状態をリセットします。
+- 保存されたカーソルの状態をリセットします。

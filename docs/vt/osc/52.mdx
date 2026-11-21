@@ -1,41 +1,30 @@
 ---
-title: Query or Change Clipboard Data (OSC 52)
-description: Query or change data on clipboards.
+title: クリップボードデータの問い合わせと変更 (OSC 52)
+description: クリップボード上のデータの問い合わせや変更を行います。
 ---
 
 <VTSequence sequence={["OSC", "52", ";", "Pt", ";", "Pd", "ST"]} />
 
-Query or change data on clipboards specified by `t` based on the
-value of `d`.
+`d` の値に基づいて、`t` で指定したクリップボード上のデータの問い合わせまたは変更を行います。
 
-`t` is a list of **zero or more** characters that each correspond to
-a different type of clipboard on the system. The meaning of each character
-in `t` as defined by xterm is as follows:
+`t` は **0 個以上**の文字のリストで、各文字はシステム上の異なる種類のクリップボードに対応します。xterm が定義する `t` の各文字の意味は次のとおりです。
 
-| `t`     | Type                |
+| `t`     | 種類                |
 |---------|---------------------|
-| `c`     | Standard clipboard  |
-| `p`     | Primary clipboard   |
-| `q`     | Secondary clipboard |
-| `s`     | Selection clipboard |
-| `0`–`7` | Cut-buffer `0`–`7`  |
+| `c`     | 標準クリップボード  |
+| `p`     | プライマリクリップボード   |
+| `q`     | セカンダリクリップボード |
+| `s`     | 選択クリップボード |
+| `0`–`7` | カットバッファー `0`–`7`  |
 
 > [!NOTE]
-> Ghostty only recognizes `c`, `p`, and `s` as valid values in `t`.
-> Other types are treated as aliases for `c`. When `t` is omitted,
-> Ghostty defaults to querying or modifying the primary clipboard
-> (equivalent to `c`).
+> Ghostty は `t` の有効な値として `c`、`p`、`s` だけを認識します。それ以外の種類は `c` の別名として扱います。`t` を省略した場合、Ghostty はデフォルトでプライマリクリップボード（`c` と同等）の問い合わせまたは変更を行います。
 
 > [!WARNING]
-> Ghostty currently only allows specifying one clipboard per sequence.
-> This is a limitation on our end and may be fixed in the future.
+> 現在、Ghostty では 1 つのシーケンスにつき 1 つのクリップボードしか指定できません。これは Ghostty 側の制限であり、将来修正される可能性があります。
 
-When `d` is the single character `?`, the terminal will reply with
-another OSC 52 sequence with the data found from the first clipboard
-listed in `t` that contains the requested data.
+`d` が単一の文字 `?` の場合、ターミナルは、`t` に挙げられたクリップボードのうち、要求されたデータを含む最初のクリップボードから取得したデータを、別の OSC 52 シーケンスで返します。
 
-Otherwise, `d` is expected to be a Base64-encoded string that contains
-the new data for all clipboards listed in `t`.
+それ以外の場合、`d` は、`t` に挙げられたすべてのクリップボードに設定する新しいデータを含む、Base64 でエンコードされた文字列であることを想定します。
 
-If `d` is neither a valid Base64-encoded string or the character `?`,
-all clipboards listed in `t` are cleared.
+`d` が有効な Base64 エンコード文字列でも文字 `?` でもない場合、`t` に挙げられたすべてのクリップボードを消去します。

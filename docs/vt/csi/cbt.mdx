@@ -1,27 +1,19 @@
 ---
-title: Cursor Backward Tabulation (CBT)
-description: Move the cursor `n` tabs left.
+title: カーソル後退タブ移動 (CBT)
+description: カーソルを左に `n` タブ分移動します。
 ---
 
 <VTSequence sequence={["CSI", "Pn", "Z"]} />
 
-The leftmost valid column for this operation is the first column. If
-[origin mode](#TODO) is enabled, then the leftmost valid column for this
-operation is the [left margin](#TODO).
+この操作で有効な左端の列は最初の列です。[原点モード](#TODO)が有効な場合、この操作で有効な左端の列は[左マージン](#TODO)になります。
 
-Move the cursor left until the cursor position is on a tabstop. If the
-cursor would move past the leftmost valid column, the cursor remains at
-the leftmost valid column and the operation completes. Repeat this process
-`n` times.
+カーソルがタブストップ上に来るまで左に移動します。有効な左端の列を越えて移動する場合、カーソルは有効な左端の列にとどまり、操作を終了します。この処理を `n` 回繰り返します。
 
-Tabstops are dynamic and can be set with escape sequences such as
-[horizontal tab set (HTS)](#TODO), [tab clear (TBC)](/docs/vt/csi/tbc), etc.
-A terminal emulator may default tabstops at any interval, though an interval
-of 8 spaces is most common.
+タブストップは動的であり、[水平タブ設定 (HTS)](#TODO)、[タブ消去 (TBC)](/docs/vt/csi/tbc) などのエスケープシーケンスで設定できます。ターミナルエミュレーターは任意の間隔をデフォルトのタブストップにできますが、8 スペース間隔が最も一般的です。
 
-## Validation
+## 検証 {/* #validation */}
 
-### CBT V-1: Left Beyond First Column
+### CBT V-1: 最初の列を越えて左へ移動 {/* #cbt-v-1:-left-beyond-first-column */}
 
 ```bash
 printf "\033[?5W" # reset tab stops
@@ -33,7 +25,7 @@ printf "A"
 |Ac________|
 ```
 
-### CBT V-2: Left Starting After Tab Stop
+### CBT V-2: タブストップの後から左へ移動 {/* #cbt-v-2:-left-starting-after-tab-stop */}
 
 ```bash
 printf "\033[?5W" # reset tab stops
@@ -47,7 +39,7 @@ printf "A"
 |________AX|
 ```
 
-### CBT V-3: Left Starting on Tabstop
+### CBT V-3: タブストップ上から左へ移動 {/* #cbt-v-3:-left-starting-on-tabstop */}
 
 ```bash
 printf "\033[?5W" # reset tab stops
@@ -62,7 +54,7 @@ printf "A"
 |A_______X_|
 ```
 
-### CBT V-4: Left Margin with Origin Mode
+### CBT V-4: 原点モードでの左マージン {/* #cbt-v-4:-left-margin-with-origin-mode */}
 
 ```bash
 printf "\033[1;1H" # move to top-left

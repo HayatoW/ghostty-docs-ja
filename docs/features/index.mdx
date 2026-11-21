@@ -1,121 +1,86 @@
 ---
-title: Features
-description: The features Ghostty supports and associated documentation.
+title: 機能
+description: Ghostty がサポートする機能と関連ドキュメントです。
 ---
 
-Ghostty is a very feature-rich terminal.
+Ghostty は、非常に多機能なターミナルです。
 
-Terminal features can be divided into two categories: features for
-end-users and features for terminal application developers.
+ターミナルの機能は、エンドユーザー向けの機能と、ターミナルアプリケーション開発者向けの機能の 2 つに分けられます。
 
-Features for end-users are things like multi-window, tabs, splits, ligatures,
-auto-update, etc. These are features that make using a terminal
-more pleasant without requiring any changes to the running terminal
-applications (such as your shell, text editor, etc.).
+エンドユーザー向けの機能には、複数ウィンドウ、タブ、分割、合字、自動更新などがあります。
+これらは、実行中のターミナルアプリケーション（シェルやテキストエディターなど）に変更を加えることなく、ターミナルをより快適に使えるようにする機能です。
 
-Features for terminal application developers are things like the
-Kitty graphics protocol, Kitty keyboard protocol, synchronized
-rendering, light/dark mode notifications, etc. These features allow
-terminal applications to do more than they could in other terminal
-emulators. While these features are not directly used by end-users,
-end-users benefit from them because terminal applications they use
-every day can do more.
+ターミナルアプリケーション開発者向けの機能には、Kitty グラフィックスプロトコル、Kitty キーボードプロトコル、
+同期レンダリング、ライトモード / ダークモードの通知などがあります。
+これらにより、ターミナルアプリケーションはほかのターミナルエミュレーターよりも多くのことができるようになります。
+エンドユーザーが直接使う機能ではありませんが、日常的に使うターミナルアプリケーションの可能性が広がるため、エンドユーザーにも恩恵があります。
 
-## Feature Highlight
+## 主な機能 {/* #feature-highlight */}
 
-Here is a list highlighting some of the larger or more interesting
-features that Ghostty supports:
+Ghostty がサポートする主な機能や、特に興味深い機能を紹介します。
 
-- **Cross-platform**: Ghostty runs on macOS and Linux. It uses native
-  UI components on each platform to provide an idiomatic experience.
-  Windows support is planned for the future.
+- **クロスプラットフォーム**: Ghostty は macOS と Linux で動作します。
+  各プラットフォームのネイティブ UI コンポーネントを使い、その環境になじむ操作感を提供します。
+  Windows への対応は今後予定しています。
 
-- **Windows, tabs, and splits**: Ghostty supports multiple windows,
-  each with its own tabs and splits. These are all rendered using
-  native UI components.
+- **ウィンドウ、タブ、分割**: Ghostty は複数のウィンドウをサポートし、それぞれにタブや分割を作成できます。
+  これらはすべてネイティブ UI コンポーネントで描画されます。
 
-- **GPU-accelerated rendering**: Ghostty uses Metal on macOS and
-  OpenGL on Linux to render the terminal screen.
+- **GPU アクセラレーションによる描画**: Ghostty は、macOS では Metal、Linux では OpenGL を使ってターミナル画面を描画します。
 
-- **Themes**: Ghostty ships with hundreds of themes that can be
-  selected with a single line of configuration. Themes can be
-  switched automatically based on system dark/light mode. Users
-  can author their own themes.
+- **テーマ**: Ghostty には数百種類のテーマが付属し、1 行の設定で選択できます。
+  システムのダークモード / ライトモードに応じて自動的に切り替えることもできます。
+  独自のテーマを作成することも可能です。
 
-- **Ligatures**: You can use fonts that have ligatures and Ghostty
-  will render them correctly. You can also specify specific font
-  features to enable or disable.
+- **合字**: 合字を持つフォントを使用でき、Ghostty はそれらを正しく描画します。
+  特定のフォント機能の有効・無効も指定できます。
 
-- **Grapheme clustering**: Multi-codepoint emoji such as flags,
-  skin tones, etc. are rendered correctly as a single character.
-  Individual grapheme clusters in certain right-to-left scripts
-  like Arabic and Hebrew are also rendered correctly, although
-  only left-to-right text is supported.
+- **書記素クラスタリング**: 国旗や肌の色など、複数のコードポイントからなる絵文字を 1 文字として正しく描画します。
+  アラビア文字やヘブライ文字など、一部の右から左に書く文字体系の個々の書記素クラスタも正しく描画します。
+  ただし、対応するテキストの方向は左から右のみです。
 
-- **Kitty graphics protocol**: Ghostty supports the Kitty graphics
-  protocol, which allows terminal applications to render images
-  directly in the terminal.
+- **Kitty グラフィックスプロトコル**: Ghostty は Kitty グラフィックスプロトコルをサポートし、
+  ターミナルアプリケーションがターミナル内に直接画像を描画できるようにします。
 
-### Platform-Native Features
+### プラットフォームのネイティブ機能 {/* #platform-native-features */}
 
-One of the primary [design goals](/docs/about) of Ghostty is to
-look, feel, and behave like a purpose-built native application
-on each platform.
-Here is a list of some of the platform-native features that Ghostty has.
+Ghostty の主要な[設計目標](/docs/about)の 1 つは、各プラットフォーム専用に作られたネイティブアプリケーションのような見た目、操作感、動作を実現することです。
+Ghostty が備えるプラットフォームのネイティブ機能をいくつか紹介します。
 
-### macOS
+### macOS {/* #macos */}
 
-- **Quick Terminal**: Lightweight terminal that animates down below the
-  menu bar for instant access without interrupting work.
-- **AppleScript Automation**: Built-in AppleScript dictionary for scripting
-  windows, tabs, terminals, layouts, and input events. See
-  [AppleScript docs](/docs/features/applescript).
-- **Native Tabs, Splits, etc.**: We use native macOS components for
-  UI elements such as tabs and splits as opposed to custom-drawn
-  text such as other terminal emulators.
-- **Proxy Icon**: Drag the proxy icon in the title bar to move or
-  access terminal session files, or navigate to the file path directly.
-- **Quick Look**: Tap text with three fingers or force touch to use macOS
-  Quick Look for definitions, web searches, and more.
-- **Secure Keyboard Entry**: Automatically detect password prompts
-  or manually enable secure keyboard entry to protect passwords from
-  other processes. You can know when secure keyboard entry is active
-  because an animated lock icon appears in the top-right corner of the
-  terminal.
+- **クイックターミナル**: メニューバーの下にアニメーションで現れる軽量なターミナルで、作業を中断せずにすぐアクセスできます。
+- **AppleScript による自動化**: ウィンドウ、タブ、ターミナル、レイアウト、入力イベントをスクリプトで操作するための AppleScript 辞書を内蔵しています。
+  [AppleScript ドキュメント](/docs/features/applescript)を参照してください。
+- **ネイティブのタブや分割など**: ほかのターミナルエミュレーターのように独自に描画したテキストではなく、タブや分割などの UI 要素に macOS のネイティブコンポーネントを使います。
+- **プロキシアイコン**: タイトルバーのプロキシアイコンをドラッグしてターミナルセッションのファイルを移動したりアクセスしたり、ファイルパスに直接移動したりできます。
+- **クイックルック**: テキストを 3 本指でタップするか強く押すと、macOS のクイックルックで辞書検索やウェブ検索などができます。
+- **セキュアキーボード入力**: パスワードプロンプトを自動検出するか、手動でセキュアキーボード入力を有効にして、パスワードをほかのプロセスから保護します。
+  有効なときはターミナルの右上にアニメーション付きの鍵アイコンが表示されます。
 
-## Terminal (VT) Features
+## ターミナル（VT）機能 {/* #terminal-(vt)-features */}
 
-For terminal application developers, we believe Ghostty is one of
-the most modern and comprehensive terminal emulators available[^1].
-Our goal with Ghostty is to be the most compatible for legacy
-applications while also providing the most modern features for
-new applications.
+ターミナルアプリケーション開発者にとって、Ghostty は最も現代的で包括的なターミナルエミュレーターの 1 つだと考えています[^1]。
+Ghostty の目標は、従来のアプリケーションとの最高の互換性を保ちながら、
+新しいアプリケーションには最先端の機能を提供することです。
 
-What that means in practice is that Ghostty supports a wide range
-of control sequences, terminal features, and terminal protocols.
-And to determine the behavior of these features, we follow
-the following principles:
+具体的には、Ghostty は幅広い制御シーケンス、ターミナル機能、ターミナルプロトコルをサポートしています。
+これらの機能の動作を決める際は、次の原則に従います。
 
-  1. Xterm compatibility: xterm is the de facto standard for
-     terminal emulation. If xterm does something, we should do
-     the same thing[^2].
+  1. Xterm との互換性: xterm はターミナルエミュレーションの事実上の標準です。
+     xterm が何かを行うなら、私たちも同じようにするべきです[^2]。
 
-  2. Protocol origin compatibility: If the terminal that defined
-     a protocol behaves a certain way, we should follow that behavior,
-     even if it is not specified[^3].
+  2. プロトコルの起源との互換性: プロトコルを定義したターミナルが特定の動作をするなら、
+     仕様に書かれていなくても、その動作に従うべきです[^3]。
 
-  3. Defacto standard compatibility: If a behavior is widely
-     accepted as the standard, we should follow that behavior.
-     "Widely accepted" is generally subjective based on popular
-     opinion and usage.
+  3. 事実上の標準との互換性: ある動作が標準として広く受け入れられているなら、その動作に従うべきです。
+     「広く受け入れられている」かどうかは、一般に世論や使用状況に基づく主観的な判断です。
 
-For a list of terminal developer features Ghostty supports, see the
-[reference](/docs/vt/reference)
-(but note at the time of writing this is still a work-in-progress).
+Ghostty がサポートするターミナル開発者向け機能の一覧は、
+[リファレンス](/docs/vt/reference)を参照してください
+（ただし、執筆時点ではまだ作成途中です）。
 
-[^1]: If not, we want to know! Please
-[open a discussion](https://github.com/ghostty-org/ghostty/discussions).
-[^2]: We may put some xterm behaviors behind a configuration flag if
-the behavior is questionable or not widely accepted.
-[^3]: If a behavior differs between the specification and the terminal that defined the protocol, we open a discussion to determine the correct behavior.
-
+[^1]: そうでないと感じたら、ぜひ教えてください！
+[ディスカッションを作成](https://github.com/ghostty-org/ghostty/discussions)してください。
+[^2]: xterm の動作に疑問がある場合や、広く受け入れられていない場合は、設定フラグで切り替えるようにすることがあります。
+[^3]: 仕様とプロトコルを定義したターミナルの動作が異なる場合は、ディスカッションを作成して正しい動作を判断します。

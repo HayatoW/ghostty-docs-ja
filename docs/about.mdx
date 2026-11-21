@@ -1,145 +1,104 @@
 ---
-title: About Ghostty
+title: Ghostty について
 description:
 ---
 
-Ghostty is a terminal emulator that differentiates itself by being
-fast, feature-rich, and native. While there are many excellent terminal
-emulators available, they all force you to choose between speed,
-features, or native UIs. Ghostty provides all three.
+Ghostty は、高速、多機能、ネイティブであることを特徴とするターミナルエミュレーターです。
+優れたターミナルエミュレーターは数多くありますが、どれも速度、機能、ネイティブ UI のいずれかを選ばなければなりません。
+Ghostty はこの 3 つすべてを提供します。
 
-In all categories, I am not trying to claim that Ghostty is the
-best (i.e. the fastest, most feature-rich, or most native). But
-when I set out to create Ghostty, I felt all terminals made
-you choose at most two of these categories. I wanted to create
-a terminal that was competitive in all three categories and I
-believe Ghostty achieves that goal.
+すべての分野において、Ghostty が最高（つまり、最速、最多機能、最もネイティブ）だと主張するつもりはありません。
+しかし、Ghostty を作り始めたとき、どのターミナルでもこれらの分野から最大 2 つしか選べないと感じていました。
+3 つすべての分野で競争力のあるターミナルを作りたいと思い、Ghostty はその目標を達成していると考えています。
 
-Before diving into the details, I also want to note that Ghostty
-is a passion project started by [Mitchell Hashimoto](https://mitchellh.com)
-(that's me!). It's something I work on in my free time and is a
-labor of love. Please don't forget this when interacting with
-the project. I'm doing my best to make something great along with
-the lovely contributors, but it's not a full-time job for any of us.
+詳細に入る前に、Ghostty は [Mitchell Hashimoto](https://mitchellh.com)
+（私です！）が情熱から始めたプロジェクトであることもお伝えしておきます。
+自由な時間に取り組んでいる、愛情を注いだ活動です。このプロジェクトに関わる際は、このことを忘れないでください。
+素晴らしい貢献者の皆さんとともに、優れたものを作ろうと最善を尽くしていますが、私たちの誰にとってもフルタイムの仕事ではありません。
 
-## Native
+## ネイティブ {/* #native */}
 
-The big picture of "native" is that Ghostty is designed to look,
-feel, and behave like you expect an application to behave in your
-desktop environment.
+「ネイティブ」の大きな意味は、Ghostty が、皆さんのデスクトップ環境でアプリケーションに期待する見た目、使い心地、動作になるよう設計されているということです。
 
-Importantly, Ghostty _is_ a native application for macOS and Linux.
-On macOS, the GUI is written in Swift and uses AppKit and SwiftUI.
-On Linux, the GUI is written in Zig and uses the GTK4 C API[^1].
-The GUIs interface with a shared core written in Zig that we
-call "libghostty". For those unfamiliar with Zig, it is a
-systems programming language that compiles to native machine code.
+重要なのは、Ghostty が macOS と Linux 向けのネイティブアプリケーションであるという点です。
+macOS では、GUI は Swift で書かれ、AppKit と SwiftUI を使用しています。
+Linux では、GUI は Zig で書かれ、GTK4 C API を使用しています[^1]。
+これらの GUI は、私たちが「libghostty」と呼ぶ、Zig で書かれた共通のコアと連携します。
+Zig をご存じない方のために説明すると、ネイティブの機械語にコンパイルされるシステムプログラミング言語です。
 
-Part of this is using native UI components[^2] for features like tabs,
-splits, error messages, etc. in contrast to many other terminal
-emulators that either use text UIs and custom widgets or
-don't support these features at all.
+その一環として、タブ、分割、エラーメッセージなどの機能にネイティブ UI コンポーネント[^2]を使用しています。
+これは、テキスト UI やカスタムウィジェットを使用したり、そもそもこれらの機能をサポートしていなかったりする、多くのほかのターミナルエミュレーターとは対照的です。
 
-Another part is using standard keyboard and mouse shortcuts
-that you're already familiar with. Ghostty uses different default
-bindings on macOS and Linux to match the conventions of each
-platform.
+もう 1 つは、すでに使い慣れている標準的なキーボードとマウスのショートカットを使用することです。
+Ghostty は、各プラットフォームの慣習に合わせ、macOS と Linux で異なるデフォルトのキーバインドを使用します。
 
-And a third part is Ghostty integrates with system capabilities
-that are unique to the platform it is running on. For example,
-on macOS, Ghostty supports Quick Look, force touch, the macOS
-secure input API, built-in window state recovery on restart,
-etc. These are all native APIs provided by macOS that don't have
-equivalents in Linux desktop environments.
+そして 3 つ目は、実行しているプラットフォーム固有のシステム機能と統合することです。
+たとえば macOS では、Ghostty は Quick Look、感圧タッチ、macOS のセキュア入力 API、
+再起動時の組み込みウィンドウ状態復元などをサポートしています。
+これらはすべて macOS が提供するネイティブ API であり、Linux デスクトップ環境には同等のものがありません。
 
-## Feature-rich
+## 多機能 {/* #feature-rich */}
 
-Ghostty tries to provide a rich set of features that are useful
-for everyday use. These can be split into two categories:
-terminal features and application features.
+Ghostty は、日常的な使用に役立つ豊富な機能の提供を目指しています。
+これらは、ターミナル機能とアプリケーション機能の 2 つに分類できます。
 
-Terminal features include the capabilities that programs running
-inside the terminal can use. For example, Ghostty supports
-the Kitty graphics protocol, light/dark mode notifications,
-hyperlinks, and more.
-This lets terminal applications like Neovim, Zellij, and
-others do more than they could in other terminal emulators[^3].
+ターミナル機能には、ターミナル内で実行されるプログラムが利用できる機能が含まれます。
+たとえば、Ghostty は Kitty グラフィックスプロトコル、ライトモード・ダークモードの通知、ハイパーリンクなどをサポートしています。
+これにより、Neovim や Zellij などのターミナルアプリケーションは、ほかのターミナルエミュレーターよりも多くのことを実現できます[^3]。
 
-Application features are higher-level features that are useful
-for interacting with the terminal emulator itself. For example,
-Ghostty supports native tabs, splits, a drop-down terminal
-on macOS, theme switching on system dark/light mode, etc.
+アプリケーション機能とは、ターミナルエミュレーター自体を操作する際に役立つ、より高水準の機能です。
+たとえば、Ghostty はネイティブのタブ、分割、macOS のドロップダウンターミナル、
+システムのダークモード・ライトモードに応じたテーマの切り替えなどをサポートしています。
 
-## Fast
+## 高速 {/* #fast */}
 
-Ghostty aims to be fast.
+Ghostty は高速であることを目指しています。
 
-Performance is a category where people start getting really
-argumentative, so the only claim I make is that Ghostty aims
-to be in the same class as the fastest terminal emulators.
-In some benchmarks it is faster, in others it is slower, but
-in every case it should be impossible to say that Ghostty is
-slow.
+パフォーマンスは議論が白熱しがちな分野なので、私が主張するのは、Ghostty が最速のターミナルエミュレーターと同じクラスを目指しているということだけです。
+ベンチマークによって速い場合も遅い場合もありますが、いずれの場合も Ghostty が遅いとは言えないはずです。
 
-"Fast" is also a loaded term since "fast" can mean different
-things to different people. For example, here is just a
-small list of the things that can be "fast": startup time,
-scrolling speed, IO throughput, control sequence throughput,
-framerates, etc.
+「高速」という言葉も、人によって異なる意味を持つため、一筋縄ではいきません。
+たとえば、「高速」になり得るものを少し挙げるだけでも、起動時間、スクロール速度、
+IO スループット、制御シーケンスのスループット、フレームレートなどがあります。
 
-In the future, I'd like to provide detailed benchmarks and
-explanations about how Ghostty performs in various performance
-categories. For the initial public release, I'll just say that
-Ghostty aims to be "fast" as described above.
+将来的には、さまざまなパフォーマンス分野で Ghostty がどのように動作するかについて、詳細なベンチマークと説明を提供したいと考えています。
+最初の一般公開リリースでは、Ghostty は上記の意味で「高速」を目指している、とだけ述べておきます。
 
-I know many don't believe that speed is that important for a
-terminal emulator, but new users to Ghostty repeatedly told me
-that they were very surprised how noticeable the speed
-improvements were to their everyday use. I hope you'll feel the
-same way.
+ターミナルエミュレーターにとって速度はそれほど重要ではないと考える人が多いことは承知しています。
+しかし、Ghostty を使い始めたユーザーからは、日常の使用で速度の向上をはっきりと感じられることにとても驚いたと、繰り返し聞きました。
+皆さんにも同じように感じていただければ幸いです。
 
-## libghostty
+## libghostty {/* #libghostty */}
 
-Ghostty also differentiates itself with its architecture. The
-core of Ghostty is a cross-platform, C-ABI compatible library called
-`libghostty`. `libghostty` provides the core terminal emulation, font handling,
-and rendering capabilities.
+Ghostty は、そのアーキテクチャも特徴です。
+Ghostty のコアは、`libghostty` というクロスプラットフォームの C ABI 互換ライブラリです。
+`libghostty` は、ターミナルエミュレーション、フォント処理、レンダリングの中核機能を提供します。
 
-The Ghostty GUI applications are consumers of `libghostty`. The macOS app is
-written in Swift, uses AppKit and SwiftUI, and links against the `libghostty`
-C API. The Linux app is written in Zig, uses the GTK4 C API, and also links
-against `libghostty`[^4].
+Ghostty の GUI アプリケーションは `libghostty` を利用します。
+macOS アプリは Swift で書かれ、AppKit と SwiftUI を使用し、`libghostty` の C API にリンクします。
+Linux アプリは Zig で書かれ、GTK4 C API を使用し、同じく `libghostty` にリンクします[^4]。
 
-This architecture allows for a clean separation between the terminal
-emulation and the GUI. It is the key architecture that allows Ghostty
-to achieve its goal of being [native](#native).
+このアーキテクチャにより、ターミナルエミュレーションと GUI を明確に分離できます。
+これは、Ghostty が[ネイティブ](#native)であるという目標を達成するための重要なアーキテクチャです。
 
-This architecture makes Ghostty unique since Ghostty the project also aims
-to enable other terminal emulator projects to be built on top of a shared
-core. This allows for a more diverse ecosystem of terminal emulators that
-can focus on higher-level features and UIs without needing to reimplement
-the core terminal emulation.
+Ghostty プロジェクトは、共通のコアの上にほかのターミナルエミュレータープロジェクトを構築できるようにすることも目指しており、このアーキテクチャが Ghostty を独自のものにしています。
+これにより、中核となるターミナルエミュレーションを再実装することなく、より高水準の機能や UI に注力できる、多様なターミナルエミュレーターのエコシステムが実現します。
 
 <Note>
-As of the initial public release, `libghostty` is not yet a stable API
-and has not been released as a standalone, stable library. However, it is
-already in use by the macOS and Linux GUI applications. The goal is to
-stabilize the API and release it as a standalone library in the future.
+最初の一般公開リリース時点では、`libghostty` の API はまだ安定しておらず、独立した安定版ライブラリとしてもリリースされていません。
+ただし、macOS と Linux の GUI アプリケーションではすでに使用されています。
+将来的には API を安定させ、独立したライブラリとしてリリースすることを目指しています。
 </Note>
 
-[^1]: Linux doesn't have a "native" GUI toolkit like macOS, but
-GTK4 is the closest thing to a standard GUI toolkit that exists.
-Most importantly, we don't draw custom widgets and Ghostty will
-fit right into your desktop environment.
+[^1]: Linux には macOS のような「ネイティブ」の GUI ツールキットはありませんが、
+GTK4 は既存の GUI ツールキットの中で標準に最も近いものです。
+何よりも、カスタムウィジェットを描画しないため、Ghostty は皆さんのデスクトップ環境に自然になじみます。
 
-[^2]: Linux uses GTK4 and (optionally) Adwaita, so Ghostty will
-look and feel like a GTK4 application which may or may not be "native"
-depending on your desktop environment and definition of "native". See
-note 1 too.
+[^2]: Linux では GTK4 と（任意で）Adwaita を使用するため、Ghostty は GTK4 アプリケーションらしい見た目と使い心地になります。
+これが「ネイティブ」かどうかは、デスクトップ環境と「ネイティブ」の定義によって異なります。
+注 1 も参照してください。
 
-[^3]: For example, Neovim uses synchronized rendering to prevent
-tearing between frames.
+[^3]: たとえば、Neovim はフレーム間のティアリングを防ぐために同期レンダリングを使用します。
 
-[^4]: Since the GTK4 app is written in Zig, it doesn't link in the traditional
-sense. Instead, it uses the public `libghostty` APIs and compiles as a single
-Zig compilation unit.
+[^4]: GTK4 アプリは Zig で書かれているため、従来の意味でのリンクは行いません。
+代わりに、公開された `libghostty` API を使用し、単一の Zig コンパイル単位としてコンパイルします。

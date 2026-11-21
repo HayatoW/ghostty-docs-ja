@@ -1,14 +1,10 @@
 ---
-title: Cursor Next Line (CNL)
-description: Move the cursor down `n` cells and to the beginning of the line.
+title: カーソル次行移動 (CNL)
+description: カーソルを `n` セル下の行頭に移動します。
 ---
 
 <VTSequence sequence={["CSI", "Pn", "E"]} />
 
-The parameter `n` must be an integer greater than or equal to 1.
-If `n` is less than or equal to 0, adjust `n` to be 1. If `n` is
-omitted, `n` defaults to 1.
+パラメーター `n` は 1 以上の整数である必要があります。`n` が 0 以下の場合は、`n` を 1 に調整します。`n` を省略した場合、`n` のデフォルトは 1 です。
 
-The logic of this sequence is identical to
-[Cursor Down (CUD)](/docs/vt/csi/cud)
-followed by [Carriage Return (CR)](/docs/vt/control/cr).
+このシーケンスの処理は、[カーソル下移動 (CUD)](/docs/vt/csi/cud) に続けて[復帰 (CR)](/docs/vt/control/cr)を行う場合と同じです。
