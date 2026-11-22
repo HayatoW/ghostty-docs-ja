@@ -7,6 +7,9 @@
 <p align="center">
   This repository contains the entire source for <a href="https://ghostty.org">ghostty.org</a>.
 </p>
+<p align="center">
+  <a href="https://devin.ai"><img src="https://raw.githubusercontent.com/club-cog/built-by-devin/main/badges/built-by-devin.svg" alt="Built by Devin"></a>
+</p>
 
 ## Local Development
 
